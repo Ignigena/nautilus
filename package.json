@@ -1,0 +1,45 @@
+{
+  "name": "nautilus",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -b",
+    "unit": "istanbul cover --dir ./coverage _mocha -- -b",
+    "docs": "./node_modules/.bin/docker -o docs -I -n -x coverage,docs,node_modules,package.json,test,*.md"
+  },
+  "license": "MIT",
+  "repository": "ignigena/nautilus",
+  "dependencies": {
+    "change-case": "^2.3.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "jsonpack": "^1.1.5",
+    "jts": "^1.0.0",
+    "lodash": "^4.12.0",
+    "lusca": "^1.4.0",
+    "mongoose": "^4.4.16",
+    "node-mocks-http": "^1.5.2",
+    "require-all": "^2.0.0",
+    "serve-favicon": "^2.3.0",
+    "socket.io": "^1.4.6",
+    "winston": "^2.2.0"
+  },
+  "devDependencies": {
+    "docker": "^1.0.0-alpha.2",
+    "expect": "^1.20.1",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.4.5",
+    "supertest": "^1.2.0",
+    "team-guidelines": "github:treehouseaustin/team-guidelines"
+  },
+  "engines": {
+    "node": "6.x",
+    "npm": "3.x"
+  },
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/team-guidelines/.eslintrc.js"
+    ]
+  }
+}
