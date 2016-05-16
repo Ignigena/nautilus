@@ -3,6 +3,7 @@
 // The purpose of Nautilus is to provide a basic structure around Express to
 // allow for better team maintainability and rapid prototyping of new apps.
 const express = require('express');
+const fs = require('fs');
 const http = require('http');
 const requireAll = require('require-all');
 
@@ -26,12 +27,14 @@ class Nautilus {
     require('./lib/core/middleware')(this.app);
     this.app.log.profile('middleware');
 
-    this.loadHooks();
+    this.loadHooks('core');
 
     // Once all core hooks are loaded, we connect to Mongo through Mongoose.
     this.app.log.profile('connect');
     require('./lib/core/connect')(this.app);
     this.app.log.profile('connect');
+
+    this.loadHooks('custom');
 
     // The port number can be overridden by passing a `PORT` environment variable to
     // the Node process. This is done automatically by some hosts such as Heroku.
@@ -41,19 +44,22 @@ class Nautilus {
   // All core Nautilus hooks are looped through and initialized. Both the
   // Express application and the attached HTTP server are passed along to each
   // hook to allow the application to be extended before traffic is served.
-  loadHooks() {
-    this.app.log.profile('hooks');
-    this.app.log.verbose('Initializing hooks...');
-    requireAll({
-      dirname: `${__dirname}/lib/hooks`,
-      map: name => {
-        this.app.log.verbose(`  ├ ${name}`);
-        return name;
-      },
-      resolve: config => config(this.app, this.server)
-    });
-    this.app.log.verbose('  └ done!');
-    this.app.log.profile('hooks');
+  loadHooks(type) {
+    this.app.log.profile(`${type} hooks`);
+    this.app.log.verbose(`Initializing ${type} hooks...`);
+    var hookPath = type === 'core' ? `${__dirname}/lib/hooks` : `${this.app.appPath}/hooks`;
+    if (fs.existsSync(hookPath)) {
+      requireAll({
+        dirname: hookPath,
+        map: name => {
+          this.app.log.verbose(`  ├ ${name}`);
+          return name;
+        },
+        resolve: config => config(this.app, this.server)
+      });
+      this.app.log.verbose('  └ done!');
+    }
+    this.app.log.profile(`${type} hooks`);
   }
 
   // Once you're ready to `.start()` the server:
