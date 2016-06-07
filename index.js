@@ -70,13 +70,17 @@ class Nautilus {
   // myApp.start();
   // ```
   start(cb) {
-    this.server.listen(this.app.get('port'), () => {
-      this.app.log.info();
-      this.app.log.info(`Server running on port ${this.server.address().port} in ${this.app.get('env')} mode.`);
-      this.app.log.info('To shut down press <CTRL> + C at any time.');
-      this.app.log.info();
-      if (cb) cb();
-    });
+    try {
+      this.server.listen(this.app.get('port'), () => {
+        this.app.log.info();
+        this.app.log.info(`Server running on port ${this.server.address().port} in ${this.app.get('env')} mode.`);
+        this.app.log.info('To shut down press <CTRL> + C at any time.');
+        this.app.log.info();
+        if (cb) cb(null, this.server);
+      });
+    } catch (err) {
+      cb(err);
+    }
     return this.app;
   }
 
