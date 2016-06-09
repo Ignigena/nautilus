@@ -9,9 +9,14 @@ const requireAll = require('require-all');
 
 class Nautilus {
 
-  constructor() {
+  constructor(config) {
     this.app = express();
     this.server = new http.Server(this.app);
+
+    // Allow the user to override the configuration set by the application. Any
+    // values provided to the constructor will override both environment and
+    // local configuration settings.
+    this.app.runtimeConfig = config;
 
     // The application path is set to the current working directory of the parent
     // process. This allows for relative paths to be resolved in order to render
