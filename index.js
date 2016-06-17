@@ -39,6 +39,7 @@ class Nautilus {
     require('./lib/core/connect')(this.app);
     this.app.log.profile('connect');
 
+    this.loadHooks('custom', 'middleware');
     this.loadHooks('custom');
 
     // The port number can be overridden by passing a `PORT` environment variable to
@@ -49,10 +50,10 @@ class Nautilus {
   // All core Nautilus hooks are looped through and initialized. Both the
   // Express application and the attached HTTP server are passed along to each
   // hook to allow the application to be extended before traffic is served.
-  loadHooks(type) {
-    this.app.log.profile(`${type} hooks`);
-    this.app.log.verbose(`Initializing ${type} hooks...`);
-    var hookPath = type === 'core' ? `${__dirname}/lib/hooks` : `${this.app.appPath}/hooks`;
+  loadHooks(type, location = 'hooks') {
+    this.app.log.profile(`${type} ${location}`);
+    this.app.log.verbose(`Initializing ${type} ${location}...`);
+    var hookPath = type === 'core' ? `${__dirname}/lib/${location}` : `${this.app.appPath}/${location}`;
     if (fs.existsSync(hookPath)) {
       requireAll({
         dirname: hookPath,
@@ -64,7 +65,7 @@ class Nautilus {
       });
       this.app.log.verbose('  └ done!');
     }
-    this.app.log.profile(`${type} hooks`);
+    this.app.log.profile(`${type} ${location}`);
   }
 
   // Once you're ready to `.start()` the server:
