@@ -82,7 +82,15 @@ class Nautilus {
         this.app.log.info(`Server running on port ${this.server.address().port} in ${this.app.get('env')} mode.`);
         this.app.log.info('To shut down press <CTRL> + C at any time.');
         this.app.log.info();
-        if (cb) cb(null, this.server);
+
+        if (!cb) return;
+        if (!this.app.config.waitForReady) return cb(null, this.server);
+
+        // If the launch of the server involves asynchronous activities it may
+        // be helpful to enable `waitForReady` in your `app.config` settings.
+        // Once all asynchronous activies have been completed, simply call
+        // `app.events.emit('ready');` and your callback will fire.
+        app.events.on('ready', () => cb(null, this.server));
       });
     } catch (err) {
       cb(err);
