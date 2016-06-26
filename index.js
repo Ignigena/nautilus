@@ -89,13 +89,25 @@ class Nautilus {
         // If the launch of the server involves asynchronous activities it may
         // be helpful to enable `waitForReady` in your `app.config` settings.
         // Once all asynchronous activies have been completed, simply call
-        // `app.events.emit('ready');` and your callback will fire.
-        app.events.on('ready', () => cb(null, this.server));
+        // `app.events.emit('ready');` and your callback will fire. This can be
+        // useful when testing asynchronous hooks. If you need to delay binding
+        // to port see `.startWhenReady()` below.
+        this.app.events.on('ready', () => cb(null, this.server));
       });
     } catch (err) {
       cb(err);
     }
     return this.app;
+  }
+
+  // This is the functional equivelant to adding `waitForReady` in your
+  // `app.config` settings. The primary difference here is that the server will
+  // not bind to port before the "ready" event is emitted. This can be useful
+  // when deploying to Heroku and utilizing the Preboot setting. Make sure you
+  // emit a "ready" event by calling `app.events.emit('ready');` in one of your
+  // hooks otherwise the server will never bind to port!
+  startWhenReady(cb) {
+    this.app.events.on('ready', () => this.start(cb));
   }
 
 }
