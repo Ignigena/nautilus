@@ -2,6 +2,7 @@
 // ========
 // The purpose of Nautilus is to provide a basic structure around Express to
 // allow for better team maintainability and rapid prototyping of new apps.
+'use strict';
 const express = require('express');
 const fs = require('fs');
 const http = require('http');
@@ -50,7 +51,8 @@ class Nautilus {
   // All core Nautilus hooks are looped through and initialized. Both the
   // Express application and the attached HTTP server are passed along to each
   // hook to allow the application to be extended before traffic is served.
-  loadHooks(type, location = 'hooks') {
+  loadHooks(type, location) {
+    location = location || 'hooks';
     this.app.log.profile(`${type} ${location}`);
     this.app.log.verbose(`Initializing ${type} ${location}...`);
     var hookPath = type === 'core' ? `${__dirname}/lib/${location}` : `${this.app.appPath}/${location}`;
