@@ -27,6 +27,7 @@ class Nautilus {
     // Configuration and logging are initialized first before all others.
     require('./lib/core/config')(this.app);
     require('./lib/core/logs')(this.app);
+    require('./lib/core/events')(this.app);
 
     // The middleware component adds default Session and Security middleware.
     this.app.log.profile('middleware');
@@ -63,7 +64,17 @@ class Nautilus {
           this.app.log.verbose(`  ├ ${name}`);
           return name;
         },
-        resolve: config => config(this.app, this.server)
+        resolve: config => {
+          config(this.app, this.server);
+
+          // Each hook, both core and custom, will emit an event when it has
+          // finished loading. To take advantage of this make sure your custom
+          // hooks are registered with a function name.
+          if (config.prototype && config.prototype.constructor.name) {
+            var hookName = config.prototype.constructor.name;
+            this.app.events.emit(`hooks:loaded:${hookName.replace('Hook', '')}`);
+          }
+        }
       });
       this.app.log.verbose('  └ done!');
     }
