@@ -44,6 +44,11 @@ class Nautilus {
     this.loadHooks('custom', 'middleware');
     this.loadHooks('custom');
 
+    // Globally intercept 404 errors and return a `res.notFound` rather than the
+    // default Express 404 page. This allows a view to be used when added to
+    // your views directory at `responses/404.jts`.
+    this.app.use(require('./lib/middleware/notFound'));
+
     // The port number can be overridden by passing a `PORT` environment variable to
     // the Node process. This is done automatically by some hosts such as Heroku.
     this.app.set('port', process.env.PORT || 3000);
