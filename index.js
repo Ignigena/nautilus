@@ -34,6 +34,8 @@ class Nautilus {
     require('./lib/core/middleware')(this.app);
     this.app.log.profile('middleware');
 
+    this.loadHooks('custom', 'middleware');
+
     this.loadHooks('core');
 
     // Once all core hooks are loaded, we connect to Mongo through Mongoose.
@@ -41,7 +43,6 @@ class Nautilus {
     require('./lib/core/connect')(this.app);
     this.app.log.profile('connect');
 
-    this.loadHooks('custom', 'middleware');
     this.loadHooks('custom');
 
     // The port number can be overridden by passing a `PORT` environment variable to
