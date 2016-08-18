@@ -19,18 +19,22 @@ describe('hooks:session', function() {
 
   var session;
 
-  it('assigns a cookie with session ID', done => request(nautilus.app).get('/session/').expect(200).end((err, response) => {
-    expect(response.text).toEqual('Session visits: 1');
-    var sessionCookie = cookie.parse(response.headers['set-cookie'][0]);
-    expect(sessionCookie['nautilus.sid']).toExist();
-    session = sessionCookie['nautilus.sid'];
-    done(err);
-  }));
+  it('assigns a cookie with session ID', function(done) {
+    request(nautilus.app).get('/session/').expect(200).end((err, response) => {
+      expect(response.text).toEqual('Session visits: 1');
+      var sessionCookie = cookie.parse(response.headers['set-cookie'][0]);
+      expect(sessionCookie['nautilus.sid']).toExist();
+      session = sessionCookie['nautilus.sid'];
+      done(err);
+    });
+  });
 
-  it('respects the "Cookie" header', done => request(nautilus.app).get('/session/').set('Cookie', `nautilus.sid=${session}`).end((err, response) => {
-    expect(response.text).toEqual('Session visits: 2');
-    done(err);
-  }));
+  it('respects the "Cookie" header', function(done) {
+    request(nautilus.app).get('/session/').set('Cookie', `nautilus.sid=${session}`).end((err, response) => {
+      expect(response.text).toEqual('Session visits: 2');
+      done(err);
+    });
+  });
 
   after(() => nautilus.server.close());
 

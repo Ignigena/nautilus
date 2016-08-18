@@ -6,7 +6,7 @@ describe('hooks:favicon', function() {
   var nautilus = new Nautilus();
   before(done => nautilus.start(done));
 
-  it('loads a default favicon', done => request(nautilus.app).get('/favicon.ico').expect(200, done));
+  it('loads a default favicon', () => request(nautilus.app).get('/favicon.ico').expect(200));
 
   after(() => nautilus.server.close());
 
