@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -b",
-    "unit": "istanbul cover --dir ./coverage _mocha -- -b",
+    "test": "NODE_ENV=test mocha -b",
+    "unit": "NODE_ENV=test istanbul cover --dir ./coverage _mocha -- -b",
     "docs": "./node_modules/.bin/docker -o docs -I -n -x coverage,docs,node_modules,package.json,test,*.md"
   },
   "license": "MIT",

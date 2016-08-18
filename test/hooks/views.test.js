@@ -1,5 +1,3 @@
-process.env.NODE_ENV = 'test';
-
 const expect = require('expect');
 const fs = require('fs');
 
