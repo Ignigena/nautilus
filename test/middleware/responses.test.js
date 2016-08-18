@@ -64,7 +64,7 @@ describe('middleware:responses', function() {
     it('uses TXT when appropriate', done => {
       request(nautilus.app)
         .get('/response/error/')
-        .set('Accept', 'none')
+        .set('Accept', 'text/plain')
         .expect(500, (err, response) => {
           expect(response.type).toEqual('text/plain');
           expect(response.text).toEqual('server error');
