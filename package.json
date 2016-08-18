@@ -37,8 +37,7 @@
     "supertest": "^2.0.0"
   },
   "engines": {
-    "node": "6.x",
-    "npm": "3.x"
+    "node": ">= 4.x"
   },
   "eslintConfig": {
     "extends": [
