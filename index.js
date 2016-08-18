@@ -3,6 +3,7 @@
 // The purpose of Nautilus is to provide a basic structure around Express to
 // allow for better team maintainability and rapid prototyping of new apps.
 'use strict';
+const _ = require('lodash');
 const express = require('express');
 const fs = require('fs');
 const http = require('http');
@@ -27,24 +28,15 @@ class Nautilus {
     // Configuration and logging are initialized first before all others.
     require('./lib/core/config')(this.app);
     require('./lib/core/logs')(this.app);
-    require('./lib/core/events')(this.app);
 
     // The middleware component adds default Session and Security middleware.
     this.app.log.profile('middleware');
     require('./lib/core/middleware')(this.app);
     this.app.log.profile('middleware');
 
-    require('./lib/core/session')(this.app);
-
     this.loadHooks('custom', 'middleware');
 
     this.loadHooks('core');
-
-    // Once all core hooks are loaded, we connect to Mongo through Mongoose.
-    this.app.log.profile('connect');
-    require('./lib/core/connect')(this.app);
-    this.app.log.profile('connect');
-
     this.loadHooks('custom');
 
     // The port number can be overridden by passing a `PORT` environment variable to
@@ -59,28 +51,31 @@ class Nautilus {
     location = location || 'hooks';
     this.app.log.profile(`${type} ${location}`);
     this.app.log.verbose(`Initializing ${type} ${location}...`);
-    var hookPath = type === 'core' ? `${__dirname}/lib/${location}` : `${this.app.appPath}/${location}`;
-    if (fs.existsSync(hookPath)) {
-      requireAll({
-        dirname: hookPath,
-        map: name => {
-          this.app.log.verbose(`  ├ ${name}`);
-          return name;
-        },
-        resolve: config => {
-          config(this.app, this.server);
+    var dirname = type === 'core' ? `${__dirname}/lib/${location}` : `${this.app.appPath}/${location}`;
+    if (!fs.existsSync(dirname)) return;
 
-          // Each hook, both core and custom, will emit an event when it has
-          // finished loading. To take advantage of this make sure your custom
-          // hooks are registered with a function name.
-          if (config.prototype && config.prototype.constructor.name) {
-            var hookName = config.prototype.constructor.name;
-            this.app.events.emit(`hooks:loaded:${hookName.replace('Hook', '')}`);
-          }
-        }
-      });
-      this.app.log.verbose('  └ done!');
-    }
+    // The order in which hooks are loaded are determined by the value of their
+    // prototype `order`. The default value of any hook is `0`.
+    var allHooks = requireAll({ dirname });
+    this.app.hooks = _.orderBy(Object.keys(allHooks), hook =>
+      allHooks[hook].prototype && allHooks[hook].prototype.order || 0, 'asc');
+
+    _.each(this.app.hooks, hook => {
+      // To disable a hook, change it's configuration value to `false` either
+      // through the filesystem config or directly when creating the Nautilus
+      // instance. This works the same for core and custom hooks.
+      if (this.app.config[hook] === false) return;
+      this.app.log.verbose(`  ├ ${hook}`);
+
+      allHooks[hook](this.app, this.server);
+
+      // Each hook, both core and custom, will emit an event when it has loaded.
+      // For advaned fine-grained control, a hook can wait for any other hook
+      // to fire it's loaded event before initializing.
+      if (this.app.events) this.app.events.emit(`hooks:loaded:${type}:${hook}`);
+    });
+
+    this.app.log.verbose('  └ done!');
     this.app.log.profile(`${type} ${location}`);
   }
 
