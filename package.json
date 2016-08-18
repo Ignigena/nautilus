@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@treehouse/guidelines": "^1.0.0",
+    "cookie": "^0.3.1",
     "docker": "^1.0.0-alpha.2",
     "expect": "^1.20.1",
     "istanbul": "^0.4.3",

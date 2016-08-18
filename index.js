@@ -34,6 +34,8 @@ class Nautilus {
     require('./lib/core/middleware')(this.app);
     this.app.log.profile('middleware');
 
+    require('./lib/core/session')(this.app);
+
     this.loadHooks('custom', 'middleware');
 
     this.loadHooks('core');
