@@ -126,6 +126,11 @@ class Nautilus {
     this.app.events.on('ready', () => this.start(cb));
   }
 
+  stop(cb) {
+    process.removeListener('uncaughtException', this.app.log.warn);
+    this.server.close(cb);
+  }
+
 }
 
 module.exports = Nautilus;
