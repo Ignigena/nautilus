@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha -b",
-    "unit": "NODE_ENV=test istanbul cover --dir ./coverage _mocha -- -b",
+    "test": "NODE_ENV=test istanbul cover _mocha -- -b",
     "docs": "./node_modules/.bin/docker -o docs -I -n -x coverage,docs,node_modules,package.json,test,*.md"
   },
   "license": "MIT",
@@ -34,6 +33,7 @@
     "expect": "^1.20.1",
     "istanbul": "^0.4.3",
     "mocha": "^3.0.2",
+    "rimraf": "^2.5.4",
     "supertest": "^2.0.0"
   },
   "engines": {

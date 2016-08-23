@@ -8,6 +8,6 @@ describe('hooks:favicon', function() {
 
   it('loads a default favicon', () => request(nautilus.app).get('/favicon.ico').expect(200));
 
-  after(() => nautilus.server.close());
+  after(done => nautilus.stop(done));
 
 });

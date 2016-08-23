@@ -40,7 +40,7 @@ describe('hooks:session', function() {
       });
     });
 
-    after(() => nautilus.server.close());
+    after(done => nautilus.stop(done));
 
   });
 
@@ -55,7 +55,7 @@ describe('hooks:session', function() {
     it('respects the settings in configuration', () =>
       request(nautilus.app).get('/session/').expect(500));
 
-    after(() => nautilus.server.close());
+    after(done => nautilus.stop(done));
 
   });
 

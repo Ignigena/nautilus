@@ -15,6 +15,6 @@ describe('hooks:routes', function() {
 
   it('allows routes to be declared in configuration', () => request(nautilus.app).get('/hello').expect(200));
 
-  after(() => nautilus.server.close());
+  after(done => nautilus.stop(done));
 
 });

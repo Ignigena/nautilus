@@ -73,6 +73,6 @@ describe('middleware:responses', function() {
     });
   });
 
-  after(() => nautilus.server.close());
+  after(done => nautilus.stop(done));
 
 });

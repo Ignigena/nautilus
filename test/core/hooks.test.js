@@ -10,6 +10,6 @@ describe('core:hooks', function() {
     expect(nautilus.app.hooks.shift()).toEqual('events');
   });
 
-  after(() => nautilus.server.close());
+  after(done => nautilus.stop(done));
 
 });

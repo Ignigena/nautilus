@@ -1,5 +1,5 @@
 const expect = require('expect');
-const fs = require('fs');
+const rimraf = require('rimraf');
 
 const Nautilus = require('../../index');
 
@@ -33,8 +33,7 @@ describe('hooks:views', function() {
     expect(nautilus.app.config.views.engine.ext).toEqual('jts');
   });
 
-  after(() => nautilus.server.close());
-  after(() => fs.unlink('./config/views.js'));
-  after(() => fs.rmdirSync('./config'));
+  after(done => nautilus.stop(done));
+  after(done => rimraf('./config', done));
 
 });

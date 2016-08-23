@@ -35,6 +35,6 @@ describe('middleware:slash', function() {
   it('recognizes a properly slashed URL with a query string', () =>
     request(nautilus.app).get('/slash/?query=string').expect(200));
 
-  after(() => nautilus.server.close());
+  after(done => nautilus.stop(done));
 
 });
