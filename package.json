@@ -12,6 +12,7 @@
   "dependencies": {
     "change-case": "^3.0.0",
     "compression": "^1.6.2",
+    "cors": "^2.8.0",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "jsonpack": "^1.1.5",
