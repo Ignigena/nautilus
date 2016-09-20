@@ -108,7 +108,7 @@ class Nautilus {
         // `app.events.emit('ready');` and your callback will fire. This can be
         // useful when testing asynchronous hooks. If you need to delay binding
         // to port see `.startWhenReady()` below.
-        this.app.events.on('ready', () => cb(null, this.server));
+        this.app.events.once('ready', () => cb(null, this.server));
       });
     } catch (err) {
       cb(err);
@@ -123,11 +123,10 @@ class Nautilus {
   // emit a "ready" event by calling `app.events.emit('ready');` in one of your
   // hooks otherwise the server will never bind to port!
   startWhenReady(cb) {
-    this.app.events.on('ready', () => this.start(cb));
+    this.app.events.once('ready', () => this.start(cb));
   }
 
   stop(cb) {
-    process.removeListener('uncaughtException', this.app.log.warn);
     this.server.close(cb);
   }
 
