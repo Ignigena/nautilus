@@ -40,7 +40,7 @@
     "supertest": "^2.0.0"
   },
   "engines": {
-    "node": ">= 4.x"
+    "node": ">= 6.x"
   },
   "eslintConfig": {
     "extends": [

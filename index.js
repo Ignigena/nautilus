@@ -2,7 +2,6 @@
 // ========
 // The purpose of Nautilus is to provide a basic structure around Express to
 // allow for better team maintainability and rapid prototyping of new apps.
-'use strict';
 const _ = require('lodash');
 const express = require('express');
 const fs = require('fs');
