@@ -90,8 +90,8 @@ module.exports = {
 };
 ```
 
-In this example, the model will be created at runtime and available as the
-superglobal `User` for querying in other controllers or services.
+In this example, the model will be created at runtime and available at the app
+object under `app.api.model.user` for querying in other controllers or services.
 
 ### Templates
 
