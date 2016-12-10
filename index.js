@@ -29,9 +29,9 @@ class Nautilus {
     require('./lib/core/logs')(this.app);
 
     // The middleware component adds default Session and Security middleware.
-    this.app.log.profile('middleware');
+    this.app.profile('middleware');
     require('./lib/core/middleware')(this.app);
-    this.app.log.profile('middleware');
+    this.app.profile('middleware');
 
     this.loadHooks('custom', 'middleware');
 
@@ -48,7 +48,7 @@ class Nautilus {
   // hook to allow the application to be extended before traffic is served.
   loadHooks(type, location) {
     location = location || 'hooks';
-    this.app.log.profile(`${type} ${location}`);
+    this.app.profile(`${type} ${location}`);
     this.app.log.verbose(`Initializing ${type} ${location}...`);
     var dirname = type === 'core' ? `${__dirname}/lib/${location}` : `${this.app.appPath}/${location}`;
     if (!fs.existsSync(dirname)) return;
@@ -75,7 +75,7 @@ class Nautilus {
     });
 
     this.app.log.verbose('  └ done!');
-    this.app.log.profile(`${type} ${location}`);
+    this.app.profile(`${type} ${location}`);
   }
 
   // Once you're ready to `.start()` the server:
