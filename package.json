@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test istanbul cover _mocha -- -b",
-    "docs": "./node_modules/.bin/docker -o docs -I -n -x coverage,docs,node_modules,package.json,test,*.md"
+    "docs": "docker -o docs -I -n -x coverage,docs,node_modules,package.json,test,*.md",
+    "lint": "eslint ."
   },
   "license": "MIT",
   "repository": "ignigena/nautilus",
@@ -32,9 +33,10 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
-    "@treehouse/guidelines": "^1.0.0",
     "cookie": "^0.3.1",
     "docker": "^1.0.0-alpha.2",
+    "eslint": "^3.12.2",
+    "eslint-config-google": "^0.7.1",
     "expect": "^1.20.1",
     "istanbul": "^0.4.3",
     "mocha": "^3.0.2",
@@ -43,10 +45,5 @@
   },
   "engines": {
     "node": ">= 6.x"
-  },
-  "eslintConfig": {
-    "extends": [
-      "./node_modules/@treehouse/guidelines/.eslintrc.js"
-    ]
   }
 }
