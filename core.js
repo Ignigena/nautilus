@@ -5,7 +5,9 @@
 // and the rapid prototyping of new apps.
 const _ = require('lodash');
 const fs = require('fs');
+const path = require('path');
 const requireAll = require('require-all');
+const stack = require('callsite');
 
 class Nautilus {
 
@@ -48,7 +50,7 @@ class Nautilus {
     this.app.profile(`${type} ${location}`);
     this.app.log.verbose(`Initializing ${type} ${location}...`);
     const dirname = {
-      core: `${__dirname}/lib/${location}`,
+      core: `${path.dirname(stack()[1].getFileName())}/lib/${location}`,
       custom: `${this.app.appPath}/${location}`,
     }[type];
     if (!fs.existsSync(dirname)) return;
