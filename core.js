@@ -26,12 +26,20 @@ class Nautilus {
     // Allow the user to override the configuration set by the application. Any
     // values provided to the constructor will override both environment and
     // local configuration settings.
-    this.app.runtimeConfig = config;
+    this.app.runtimeConfig = config || {};
 
     // The application path is set to the current working directory of the
     // parent process. This allows for relative paths to be resolved in order to
     // render views, read configuration, etc.
     this.app.appPath = process.cwd();
+
+    // Populate the configuration with a reference to the parent `package.json`.
+    // This can be used to check version dependencies or get basic metadata
+    // about the project by accessing `app.config.self`.
+    try {
+      const packagePath = path.resolve(this.app.appPath, 'package.json');
+      this.app.runtimeConfig.self = require(packagePath);
+    } catch(err) {}
 
     // Configuration and logging are initialized first before all others.
     require('./lib/core/config')(this.app);
