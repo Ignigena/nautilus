@@ -32,6 +32,7 @@ class Nautilus {
     // parent process. This allows for relative paths to be resolved in order to
     // render views, read configuration, etc.
     this.app.appPath = process.cwd();
+    this.app.frameworkPath = path.dirname(stack()[1].getFileName());
 
     // Populate the configuration with a reference to the parent `package.json`.
     // This can be used to check version dependencies or get basic metadata
@@ -58,7 +59,7 @@ class Nautilus {
     this.app.profile(`${type} ${location}`);
     this.app.log.verbose(`Initializing ${type} ${location}...`);
     const dirname = {
-      core: `${path.dirname(stack()[1].getFileName())}/lib/${location}`,
+      core: `${this.app.frameworkPath}/lib/${location}`,
       custom: `${this.app.appPath}/${location}`,
     }[type];
     if (!fs.existsSync(dirname)) return;
