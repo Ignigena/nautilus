@@ -1,32 +1,14 @@
-// Nautilus
-// ========
-// The purpose of Nautilus is to provide a basic structure around Express to
-// allow for better team maintainability and rapid prototyping of new apps.
-const _ = require('lodash');
+// Nautilus: Web
+// ==
 const express = require('express');
-const fs = require('fs');
 const http = require('http');
-const requireAll = require('require-all');
+const Nautilus = require('./core.js');
 
-class Nautilus {
+class NautilusWeb extends Nautilus {
 
   constructor(config) {
-    this.app = express();
+    super(express(), config);
     this.server = new http.Server(this.app);
-
-    // Allow the user to override the configuration set by the application. Any
-    // values provided to the constructor will override both environment and
-    // local configuration settings.
-    this.app.runtimeConfig = config;
-
-    // The application path is set to the current working directory of the parent
-    // process. This allows for relative paths to be resolved in order to render
-    // views, read configuration, etc.
-    this.app.appPath = process.cwd();
-
-    // Configuration and logging are initialized first before all others.
-    require('./lib/core/config')(this.app);
-    require('./lib/core/logs')(this.app);
 
     // The middleware component adds default Session and Security middleware.
     this.app.profile('middleware');
@@ -38,44 +20,10 @@ class Nautilus {
     this.loadHooks('core');
     this.loadHooks('custom');
 
-    // The port number can be overridden by passing a `PORT` environment variable to
-    // the Node process. This is done automatically by some hosts such as Heroku.
+    // The port number can be overridden by passing a `PORT` environment
+    // variable to the Node process. This is done automatically by some hosts
+    // such as Heroku.
     this.app.set('port', process.env.PORT || 3000);
-  }
-
-  // All core Nautilus hooks are looped through and initialized. Both the
-  // Express application and the attached HTTP server are passed along to each
-  // hook to allow the application to be extended before traffic is served.
-  loadHooks(type, location) {
-    location = location || 'hooks';
-    this.app.profile(`${type} ${location}`);
-    this.app.log.verbose(`Initializing ${type} ${location}...`);
-    var dirname = type === 'core' ? `${__dirname}/lib/${location}` : `${this.app.appPath}/${location}`;
-    if (!fs.existsSync(dirname)) return;
-
-    // The order in which hooks are loaded are determined by the value of their
-    // prototype `order`. The default value of any hook is `0`.
-    var allHooks = requireAll({ dirname });
-    this.app.hooks = _.orderBy(Object.keys(allHooks), hook =>
-      allHooks[hook].prototype && allHooks[hook].prototype.order || 0, 'asc');
-
-    _.each(this.app.hooks, hook => {
-      // To disable a hook, change it's configuration value to `false` either
-      // through the filesystem config or directly when creating the Nautilus
-      // instance. This works the same for core and custom hooks.
-      if (this.app.config[hook] === false) return;
-      this.app.log.verbose(`  ├ ${hook}`);
-
-      allHooks[hook](this.app, this.server);
-
-      // Each hook, both core and custom, will emit an event when it has loaded.
-      // For advaned fine-grained control, a hook can wait for any other hook
-      // to fire it's loaded event before initializing.
-      if (this.app.events) this.app.events.emit(`hooks:loaded:${type}:${hook}`);
-    });
-
-    this.app.log.verbose('  └ done!');
-    this.app.profile(`${type} ${location}`);
   }
 
   // Once you're ready to `.start()` the server:
@@ -131,4 +79,4 @@ class Nautilus {
 
 }
 
-module.exports = Nautilus;
+module.exports = NautilusWeb;
