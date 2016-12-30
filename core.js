@@ -48,6 +48,13 @@ class Nautilus {
     require('./lib/core/logs')(this.app);
 
     this.app.events = new EventEmitter();
+
+    // An asynchronous bootstrap function is run immediately after Nautilus core
+    // is initialized. This allows for special logic before additional hooks are
+    // loaded from the parent framework or end-user application.
+    if (this.app.config.bootstrap) {
+      this.app.config.bootstrap(this.app);
+    }
   }
 
   /**
