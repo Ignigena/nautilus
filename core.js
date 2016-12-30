@@ -81,12 +81,15 @@ class Nautilus {
       if (this.app.config[hook] === false) return;
       this.app.log.verbose(`  ├ ${hook}`);
 
-      allHooks[hook](this.app, arg);
+      let hookReturn = allHooks[hook](this.app, arg);
 
       // Each hook, both core and custom, will emit an event when it has loaded.
       // For advaned fine-grained control, a hook can wait for any other hook
-      // to fire it's loaded event before initializing.
-      if (this.app.events) this.app.events.emit(`hooks:loaded:${type}:${hook}`);
+      // to fire it's `hooks:loaded` event before initializing.
+      if (this.app.events) {
+        this.app.events.emit(`hooks:loaded:${type}${location !== 'hooks' && `:${location}`}:${hook}`, hookReturn);
+        this.app.events.emit(`hooks:loaded${location !== 'hooks' && `:${location}`}`, hook, hookReturn);
+      }
     });
 
     this.app.log.verbose('  └ done!');
