@@ -4,6 +4,7 @@
 // over configuration and allowing for both better long term maintainability
 // and the rapid prototyping of new apps.
 const _ = require('lodash');
+const EventEmitter = require('events');
 const fs = require('fs');
 const path = require('path');
 const requireAll = require('require-all');
@@ -45,6 +46,8 @@ class Nautilus {
     // Configuration and logging are initialized first before all others.
     require('./lib/core/config')(this.app);
     require('./lib/core/logs')(this.app);
+
+    this.app.events = new EventEmitter();
   }
 
   /**
