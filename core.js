@@ -65,12 +65,24 @@ class Nautilus {
     const dirname = {
       core: `${this.app.frameworkPath}/lib/${location}`,
       custom: `${this.app.appPath}/${location}`,
+      user: location,
     }[type];
     if (!fs.existsSync(dirname)) return;
 
+    // All hooks are loaded and assigned a key based on their filename. Folders
+    // are scanned recursively by default to allow for flexibility in structure.
+    // If a folder only contains a single matching file, the folder name is
+    // used as the key and flattened. This prevents `hooks/myHook/index.js` from
+    // being loaded as `myHook.index`.
+    const allHooks = requireAll({ dirname });
+    _.each(allHooks, (hook, key) => {
+      if (Object.keys(hook).length == 1) {
+        allHooks[key] = hook[Object.keys(hook)[0]];
+      }
+    });
+
     // The order in which hooks are loaded are determined by the value of their
     // prototype `order`. The default value of any hook is `0`.
-    const allHooks = requireAll({ dirname });
     this.app.hooks = _.orderBy(Object.keys(allHooks), hook =>
       allHooks[hook].prototype && allHooks[hook].prototype.order || 0, 'asc');
 
