@@ -53,8 +53,9 @@ class Nautilus {
    * @param {String} type The type of hook to load (either `core` or `custom`)
    * @param {String} location The location of the hook if a specific one is
    * being requested. Otherwise, leave blank to load all hooks of this type.
+   * @param {Object} arg Second argument to be passed to each hook after `app`.
    */
-  loadHooks(type, location) {
+  loadHooks(type, location, arg) {
     location = location || 'hooks';
     this.app.profile(`${type} ${location}`);
     this.app.log.verbose(`Initializing ${type} ${location}...`);
@@ -77,7 +78,7 @@ class Nautilus {
       if (this.app.config[hook] === false) return;
       this.app.log.verbose(`  ├ ${hook}`);
 
-      allHooks[hook](this.app, this.server);
+      allHooks[hook](this.app, arg);
 
       // Each hook, both core and custom, will emit an event when it has loaded.
       // For advaned fine-grained control, a hook can wait for any other hook
