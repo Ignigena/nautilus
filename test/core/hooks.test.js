@@ -15,7 +15,7 @@ describe('core:hooks', function() {
   before(done => nautilus.start(done));
 
   it('respects the defined order of hooks', () => {
-    expect(nautilus.app.hooks.shift()).toEqual('security');
+    expect(nautilus.app.hooks.core.shift()).toEqual('security');
   });
 
   it('emits an event as each hook is loaded', () => {

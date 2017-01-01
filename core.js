@@ -90,10 +90,11 @@ class Nautilus {
 
     // The order in which hooks are loaded are determined by the value of their
     // prototype `order`. The default value of any hook is `0`.
-    this.app.hooks = _.orderBy(Object.keys(allHooks), hook =>
+    this.app.hooks = this.app.hooks || {};
+    this.app.hooks[type] = _.orderBy(Object.keys(allHooks), hook =>
       allHooks[hook].prototype && allHooks[hook].prototype.order || 0, 'asc');
 
-    _.each(this.app.hooks, hook => {
+    _.each(this.app.hooks[type], hook => {
       // To disable a hook, change it's configuration value to `false` either
       // through the filesystem config or directly when creating the Nautilus
       // instance. This works the same for core and custom hooks.
