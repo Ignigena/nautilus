@@ -46,6 +46,7 @@ class Nautilus {
     // Configuration and logging are initialized first before all others.
     require('./lib/core/config')(this.app);
     require('./lib/core/logs')(this.app);
+    require('./lib/core/hooks')(this.app);
 
     this.app.events = new EventEmitter();
 
@@ -90,7 +91,6 @@ class Nautilus {
 
     // The order in which hooks are loaded are determined by the value of their
     // prototype `order`. The default value of any hook is `0`.
-    this.app.hooks = this.app.hooks || {};
     this.app.hooks[type] = _.orderBy(Object.keys(allHooks), hook =>
       allHooks[hook].prototype && allHooks[hook].prototype.order || 0, 'asc');
 
@@ -106,9 +106,12 @@ class Nautilus {
       // Each hook, both core and custom, will emit an event when it has loaded.
       // For advaned fine-grained control, a hook can wait for any other hook
       // to fire it's `hooks:loaded` event before initializing.
+      let locationKey = (location !== 'hooks') ? `:${location}` : '';
+      const hookAddress = `${type}${locationKey}:${hook}`;
+      this.app.hooks.loaded.push(hookAddress);
+
       if (this.app.events) {
-        let locationKey = (location !== 'hooks') ? `:${location}` : '';
-        this.app.events.emit(`hooks:loaded:${type}${locationKey}:${hook}`, hookReturn);
+        this.app.events.emit(`hooks:loaded:${hookAddress}`, hookReturn);
         this.app.events.emit(`hooks:loaded${locationKey}`, hook, hookReturn);
       }
     });

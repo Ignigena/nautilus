@@ -3,12 +3,16 @@ const Nautilus = require('../../index');
 
 describe('core:hooks', function() {
 
-  let eventFired = false;
+  let sessionLoaded = false;
+  let viewsLoaded = false;
 
   var nautilus = new Nautilus({
     bootstrap(app) {
       app.events.once('hooks:loaded:core:session', () => {
-        eventFired = true;
+        sessionLoaded = true;
+      });
+      app.hooks.after('core:views', () => {
+        viewsLoaded = true;
       });
     }
   });
@@ -19,7 +23,8 @@ describe('core:hooks', function() {
   });
 
   it('emits an event as each hook is loaded', () => {
-    expect(eventFired).toEqual(true);
+    expect(sessionLoaded).toEqual(true);
+    expect(viewsLoaded).toEqual(true);
   });
 
   after(done => nautilus.stop(done));
