@@ -12,10 +12,8 @@ class NautilusWeb extends Nautilus {
 
     // The middleware component adds default Session and Security middleware.
     this.app.profile('middleware');
-    require('./lib/core/middleware')(this.app);
+    require('./lib/core/middleware').bind(this)(this.app);
     this.app.profile('middleware');
-
-    this.loadHooks('custom', 'middleware', this.server);
 
     this.loadHooks('core', 'hooks', this.server);
     this.loadHooks('custom', 'hooks', this.server);
