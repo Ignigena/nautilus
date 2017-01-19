@@ -1,5 +1,6 @@
 .DS_Store
 coverage
-docs
+docs/_book
+jsdocs
 node_modules
 *.log

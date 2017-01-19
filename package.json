@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test istanbul cover _mocha -- -b",
-    "docs": "docker -o docs -I -n -x coverage,docs,node_modules,package.json,test,*.md",
+    "docs": "docker -o jsdocs -I -n -x coverage,docs,node_modules,package.json,test,*.md",
     "lint": "eslint ."
   },
   "license": "MIT",
