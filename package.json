@@ -11,6 +11,7 @@
   "license": "MIT",
   "repository": "ignigena/nautilus",
   "dependencies": {
+    "body-parser": "^1.16.0",
     "callsite": "^1.0.0",
     "change-case": "^3.0.0",
     "compression": "^1.6.2",
