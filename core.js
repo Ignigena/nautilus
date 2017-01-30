@@ -22,7 +22,7 @@ class Nautilus {
    * layers of configuration including environment and local configurations.
    */
   constructor(app, config) {
-    this.app = app;
+    this.app = app || {};
 
     // Allow the user to override the configuration set by the application. Any
     // values provided to the constructor will override both environment and
@@ -32,7 +32,7 @@ class Nautilus {
     // The application path is set to the current working directory of the
     // parent process. This allows for relative paths to be resolved in order to
     // render views, read configuration, etc.
-    this.app.appPath = process.cwd();
+    this.app.appPath = this.app.appPath || process.cwd();
     this.app.frameworkPath = path.dirname(stack()[1].getFileName());
 
     // Populate the configuration with a reference to the parent `package.json`.
