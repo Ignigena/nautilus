@@ -27,6 +27,11 @@ describe('core:hooks', function() {
     expect(viewsLoaded).toEqual(true);
   });
 
+  it('cleans up empty hooks', () => {
+    expect(nautilus.app.blueprint).toExist();
+    expect(nautilus.app.views).toNotExist();
+  })
+
   after(done => nautilus.stop(done));
 
 });

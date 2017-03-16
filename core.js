@@ -101,6 +101,8 @@ class Nautilus {
       if (this.app.config[hook] === false) return;
       this.app.log.verbose(`  ├ ${hook}`);
 
+      this.app[hook] = this.app[hook] || {};
+
       let hookReturn = allHooks[hook](this.app, arg);
 
       // Each hook, both core and custom, will emit an event when it has loaded.
@@ -114,6 +116,12 @@ class Nautilus {
         this.app.events.emit(`hooks:loaded:${hookAddress}`, hookReturn);
         this.app.events.emit(`hooks:loaded${locationKey}`, hook, hookReturn);
       }
+
+      if (typeof hookReturn === 'Object') {
+        this.app[hook] = hookReturn;
+      }
+
+      if (Object.keys(this.app[hook]).length < 1) delete this.app[hook];
     });
 
     this.app.log.verbose('  └ done!');
