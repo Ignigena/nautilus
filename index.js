@@ -45,7 +45,10 @@ class NautilusWeb extends Nautilus {
         this.app.log.info();
 
         if (!cb) return;
-        if (!this.app.config.waitForReady) return cb(null, this.server);
+        if (!this.app.config.waitForReady) {
+          this.app.events.emit('ready');
+          return cb(null, this.server);
+        }
 
         // If the launch of the server involves asynchronous activities it may
         // be helpful to enable `waitForReady` in your `app.config` settings.
