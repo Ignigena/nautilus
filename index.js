@@ -8,7 +8,7 @@ class NautilusWeb extends Nautilus {
 
   constructor(config) {
     super(express(), config);
-    this.server = new http.Server(this.app);
+    this.server = this.app.server = new http.Server(this.app);
 
     // The middleware component adds default Session and Security middleware.
     this.app.profile('middleware');
@@ -44,7 +44,11 @@ class NautilusWeb extends Nautilus {
         this.app.log.info('To shut down press <CTRL> + C at any time.');
         this.app.log.info();
 
-        if (!cb) return;
+        if (!cb) {
+          this.app.events.emit('ready');
+          return;
+        }
+
         if (!this.app.config.waitForReady) {
           this.app.events.emit('ready');
           return cb(null, this.server);
