@@ -5,8 +5,11 @@ const Nautilus = require('../../index');
 describe('hooks:security', function() {
 
   describe('cors default configuration', function() {
-    var nautilus = new Nautilus();
-    before(done => nautilus.start(done));
+    let nautilus;
+    before(done => {
+      nautilus = new Nautilus();
+      nautilus.start(done);
+    });
 
     it('includes a wildcard CORS header', () =>
       request(nautilus.app).get('/').expect('Access-Control-Allow-Origin', '*'));
@@ -15,7 +18,7 @@ describe('hooks:security', function() {
   });
 
   describe('cors custom configuration', function() {
-    var nautilus = new Nautilus({
+    let nautilus = new Nautilus({
       cors: { origin: ['https://nautilus.website', /nautilus\.website$/] }
     });
     before(done => nautilus.start(done));

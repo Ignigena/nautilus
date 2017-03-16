@@ -26,7 +26,7 @@ describe('hooks:config', function() {
       require('../util/writeEnvConfig')('test', config, done);
     });
 
-    var nautilus;
+    let nautilus;
     before(done => {
       nautilus = new Nautilus();
       nautilus.start(done);
@@ -52,7 +52,7 @@ describe('hooks:config', function() {
       require('../util/writeEnvConfig')('local', config, done);
     });
 
-    var nautilus;
+    let nautilus;
     before(done => {
       nautilus = new Nautilus();
       nautilus.start(done);

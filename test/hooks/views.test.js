@@ -23,7 +23,7 @@ describe('hooks:views', function() {
     require('../util/writeConfig')('views', config, done);
   });
 
-  var nautilus;
+  let nautilus;
   before(done => {
     nautilus = new Nautilus();
     nautilus.start(done);

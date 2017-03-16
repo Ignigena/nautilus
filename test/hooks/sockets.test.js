@@ -4,8 +4,11 @@ const Nautilus = require('../../index');
 
 describe('hooks:sockets', function() {
 
-  var nautilus = new Nautilus();
-  before(done => nautilus.start(done));
+  let nautilus;
+  before(done => {
+    nautilus = new Nautilus();
+    nautilus.start(done);
+  });
 
   it('initializes a socket using the default server', () => {
     expect(nautilus.server).toEqual(nautilus.app.io.httpServer);

@@ -6,18 +6,19 @@ const Nautilus = require('../../index');
 
 describe('middleware:responses', function() {
 
-  var nautilus = new Nautilus();
-
-  nautilus.app.get('/response/bad', (req, res) => res.badRequest('bad'));
-  nautilus.app.get('/response/created', (req, res) => res.created('created'));
-  nautilus.app.get('/response/forbidden', (req, res) => res.forbidden('forbidden'));
-  nautilus.app.get('/response/notFound', (req, res) => res.notFound('notFound'));
-  nautilus.app.get('/response/ok', (req, res) => res.ok('ok'));
-  nautilus.app.get('/response/redirect', (req, res) => res.redirect('http://google.com', true));
-  nautilus.app.get('/response/redirectPermanent', (req, res) => res.redirect('http://apple.com'));
-  nautilus.app.get('/response/error', (req, res) => res.serverError('server error'));
-
-  before(done => nautilus.start(done));
+  let nautilus;
+  before(done => {
+    nautilus = new Nautilus();
+    nautilus.app.get('/response/bad', (req, res) => res.badRequest('bad'));
+    nautilus.app.get('/response/created', (req, res) => res.created('created'));
+    nautilus.app.get('/response/forbidden', (req, res) => res.forbidden('forbidden'));
+    nautilus.app.get('/response/notFound', (req, res) => res.notFound('notFound'));
+    nautilus.app.get('/response/ok', (req, res) => res.ok('ok'));
+    nautilus.app.get('/response/redirect', (req, res) => res.redirect('http://google.com', true));
+    nautilus.app.get('/response/redirectPermanent', (req, res) => res.redirect('http://apple.com'));
+    nautilus.app.get('/response/error', (req, res) => res.serverError('server error'));
+    nautilus.start(done);
+  });
 
   it('res.badRequest', () => request(nautilus.app).get('/response/bad/').expect(400));
   it('res.created', () => request(nautilus.app).get('/response/created/').expect(201));

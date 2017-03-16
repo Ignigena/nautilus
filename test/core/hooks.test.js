@@ -6,17 +6,20 @@ describe('core:hooks', function() {
   let sessionLoaded = false;
   let viewsLoaded = false;
 
-  var nautilus = new Nautilus({
-    bootstrap(app) {
-      app.events.once('hooks:loaded:core:session', () => {
-        sessionLoaded = true;
-      });
-      app.hooks.after('core:views', () => {
-        viewsLoaded = true;
-      });
-    }
+  let nautilus;
+  before(done => {
+    nautilus = new Nautilus({
+      bootstrap(app) {
+        app.events.once('hooks:loaded:core:session', () => {
+          sessionLoaded = true;
+        });
+        app.hooks.after('core:views', () => {
+          viewsLoaded = true;
+        });
+      }
+    });
+    nautilus.start(done)
   });
-  before(done => nautilus.start(done));
 
   it('respects the defined order of hooks', () => {
     expect(nautilus.app.hooks.core.shift()).toEqual('security');

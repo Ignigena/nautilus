@@ -6,16 +6,18 @@ const Nautilus = require('../../index');
 
 describe('middleware:slash', function() {
 
-  var nautilus = new Nautilus({
-    slash: {
-      whitelist: ['whitelist/*']
-    }
+  let nautilus;
+  before(done => {
+    nautilus = new Nautilus({
+      slash: {
+        whitelist: ['whitelist/*']
+      }
+    });
+    nautilus.app.get('/slash', (req, res) => res.ok('ok'));
+    nautilus.app.get('/slash.png', (req, res) => res.ok('ok'));
+    nautilus.app.get('/whitelist/path', (req, res) => res.ok('ok'));
+    nautilus.start(done);
   });
-  nautilus.app.get('/slash', (req, res) => res.ok('ok'));
-  nautilus.app.get('/slash.png', (req, res) => res.ok('ok'));
-  nautilus.app.get('/whitelist/path', (req, res) => res.ok('ok'));
-
-  before(done => nautilus.start(done));
 
   it('adds a slash to the end of all URLs', () =>
     request(nautilus.app).get('/slash/').expect(200));

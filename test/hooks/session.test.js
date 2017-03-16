@@ -16,10 +16,11 @@ describe('hooks:session', function() {
 
   describe('enabled', function() {
 
-    var nautilus = new Nautilus({
-      routes
+    let nautilus;
+    before(done => {
+      nautilus = new Nautilus({ routes });
+      nautilus.start(done);
     });
-    before(done => nautilus.start(done));
 
     var session;
 
@@ -46,11 +47,14 @@ describe('hooks:session', function() {
 
   describe('disabled', function() {
 
-    var nautilus = new Nautilus({
-      session: false,
-      routes
+    let nautilus;
+    before(done => {
+      nautilus = new Nautilus({
+        session: false,
+        routes
+      });
+      nautilus.start(done);
     });
-    before(done => nautilus.start(done));
 
     it('respects the settings in configuration', () =>
       request(nautilus.app).get('/session/').expect(500));

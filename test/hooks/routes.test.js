@@ -4,19 +4,22 @@ const Nautilus = require('../../index');
 
 describe('hooks:routes', function() {
 
-  var nautilus = new Nautilus({
-    slash: false,
-    routes: {
-      'index': (req, res) => res.ok('home'),
-      '/hello': function(req, res) {
-        res.ok(req.params.id);
-      },
-      'r|(foo|bar)': function(req, res) {
-        res.ok(req.params[0]);
+  let nautilus;
+  before(done => {
+    nautilus = new Nautilus({
+      slash: false,
+      routes: {
+        'index': (req, res) => res.ok('home'),
+        '/hello': function(req, res) {
+          res.ok(req.params.id);
+        },
+        'r|(foo|bar)': function(req, res) {
+          res.ok(req.params[0]);
+        }
       }
-    }
+    });
+    nautilus.start(done);
   });
-  before(done => nautilus.start(done));
 
   it('allows routes to be declared in configuration', () => request(nautilus.app).get('/hello').expect(200));
 
