@@ -117,7 +117,7 @@ class Nautilus {
         this.app.events.emit(`hooks:loaded${locationKey}`, hook, hookReturn);
       }
 
-      if (typeof hookReturn === 'Object') {
+      if (typeof hookReturn === 'object') {
         this.app[hook] = hookReturn;
       }
 
