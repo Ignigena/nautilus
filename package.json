@@ -26,7 +26,7 @@
     "mongo-querystring": "^4.0.2",
     "mongodb": "^2.2.10",
     "mongoose": "^4.4.16",
-    "mongoose-findorcreate": "^0.1.2",
+    "mongoose-findorcreate": "^1.0.0",
     "node-mocks-http": "^1.5.2",
     "path-to-regexp": "^1.7.0",
     "require-all": "^2.0.0",
@@ -43,7 +43,7 @@
     "istanbul": "^0.4.3",
     "mocha": "^3.0.2",
     "rimraf": "^2.5.4",
-    "supertest": "^2.0.0"
+    "supertest": "^3.0.0"
   },
   "engines": {
     "node": ">= 6.x"
