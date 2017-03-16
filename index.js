@@ -3,6 +3,7 @@
 const express = require('express');
 const http = require('http');
 const Nautilus = require('./core.js');
+const parseUrl = require('parseurl');
 
 class NautilusWeb extends Nautilus {
 
@@ -35,7 +36,10 @@ class NautilusWeb extends Nautilus {
     // Globally intercept 404 errors and return a `res.notFound` rather than the
     // default Express 404 page. This allows a view to be used when added to
     // your views directory at `responses/404.jts`.
-    this.app.use((req, res) => res.notFound());
+    this.app.use((req, res, next) => {
+      if (parseUrl(req).pathname === '/favicon.ico') return next();
+      res.notFound();
+    });
 
     try {
       this.server.listen(this.app.get('port'), () => {
