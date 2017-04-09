@@ -14,7 +14,13 @@ describe('hooks:models', function() {
         user: {
           schema: {
             email: String,
-            name: String,
+            firstName: String,
+            lastName: String,
+          },
+          virtuals: {
+            fullName() {
+              return `${this.firstName} ${this.lastName}`;
+            },
           },
           setup(schema, app) {
             app.config.foo = 'bar';
@@ -38,11 +44,12 @@ describe('hooks:models', function() {
     let record;
     let fixture = {
       email: 'test@test.com',
-      name: 'Test User'
+      firstName: 'Test',
+      lastName: 'User',
     };
 
     it('exposes find shortcuts for all models', () => {
-      return nautilus.app.api.model.user.create(fixture, () => {
+      return nautilus.app.model('user').create(fixture, () => {
         return nautilus.app.model('user').find({ email: fixture.email });
       }).then(result => {
         record = result;
@@ -53,6 +60,12 @@ describe('hooks:models', function() {
     it('allows findOne criteria to be an ObjectID', () => {
       return nautilus.app.model('user').findOne(record._id).then(result => {
         expect(result.email).toEqual(fixture.email);
+      });
+    });
+
+    it('properly configures any virtual fields', () => {
+      return nautilus.app.model('user').findOne(record._id).then(result => {
+        expect(result.fullName).toEqual('Test User');
       });
     });
   });
