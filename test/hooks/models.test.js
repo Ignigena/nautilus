@@ -16,10 +16,18 @@ describe('hooks:models', function() {
             email: String,
             firstName: String,
             lastName: String,
+            password: String,
           },
           virtuals: {
             fullName() {
               return `${this.firstName} ${this.lastName}`;
+            },
+          },
+          middleware: {
+            preSave(next) {
+              if (!this.isModified('password')) return next();
+              this.password = this.password.split('').reverse().join('');
+              next();
             },
           },
           setup(schema, app) {
@@ -62,11 +70,29 @@ describe('hooks:models', function() {
         expect(result.email).toEqual(fixture.email);
       });
     });
+  });
+
+  describe('middleware and virtuals', () => {
+    let record;
+    let fixture = {
+      email: 'test@test.com',
+      firstName: 'Test',
+      lastName: 'User',
+      password: 'password',
+    };
+
+    before(() => {
+      return nautilus.app.model('user').create(fixture).then(result => {
+        record = result;
+      });
+    })
 
     it('properly configures any virtual fields', () => {
-      return nautilus.app.model('user').findOne(record._id).then(result => {
-        expect(result.fullName).toEqual('Test User');
-      });
+      expect(record.fullName).toEqual('Test User');
+    });
+
+    it('implements all middleware specified in the model', () => {
+      expect(record.password).toEqual('drowssap');
     });
   });
 
