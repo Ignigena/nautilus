@@ -41,6 +41,19 @@ class NautilusWeb extends Nautilus {
       res.notFound();
     });
 
+    let ready = function() {
+      this.app.events.emit('ready');
+      if (!cb) return;
+
+      // If no Mongo connection is configured OR if Mongo has already
+      // established a connection, the ready callback is called immediately.
+      if (!this.app.mongo || this.app.mongo.connection.readyState === 1) {
+        return cb(null, this.server);
+      }
+
+      this.app.mongo.connection.once('connected', () => cb(null, this.server));
+    }.bind(this);
+
     try {
       this.server.listen(this.app.get('port'), () => {
         this.app.log.info();
@@ -48,14 +61,8 @@ class NautilusWeb extends Nautilus {
         this.app.log.info('To shut down press <CTRL> + C at any time.');
         this.app.log.info();
 
-        if (!cb) {
-          this.app.events.emit('ready');
-          return;
-        }
-
         if (!this.app.config.waitForReady) {
-          this.app.events.emit('ready');
-          return cb(null, this.server);
+          return ready();
         }
 
         // If the launch of the server involves asynchronous activities it may
