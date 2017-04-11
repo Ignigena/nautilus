@@ -83,7 +83,11 @@ class NautilusWeb extends Nautilus {
   }
 
   stop(cb) {
-    this.server.close(cb);
+    if (!this.app.mongo || !cb)
+      return this.server.close(cb);
+
+    this.app.mongo.connection.once('disconnected', cb);
+    this.server.close();
   }
 
 }
