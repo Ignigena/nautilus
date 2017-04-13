@@ -42,6 +42,17 @@ describe('hooks:blueprint', function() {
     });
   });
 
+  it('allows blueprint updates through HTTP', done => {
+    request(nautilus.app).put('/person/' + newUser._id)
+      .set('Accept', 'application/json')
+      .send({ email: 'changed@test.com' })
+      .expect(200, (err, response) => {
+        expect(response.body.data.email).toEqual('changed@test.com');
+        expect(response.body.data._id).toEqual(newUser._id);
+        done(err);
+      });
+  });
+
   it('prohibits updating the internal ID field', () => {
     let req = {
       body: { _id: '1234' },
