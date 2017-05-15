@@ -33,6 +33,13 @@ describe('hooks:models', function() {
           setup(schema, app) {
             app.config.foo = 'bar';
           }
+        },
+        widget(app) {
+          return {
+            schema: {
+              name: String
+            }
+          }
         }
       }
     });
@@ -42,6 +49,10 @@ describe('hooks:models', function() {
   it('sets up model definitions', () => {
     expect(nautilus.app.api.model).toExist();
     expect(nautilus.app.api.model.user).toExist();
+  });
+
+  it('allows model definitions to returned from a function', () => {
+    expect(nautilus.app.model('widget')).toExist();
   });
 
   it('executes the setup function after initialization', () => {
