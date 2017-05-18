@@ -1,13 +1,13 @@
 # Models and ORM
 
-Models are constructed through [Mongoose](http://mongoosejs.com) which also
-provides an ORM out of the box. Model definitions can be placed in the `/api`
+Models are constructed through [Mongoose](http://mongoosejs.com) which
+provides an ODM out of the box. Model definitions can be placed in the `/api`
 directory and must have the suffix `.model.js`. Model schema can be configured
 with the `schema` object and any options provided with an `options` object:
 
 Here's a sample "User" model located in `api/user.model.js`:
 
-```
+```javascript
 module.exports = {
   schema: {
     email: {

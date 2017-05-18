@@ -11,7 +11,7 @@ most cases, configuration for built-in hooks share the name of the hook.
 For example, to override the configuration for the `log` hook you might create
 a new file at `config/log.js` to override the default logging level in Winston:
 
-```
+```javascript
 module.exports = {
   level: 'verbose',
 }
