@@ -32,7 +32,7 @@ class Nautilus {
     // The application path is set to the current working directory of the
     // parent process. This allows for relative paths to be resolved in order to
     // render views, read configuration, etc.
-    this.app.appPath = this.app.appPath || process.cwd();
+    this.app.appPath = this.app.appPath || this.app.runtimeConfig.appPath || process.cwd();
     this.app.frameworkPath = path.dirname(stack()[1].getFileName());
 
     // Populate the configuration with a reference to the parent `package.json`.
