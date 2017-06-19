@@ -17,7 +17,8 @@ describe('hooks:blueprint', function() {
             name: String,
           },
         }
-      }
+      },
+      slash: false,
     });
     nautilus.start(done);
   });
@@ -61,6 +62,10 @@ describe('hooks:blueprint', function() {
     nautilus.app.blueprint.update('person', req).then(user => {
       expect(user._id).toEqual(newUser._id);
     });
+  });
+
+  it('prohibits findOne requests with an invalid mongoid', done => {
+    request(nautilus.app).get('/person/123').expect(400, done);
   });
 
   after(done => nautilus.stop(done));
