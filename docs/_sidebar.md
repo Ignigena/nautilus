@@ -9,5 +9,6 @@
   - [Configuration](concepts/configuration.md)
   - [Models](concepts/models.md)
   - [Responses](concepts/responses.md)
+  - [Policies](concepts/policies.md)
   - [Security](concepts/security.md)
   - [Views](concepts/views.md)

@@ -11,12 +11,17 @@ describe('hooks:policies', function() {
       policies: {
         '*': false,
         '/hello': true,
+        '/goodbye': {
+          fn(req, res, next) {
+            return res.forbidden();
+          },
+          methods: ['DELETE'],
+        }
       },
       routes: {
         'index': (req, res) => res.ok('home'),
-        '/hello': function(req, res) {
-          res.ok('world');
-        },
+        '/hello': (req, res) => res.ok('world'),
+        '/goodbye': (req, res) => res.ok('cruel world'),
       },
     });
     nautilus.start(done);
@@ -28,6 +33,13 @@ describe('hooks:policies', function() {
 
   it('overrides the catch-all with route specific policies', done => {
     request(nautilus.app).get('/hello').expect(200, done);
+  });
+
+  it('allows a policy to be restricted based on the request method', done => {
+    request(nautilus.app).get('/goodbye').expect(200, err => {
+      if (err) return done(err);
+      request(nautilus.app).delete('/goodbye').expect(403, done);
+    });
   });
 
   after(done => nautilus.stop(done));
