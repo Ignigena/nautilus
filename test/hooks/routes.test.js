@@ -15,7 +15,15 @@ describe('hooks:routes', function() {
         },
         'r|(foo|bar)': function(req, res) {
           res.ok(req.params[0]);
-        }
+        },
+        'danger': {
+          delete(req, res) {
+            res.ok();
+          },
+          post(req, res) {
+            this.delete(req, res);
+          }
+        },
       }
     });
     nautilus.start(done);
@@ -36,6 +44,21 @@ describe('hooks:routes', function() {
     request(nautilus.app).get('/foo').end(function(err, res) {
       expect(res.text).toEqual('foo');
       done(err);
+    });
+  });
+
+  it('allows routes to be method-specific', done => {
+    request(nautilus.app).get('/danger').end(function(err, res) {
+      expect(res.status).toBe(400);
+
+      request(nautilus.app).delete('/danger').end(function(err, res) {
+        expect(res.status).toBe(200);
+
+        request(nautilus.app).post('/danger').end(function(err, res) {
+          expect(res.status).toBe(200);
+          done(err);
+        });
+      });
     });
   });
 
