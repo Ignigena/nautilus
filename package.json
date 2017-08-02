@@ -8,6 +8,9 @@
     "docs": "docker -o jsdocs -I -n -x coverage,docs,node_modules,package.json,test,*.md",
     "lint": "eslint ."
   },
+  "bin": {
+    "nautilus": "./bin/nautilus.js"
+  },
   "license": "MIT",
   "repository": "ignigena/nautilus",
   "dependencies": {
@@ -43,6 +46,7 @@
     "expect": "^1.20.1",
     "istanbul": "^0.4.3",
     "mocha": "^3.0.2",
+    "mri": "^1.1.0",
     "rimraf": "^2.5.4",
     "supertest": "^3.0.0"
   },
