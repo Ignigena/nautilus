@@ -31,6 +31,12 @@ res.serverError(); // 500 - Server error
 
 All responses defined in RFC1945 (HTTP/1.0), RFC2616 (HTTP/1.1), RFC2518 (WebDAV), RFC6585 (Additional HTTP Status Codes), and RFC7538 (Permanent Redirect) are supported. For a full list of supported status codes see the [HTTP Status Codes](https://www.npmjs.com/package/http-status-codes#codes) module which Nautilus uses.
 
+## Fresh/stale content
+
+If your response includes a `Last-Modified` header, you can optionally include headers in the request to determine the freshness of the content. Commonly, `If-None-Match` (for Etag comparison) or `If-Modified-Since` (for date comparison) are used.
+
+In this case, Express will perform a built-in check against the content and return the appropriate status code. For this reason it is recommended not to use `res.notModified` directly unless your application requires special logic and to simply set a `Last-Modified` header, return `res.ok` and let Express do the work for you.
+
 ## Content-type
 
 Nautilus will try to serve the appropriate `Content-Type` header based on both the data passed to the response and the client request headers.

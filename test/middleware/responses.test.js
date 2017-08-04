@@ -14,8 +14,8 @@ describe('middleware:responses', function() {
     nautilus.app.get('/response/forbidden', (req, res) => res.forbidden('forbidden'));
     nautilus.app.get('/response/notFound', (req, res) => res.notFound('notFound'));
     nautilus.app.get('/response/ok', (req, res) => res.ok('ok'));
-    nautilus.app.get('/response/redirect', (req, res) => res.redirect('http://google.com', true));
-    nautilus.app.get('/response/redirectPermanent', (req, res) => res.redirect('http://apple.com'));
+    nautilus.app.get('/response/redirect', (req, res) => res.redirect('http://google.com'));
+    nautilus.app.get('/response/redirectPermanent', (req, res) => res.movedPermanently('http://apple.com'));
     nautilus.app.get('/response/error', (req, res) => res.serverError('server error'));
     nautilus.start(done);
   });
