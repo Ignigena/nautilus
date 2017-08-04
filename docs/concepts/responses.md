@@ -47,16 +47,18 @@ Nautilus instructs Express to format all returned JSON with two spaces. This is 
 
 ## Views
 
-Certain responses can also be rendered using a server-side view. This is most useful when building sites other than an API where a graphical error page is desired. To enable view based rendering simply create a `responses` subfolder within your `views` directory with one or more of the 5 currently supported response types:
+Certain responses can also be rendered using a server-side view. This is most useful when building sites other than an API where a graphical error page is desired. To enable view based rendering simply create a `responses` subfolder within your `views` directory with any of the [supported response types]((https://www.npmjs.com/package/http-status-codes#codes):
 
 ```
 views
 └─┬ responses/
-  ├── badRequest.jts
+  ├── bad-request.jts
   ├── unauthorized.jts
   ├── forbidden.jts
-  ├── notFound.jts
-  └── serverError.jts
+  ├── not-found.jts
+  └── server-error.jts
 ```
+
+!> While you send responses in camel-case, the filename of a response view should always be written in kebab-case.
 
 Nautilus will recognize when templates have been created for these responses and serve them when the client accepts an HTML response.
