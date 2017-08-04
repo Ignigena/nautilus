@@ -16,8 +16,8 @@ class NautilusWeb extends Nautilus {
     require('./lib/core/middleware').bind(this)(this.app);
     this.app.profile('middleware');
 
-    this.loadHooks('core', 'hooks', this.server);
-    this.loadHooks('custom', 'hooks', this.server);
+    this.app.hooks.load('core', 'hooks', this.server);
+    this.app.hooks.load('custom', 'hooks', this.server);
 
     // The port number can be overridden by passing a `PORT` environment
     // variable to the Node process. This is done automatically by some hosts
