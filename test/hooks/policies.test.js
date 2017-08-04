@@ -12,7 +12,7 @@ describe('hooks:policies', function() {
         '*': false,
         '/hello': true,
         '/goodbye': {
-          fn(req, res, next) {
+          fn: function noGoodbyes(req, res, next) {
             return res.forbidden();
           },
           methods: ['DELETE'],
