@@ -17,6 +17,7 @@ describe('middleware:responses', function() {
     nautilus.app.get('/response/redirect', (req, res) => res.redirect('http://google.com'));
     nautilus.app.get('/response/redirectPermanent', (req, res) => res.movedPermanently('http://apple.com'));
     nautilus.app.get('/response/error', (req, res) => res.serverError('server error'));
+    nautilus.app.get('/response/json', (req, res) => res.ok({ hello: 'world' }));
     nautilus.start(done);
   });
 
@@ -72,6 +73,17 @@ describe('middleware:responses', function() {
           done(err);
         });
     });
+  });
+
+  it('prefers JSON when the response is an object', function(done) {
+    request(nautilus.app)
+      .get('/response/json/')
+      .set('Accept', 'text/html')
+      .expect(200, (err, response) => {
+        expect(response.type).toEqual('application/json');
+        expect(response.body).toEqual({ hello: 'world' });
+        done(err);
+      });
   });
 
   after(done => nautilus.stop(done));
