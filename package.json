@@ -16,8 +16,8 @@
   "dependencies": {
     "@nautilus/core": "^1.0.0",
     "body-parser": "^1.16.0",
+    "camel-case": "^3.0.0",
     "chalk": "^2.0.1",
-    "change-case": "^3.0.0",
     "compression": "^1.7.0",
     "cors": "^2.8.4",
     "express": "^4.13.4",
@@ -30,6 +30,8 @@
     "mongodb": "^2.2.30",
     "mongoose": "^4.11.5",
     "mongoose-findorcreate": "^2.0.0",
+    "param-case": "^2.1.1",
+    "pascal-case": "^2.0.1",
     "path-to-regexp": "^1.7.0",
     "serve-favicon": "^2.3.0",
     "socket.io": "^2.0.3"
