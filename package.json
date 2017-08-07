@@ -23,7 +23,6 @@
     "express": "^4.13.4",
     "express-session": "^1.15.5",
     "http-status-codes": "^1.2.0",
-    "jsonpack": "^1.1.5",
     "jts": "^1.2.0",
     "lodash": "^4.12.0",
     "lusca": "^1.4.0",
@@ -31,7 +30,6 @@
     "mongodb": "^2.2.30",
     "mongoose": "^4.11.5",
     "mongoose-findorcreate": "^2.0.0",
-    "node-mocks-http": "^1.6.4",
     "path-to-regexp": "^1.7.0",
     "serve-favicon": "^2.3.0",
     "socket.io": "^2.0.3"
