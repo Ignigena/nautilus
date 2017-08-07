@@ -2,7 +2,7 @@
 // ==
 const express = require('express');
 const http = require('http');
-const Nautilus = require('./core.js');
+const Nautilus = require('@nautilus/core');
 const parseUrl = require('parseurl');
 
 class NautilusWeb extends Nautilus {
@@ -15,6 +15,8 @@ class NautilusWeb extends Nautilus {
     this.app.profile('middleware');
     require('./lib/core/middleware').bind(this)(this.app);
     this.app.profile('middleware');
+
+    this.app.api = { path: `${this.app.appPath}/api` };
 
     this.app.hooks.load('core', 'hooks', this.server);
     this.app.hooks.load('custom', 'hooks', this.server);
