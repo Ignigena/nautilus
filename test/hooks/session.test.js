@@ -25,7 +25,7 @@ describe('hooks:session', function() {
     var session;
 
     it('assigns a cookie with session ID', function(done) {
-      request(nautilus.app).get('/session/').expect(200).end((err, response) => {
+      request(nautilus.app).get('/session').expect(200).end((err, response) => {
         expect(response.text).toEqual('Session visits: 1');
         var sessionCookie = cookie.parse(response.headers['set-cookie'][0]);
         expect(sessionCookie['nautilus.sid']).toExist();
@@ -35,7 +35,7 @@ describe('hooks:session', function() {
     });
 
     it('respects the "Cookie" header', function(done) {
-      request(nautilus.app).get('/session/').set('Cookie', `nautilus.sid=${session}`).end((err, response) => {
+      request(nautilus.app).get('/session').set('Cookie', `nautilus.sid=${session}`).end((err, response) => {
         expect(response.text).toEqual('Session visits: 2');
         done(err);
       });
@@ -57,7 +57,7 @@ describe('hooks:session', function() {
     });
 
     it('respects the settings in configuration', () =>
-      request(nautilus.app).get('/session/').expect(500));
+      request(nautilus.app).get('/session').expect(500));
 
     after(done => nautilus.stop(done));
 

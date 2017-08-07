@@ -21,19 +21,19 @@ describe('middleware:responses', function() {
     nautilus.start(done);
   });
 
-  it('res.badRequest', () => request(nautilus.app).get('/response/bad/').expect(400));
-  it('res.created', () => request(nautilus.app).get('/response/created/').expect(201));
-  it('res.forbidden', () => request(nautilus.app).get('/response/forbidden/').expect(403));
-  it('res.notFound', () => request(nautilus.app).get('/response/notFound/').expect(404));
-  it('res.ok', () => request(nautilus.app).get('/response/ok/').expect(200));
-  it('res.redirect', () => request(nautilus.app).get('/response/redirect/').expect(302));
-  it('res.redirect (permanent)', () => request(nautilus.app).get('/response/redirectPermanent/').expect(301));
-  it('res.serverError', () => request(nautilus.app).get('/response/error/').expect(500));
+  it('res.badRequest', () => request(nautilus.app).get('/response/bad').expect(400));
+  it('res.created', () => request(nautilus.app).get('/response/created').expect(201));
+  it('res.forbidden', () => request(nautilus.app).get('/response/forbidden').expect(403));
+  it('res.notFound', () => request(nautilus.app).get('/response/notFound').expect(404));
+  it('res.ok', () => request(nautilus.app).get('/response/ok').expect(200));
+  it('res.redirect', () => request(nautilus.app).get('/response/redirect').expect(302));
+  it('res.redirect (permanent)', () => request(nautilus.app).get('/response/redirectPermanent').expect(301));
+  it('res.serverError', () => request(nautilus.app).get('/response/error').expect(500));
 
   describe('content-type negotiation', function() {
     it('uses HTML when appropriate', function(done) {
       request(nautilus.app)
-        .get('/response/error/')
+        .get('/response/error')
         .set('Accept', 'text/html')
         .expect(500, (err, response) => {
           expect(response.type).toEqual('text/html');
@@ -44,7 +44,7 @@ describe('middleware:responses', function() {
 
     it('uses JSON when appropriate', function(done) {
       request(nautilus.app)
-        .get('/response/error/')
+        .get('/response/error')
         .set('Accept', 'application/json')
         .expect(500, (err, response) => {
           expect(response.type).toEqual('application/json');
@@ -55,7 +55,7 @@ describe('middleware:responses', function() {
 
     it('interchanges `error` for `body` based on response code', function(done) {
       request(nautilus.app)
-        .get('/response/ok/')
+        .get('/response/ok')
         .set('Accept', 'application/json')
         .expect(200, (err, response) => {
           expect(response.body).toEqual({ body: 'ok' });
@@ -65,7 +65,7 @@ describe('middleware:responses', function() {
 
     it('uses TXT when appropriate', function(done) {
       request(nautilus.app)
-        .get('/response/error/')
+        .get('/response/error')
         .set('Accept', 'text/plain')
         .expect(500, (err, response) => {
           expect(response.type).toEqual('text/plain');
@@ -77,7 +77,7 @@ describe('middleware:responses', function() {
 
   it('prefers JSON when the response is an object', function(done) {
     request(nautilus.app)
-      .get('/response/json/')
+      .get('/response/json')
       .set('Accept', 'text/html')
       .expect(200, (err, response) => {
         expect(response.type).toEqual('application/json');
