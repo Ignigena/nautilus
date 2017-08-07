@@ -34,7 +34,8 @@
     "pascal-case": "^2.0.1",
     "path-to-regexp": "^1.7.0",
     "serve-favicon": "^2.3.0",
-    "socket.io": "^2.0.3"
+    "socket.io": "^2.0.3",
+    "validator": "^8.0.0"
   },
   "devDependencies": {
     "cookie": "^0.3.1",

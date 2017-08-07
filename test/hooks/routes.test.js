@@ -24,6 +24,12 @@ describe('hooks:routes', function() {
             this.delete(req, res);
           }
         },
+        '/widget/:id?': {
+          validate: {
+            id: 'isMongoId',
+          },
+          fn: (req, res) => res.ok('fidget'),
+        }
       }
     });
     nautilus.start(done);
@@ -58,6 +64,16 @@ describe('hooks:routes', function() {
           expect(res.status).toBe(200);
           done(err);
         });
+      });
+    });
+  });
+
+  it('validates routes with an /:id parameter', done => {
+    request(nautilus.app).get('/widget').expect(200, err => {
+      if (err) return done(err);
+      request(nautilus.app).get('/widget/123').expect(400, err => {
+        if (err) return done(err);
+        request(nautilus.app).get('/widget/55b1249625edc30e0021ce27').expect(200, done);
       });
     });
   });
