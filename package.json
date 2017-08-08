@@ -30,6 +30,7 @@
     "mongodb": "^2.2.30",
     "mongoose": "^4.11.5",
     "mongoose-findorcreate": "^2.0.0",
+    "mri": "^1.1.0",
     "param-case": "^2.1.1",
     "pascal-case": "^2.0.1",
     "path-to-regexp": "^1.7.0",
@@ -45,7 +46,6 @@
     "expect": "^1.20.1",
     "istanbul": "^0.4.3",
     "mocha": "^3.5.0",
-    "mri": "^1.1.0",
     "rimraf": "^2.5.4",
     "supertest": "^3.0.0"
   },
