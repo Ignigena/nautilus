@@ -1,5 +1,5 @@
 const request = require('supertest');
-const Nautilus = require('../../index');
+const Nautilus = require('../../lib/index');
 
 describe('hooks:favicon', function() {
 

@@ -2,7 +2,7 @@ process.env.NODE_ENV = 'test';
 
 const expect = require('expect');
 const request = require('supertest');
-const Nautilus = require('../../index');
+const Nautilus = require('../../lib/index');
 
 describe('middleware:responses', function() {
 

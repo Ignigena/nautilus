@@ -1,7 +1,7 @@
 const expect = require('expect');
 const rimraf = require('rimraf');
 
-const Nautilus = require('../../index');
+const Nautilus = require('../../lib/index');
 
 describe('hooks:views', function() {
 

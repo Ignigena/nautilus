@@ -2,12 +2,16 @@
   "name": "@nautilus/web",
   "version": "0.8.4",
   "description": "",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "NODE_ENV=test istanbul cover _mocha -- -b",
     "docs": "docker -o jsdocs -I -n -x coverage,docs,node_modules,package.json,test,*.md",
     "lint": "eslint ."
   },
+  "files": [
+    "bin",
+    "lib"
+  ],
   "bin": {
     "nautilus": "./bin/nautilus.js"
   },

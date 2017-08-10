@@ -1,5 +1,5 @@
 const expect = require('expect');
-const Nautilus = require('../../index');
+const Nautilus = require('../../lib/index');
 
 describe('core:hooks', function() {
 
