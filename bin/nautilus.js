@@ -28,8 +28,12 @@ if (flags.version) {
 let nautilus = new Nautilus({ appPath: process.cwd() });
 
 nautilus.start(() => {
-  process.on('SIGTERM', () => {
-    console.log('\nShut down requested. Please wait...');
-    nautilus.close(process.exit);
-  });
+  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', shutdown);
 });
+
+function shutdown() {
+  console.log('');
+  nautilus.app.log.info('Gracefully shutting down. Please wait...');
+  nautilus.stop(() => nautilus.app.log.info('...done'));
+}

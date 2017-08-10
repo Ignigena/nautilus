@@ -6,7 +6,6 @@ const Nautilus = require('@nautilus/core');
 const parseUrl = require('parseurl');
 
 class NautilusWeb extends Nautilus {
-
   constructor(config) {
     super(express(), config);
     this.server = this.app.server = new http.Server(this.app);
@@ -98,7 +97,6 @@ class NautilusWeb extends Nautilus {
     this.app.mongo.connection.once('disconnected', cb);
     this.server.close();
   }
-
 }
 
 module.exports = NautilusWeb;
