@@ -1,17 +1,16 @@
 #!/usr/bin/env node
 const args = require('mri');
+const getPort = require('get-port');
 
 const Nautilus = require('../');
 const { version } = require('../package');
 
 const flags = args(process.argv.slice(2), {
   default: {
-    host: '::',
     port: 3000,
   },
   alias: {
     p: 'port',
-    H: 'host',
     v: 'version',
   },
   unknown(flag) {
@@ -25,11 +24,22 @@ if (flags.version) {
   process.exit();
 }
 
-let nautilus = new Nautilus({ appPath: process.cwd() });
+let nautilus;
 
-nautilus.start(() => {
-  process.on('SIGTERM', shutdown);
-  process.on('SIGINT', shutdown);
+getPort(flags.port).then(port => {
+  nautilus = new Nautilus({
+    appPath: process.cwd(),
+    port,
+  });
+
+  if (port !== flags.port) {
+    nautilus.app.log.warn(`Port ${flags.port} is currently in use.`);
+  }
+
+  nautilus.start(() => {
+    process.on('SIGTERM', shutdown);
+    process.on('SIGINT', shutdown);
+  });
 });
 
 function shutdown() {

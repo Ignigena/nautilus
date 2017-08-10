@@ -23,7 +23,7 @@ class NautilusWeb extends Nautilus {
     // The port number can be overridden by passing a `PORT` environment
     // variable to the Node process. This is done automatically by some hosts
     // such as Heroku.
-    this.app.set('port', process.env.PORT || 3000);
+    this.app.set('port', config.port || process.env.PORT || 3000);
   }
 
   // Once you're ready to `.start()` the server:
