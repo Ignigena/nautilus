@@ -1,7 +1,7 @@
 const expect = require('expect');
 const rimraf = require('rimraf');
 
-const Nautilus = require('../../lib/index');
+const Nautilus = require('../../index');
 
 describe('hooks:config', function() {
 
