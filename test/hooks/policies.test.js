@@ -35,6 +35,10 @@ describe('hooks:policies', function() {
     request(nautilus.app).get('/hello').expect(200, done);
   });
 
+  it('ignores query strings when matching policies', done => {
+    request(nautilus.app).get('/hello?takemeto=leader').expect(200, done);
+  });
+
   it('allows a policy to be restricted based on the request method', done => {
     request(nautilus.app).get('/goodbye').expect(200, err => {
       if (err) return done(err);
