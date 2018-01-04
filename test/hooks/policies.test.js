@@ -18,9 +18,11 @@ describe('hooks:policies', function() {
           methods: ['DELETE'],
         },
         '/knock': {
-          fn: function whosThere(req, res, next, args) {
-            if (args[0] === 'orange') return res.ok();
-            res.forbidden();
+          fn: function whosThere(req, res, next) {
+            return function(fruit) {
+              if (fruit === 'orange') return res.ok();
+              res.forbidden();
+            };
           },
           args: 'orange',
         },
