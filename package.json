@@ -1,6 +1,6 @@
 {
   "name": "@nautilus/web",
-  "version": "0.8.9",
+  "version": "0.8.10",
   "description": "Convention over configuration framework for Express",
   "main": "index.js",
   "scripts": {
