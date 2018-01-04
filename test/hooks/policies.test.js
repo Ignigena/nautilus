@@ -16,12 +16,22 @@ describe('hooks:policies', function() {
             return res.forbidden();
           },
           methods: ['DELETE'],
-        }
+        },
+        '/knock': {
+          fn: function whosThere(req, res, next) {
+            return function(fruit) {
+              if (fruit === 'orange') return res.ok();
+              res.forbidden();
+            };
+          },
+          args: 'orange',
+        },
       },
       routes: {
         'index': (req, res) => res.ok('home'),
         '/hello': (req, res) => res.ok('world'),
         '/goodbye': (req, res) => res.ok('cruel world'),
+        '/knock': (req, res) => res.ok('orange you glad?'),
       },
     });
     nautilus.start(done);
@@ -44,6 +54,10 @@ describe('hooks:policies', function() {
       if (err) return done(err);
       request(nautilus.app).delete('/goodbye').expect(403, done);
     });
+  });
+
+  it('allows a policy to accept an argument from within the policy configuration', done => {
+    request(nautilus.app).get('/knock').expect(200, done);
   });
 
   after(done => nautilus.stop(done));
