@@ -2,6 +2,8 @@ const expect = require('expect');
 const request = require('supertest');
 const Nautilus = require('../../index');
 
+const ObjectID = require('mongodb').ObjectID;
+
 describe('hooks:blueprint', function() {
 
   let nautilus;
@@ -66,6 +68,14 @@ describe('hooks:blueprint', function() {
 
   it('prohibits findOne requests with an invalid mongoid', done => {
     request(nautilus.app).get('/person/123').expect(400, done);
+  });
+
+  it('allows findOne requests with an valid mongoid', done => {
+    request(nautilus.app).get(`/person/${newUser._id}`).expect(200, done);
+  });
+
+  it('returns a 404 when an entity is not found', done => {
+    request(nautilus.app).get(`/person/${new ObjectID()}`).expect(404, done);
   });
 
   after(done => nautilus.stop(done));
