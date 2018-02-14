@@ -67,19 +67,27 @@ describe('hooks:models', function() {
       lastName: 'User',
     };
 
-    it('exposes find shortcuts for all models', () => {
-      return nautilus.app.model('user').create(fixture, () => {
-        return nautilus.app.model('user').find({ email: fixture.email });
-      }).then(result => {
-        record = result;
-        expect(result.email).toEqual(fixture.email);
-      });
+    it('exposes find shortcuts for all models', async () => {
+      let create = await nautilus.app.model('user').create(fixture);
+      record = await nautilus.app.model('user').findOne({ email: fixture.email });
+      expect(record.email).toEqual(fixture.email);
     });
 
-    it('allows findOne criteria to be an ObjectID', () => {
-      return nautilus.app.model('user').findOne(record._id).then(result => {
-        expect(result.email).toEqual(fixture.email);
-      });
+    it('allows findOne criteria to be an ObjectID', async () => {
+      let result = await nautilus.app.model('user').findOne(record._id);
+      expect(result.email).toEqual(fixture.email);
+    });
+
+    it('adds a findOrCreate convenience function', async () => {
+      expect(typeof nautilus.app.model('user').findOrCreate).toEqual('function');
+    });
+
+    it('findOrCreate allows properties that will are used only if record is created', async () => {
+      let existing = await nautilus.app.model('user').findOrCreate({ email: fixture.email }, { firstName: 'Updated' });
+      expect(existing.firstName).toEqual('Test');
+
+      let created = await nautilus.app.model('user').findOrCreate({ email: 'new@email.com' }, { firstName: 'New' });
+      expect(created.firstName).toEqual('New');
     });
   });
 
