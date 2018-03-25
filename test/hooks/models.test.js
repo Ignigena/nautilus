@@ -1,11 +1,10 @@
-const expect = require('expect');
 const request = require('supertest');
 const Nautilus = require('../../index');
 
 describe('hooks:models', function() {
 
   let nautilus;
-  before(done => {
+  beforeAll(() => {
     nautilus = new Nautilus({
       connections: {
         mongo: { url: process.env.DB_MONGO || 'mongodb://127.0.0.1:27017' }
@@ -43,16 +42,15 @@ describe('hooks:models', function() {
         }
       }
     });
-    nautilus.start(done);
   });
 
   it('sets up model definitions', () => {
-    expect(nautilus.app.api.model).toExist();
-    expect(nautilus.app.api.model.user).toExist();
+    expect(nautilus.app.api.model).toBeDefined();
+    expect(nautilus.app.api.model.user).toBeDefined();
   });
 
   it('allows model definitions to returned from a function', () => {
-    expect(nautilus.app.model('widget')).toExist();
+    expect(nautilus.app.model('widget')).toBeDefined();
   });
 
   it('executes the setup function after initialization', () => {
@@ -82,7 +80,7 @@ describe('hooks:models', function() {
       expect(typeof nautilus.app.model('user').findOrCreate).toEqual('function');
     });
 
-    it('findOrCreate allows properties that will are used only if record is created', async () => {
+    it('findOrCreate allows properties that are used only if record is created', async () => {
       let existing = await nautilus.app.model('user').findOrCreate({ email: fixture.email }, { firstName: 'Updated' });
       expect(existing.firstName).toEqual('Test');
 
@@ -100,7 +98,7 @@ describe('hooks:models', function() {
       password: 'password',
     };
 
-    before(() => {
+    beforeAll(() => {
       return nautilus.app.model('user').create(fixture).then(result => {
         record = result;
       });
@@ -114,7 +112,5 @@ describe('hooks:models', function() {
       expect(record.password).toEqual('drowssap');
     });
   });
-
-  after(done => nautilus.stop(done));
 
 });

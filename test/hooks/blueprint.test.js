@@ -1,4 +1,3 @@
-const expect = require('expect');
 const request = require('supertest');
 const Nautilus = require('../../index');
 
@@ -7,7 +6,7 @@ const ObjectID = require('mongodb').ObjectID;
 describe('hooks:blueprint', function() {
 
   let nautilus;
-  before(done => {
+  beforeAll(() => {
     nautilus = new Nautilus({
       connections: {
         mongo: { url: process.env.DB_MONGO || 'mongodb://127.0.0.1:27017' }
@@ -22,11 +21,10 @@ describe('hooks:blueprint', function() {
       },
       slash: false,
     });
-    nautilus.start(done);
   });
 
   let newUser;
-  before(done => {
+  beforeAll(done => {
     nautilus.app.model('person').create({ email: 'test@test.com', name: 'Test' }).then(user => {
       newUser = user;
       done();
@@ -51,7 +49,7 @@ describe('hooks:blueprint', function() {
       .send({ email: 'changed@test.com' })
       .expect(200, (err, response) => {
         expect(response.body.data.email).toEqual('changed@test.com');
-        expect(response.body.data._id).toEqual(newUser._id);
+        expect(response.body.data._id).toEqual(newUser._id.toString());
         done(err);
       });
   });
@@ -77,7 +75,5 @@ describe('hooks:blueprint', function() {
   it('returns a 404 when an entity is not found', done => {
     request(nautilus.app).get(`/person/${new ObjectID()}`).expect(404, done);
   });
-
-  after(done => nautilus.stop(done));
 
 });

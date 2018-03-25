@@ -1,4 +1,3 @@
-const expect = require('expect');
 const rimraf = require('rimraf');
 
 const Nautilus = require('../../index');
@@ -6,7 +5,7 @@ const Nautilus = require('../../index');
 describe('hooks:config', function() {
 
   describe('environment configuration', function() {
-    before(done => {
+    beforeAll(done => {
       var config = `
         module.exports = {
           foo: 'bars',
@@ -15,7 +14,7 @@ describe('hooks:config', function() {
       require('../util/writeConfig')('custom', config, done);
     });
 
-    before(done => {
+    beforeAll(done => {
       var config = `
         module.exports = {
           custom: {
@@ -27,9 +26,8 @@ describe('hooks:config', function() {
     });
 
     let nautilus;
-    before(done => {
+    beforeAll(() => {
       nautilus = new Nautilus();
-      nautilus.start(done);
     });
 
     it('merges environment configuration without overwriting', () => {
@@ -37,11 +35,11 @@ describe('hooks:config', function() {
       expect(nautilus.app.config.custom.hello).toEqual('world');
     });
 
-    after(done => nautilus.stop(done));
+    afterAll(done => nautilus.stop(done));
   });
 
   describe('local configuration', function() {
-    before(done => {
+    beforeAll(done => {
       var config = `
       module.exports = {
         custom: {
@@ -53,18 +51,15 @@ describe('hooks:config', function() {
     });
 
     let nautilus;
-    before(done => {
+    beforeAll(() => {
       nautilus = new Nautilus();
-      nautilus.start(done);
     });
 
     it('local configuration overrides all others', () => {
       expect(nautilus.app.config.custom.foo).toEqual('bar');
     });
-
-    after(done => nautilus.stop(done));
   });
 
-  after(done => rimraf('./config', done));
+  afterAll(done => rimraf('./config', done));
 
 });

@@ -1,11 +1,10 @@
-const expect = require('expect');
 const rimraf = require('rimraf');
 
 const Nautilus = require('../../index');
 
 describe('hooks:views', function() {
 
-  before(done => {
+  beforeAll(done => {
     var config = `
       var JTS = require('jts');
       var engine = new JTS({
@@ -24,16 +23,14 @@ describe('hooks:views', function() {
   });
 
   let nautilus;
-  before(done => {
+  beforeAll(() => {
     nautilus = new Nautilus();
-    nautilus.start(done);
   });
 
   it('uses the configured view engine', () => {
     expect(nautilus.app.config.views.engine.ext).toEqual('jts');
   });
 
-  after(done => nautilus.stop(done));
-  after(done => rimraf('./config', done));
+  afterAll(done => rimraf('./config', done));
 
 });

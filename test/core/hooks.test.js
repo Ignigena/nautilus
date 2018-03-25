@@ -1,4 +1,3 @@
-const expect = require('expect');
 const Nautilus = require('../../index');
 
 describe('core:hooks', function() {
@@ -7,7 +6,7 @@ describe('core:hooks', function() {
   let viewsLoaded = false;
 
   let nautilus;
-  before(done => {
+  beforeAll(() => {
     nautilus = new Nautilus({
       bootstrap(app) {
         app.events.once('hooks:loaded:core:session', () => {
@@ -18,7 +17,6 @@ describe('core:hooks', function() {
         });
       }
     });
-    nautilus.start(done)
   });
 
   it('respects the defined order of hooks', () => {
@@ -31,10 +29,10 @@ describe('core:hooks', function() {
   });
 
   it('cleans up empty hooks', () => {
-    expect(nautilus.app.blueprint).toExist();
-    expect(nautilus.app.views).toNotExist();
+    expect(nautilus.app.blueprint).toBeDefined();
+    expect(nautilus.app.views).toBeUndefined();
   })
 
-  after(done => nautilus.stop(done));
+  afterAll(done => nautilus.stop(done));
 
 });

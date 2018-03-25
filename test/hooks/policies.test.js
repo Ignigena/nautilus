@@ -1,11 +1,10 @@
-const expect = require('expect');
 const request = require('supertest');
 const Nautilus = require('../../index');
 
 describe('hooks:policies', function() {
 
   let nautilus;
-  before(done => {
+  beforeAll(() => {
     nautilus = new Nautilus({
       slash: false,
       policies: {
@@ -34,7 +33,6 @@ describe('hooks:policies', function() {
         '/knock': (req, res) => res.ok('orange you glad?'),
       },
     });
-    nautilus.start(done);
   });
 
   it('allows a catch-all wildcard policy to cover all routes', done => {
@@ -59,7 +57,5 @@ describe('hooks:policies', function() {
   it('allows a policy to accept an argument from within the policy configuration', done => {
     request(nautilus.app).get('/knock').expect(200, done);
   });
-
-  after(done => nautilus.stop(done));
 
 });

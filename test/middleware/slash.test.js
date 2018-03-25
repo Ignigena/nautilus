@@ -1,13 +1,12 @@
 process.env.NODE_ENV = 'test';
 
-const expect = require('expect');
 const request = require('supertest');
 const Nautilus = require('../../index');
 
 describe('middleware:slash', function() {
 
   let nautilus;
-  before(done => {
+  beforeAll(() => {
     nautilus = new Nautilus({
       slash: {
         whitelist: ['whitelist/*']
@@ -16,7 +15,6 @@ describe('middleware:slash', function() {
     nautilus.app.get('/slash', (req, res) => res.ok('ok'));
     nautilus.app.get('/slash.png', (req, res) => res.ok('ok'));
     nautilus.app.get('/whitelist/path', (req, res) => res.ok('ok'));
-    nautilus.start(done);
   });
 
   it('adds a slash to the end of all URLs', () =>
@@ -44,7 +42,5 @@ describe('middleware:slash', function() {
 
   it('recognizes a properly slashed URL with a query string', () =>
     request(nautilus.app).get('/slash/?query=string').expect(200));
-
-  after(done => nautilus.stop(done));
 
 });

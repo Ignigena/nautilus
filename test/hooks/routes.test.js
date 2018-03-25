@@ -1,11 +1,10 @@
-const expect = require('expect');
 const request = require('supertest');
 const Nautilus = require('../../index');
 
 describe('hooks:routes', function() {
 
   let nautilus;
-  before(done => {
+  beforeAll(() => {
     nautilus = new Nautilus({
       slash: false,
       routes: {
@@ -32,7 +31,6 @@ describe('hooks:routes', function() {
         }
       }
     });
-    nautilus.start(done);
   });
 
   it('allows routes to be declared in configuration', () => request(nautilus.app).get('/hello').expect(200));
@@ -77,7 +75,5 @@ describe('hooks:routes', function() {
       });
     });
   });
-
-  after(done => nautilus.stop(done));
 
 });

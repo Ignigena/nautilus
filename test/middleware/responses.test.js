@@ -1,13 +1,12 @@
 process.env.NODE_ENV = 'test';
 
-const expect = require('expect');
 const request = require('supertest');
 const Nautilus = require('../../index');
 
 describe('middleware:responses', function() {
 
   let nautilus;
-  before(done => {
+  beforeAll(() => {
     nautilus = new Nautilus();
     nautilus.app.get('/response/bad', (req, res) => res.badRequest('bad'));
     nautilus.app.get('/response/created', (req, res) => res.created('created'));
@@ -18,7 +17,6 @@ describe('middleware:responses', function() {
     nautilus.app.get('/response/redirectPermanent', (req, res) => res.movedPermanently('http://apple.com'));
     nautilus.app.get('/response/error', (req, res) => res.serverError('server error'));
     nautilus.app.get('/response/json', (req, res) => res.ok({ hello: 'world' }));
-    nautilus.start(done);
   });
 
   it('res.badRequest', () => request(nautilus.app).get('/response/bad').expect(400));
@@ -85,7 +83,5 @@ describe('middleware:responses', function() {
         done(err);
       });
   });
-
-  after(done => nautilus.stop(done));
 
 });

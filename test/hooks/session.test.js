@@ -1,5 +1,4 @@
 const cookie = require('cookie');
-const expect = require('expect');
 const request = require('supertest');
 const Nautilus = require('../../index');
 
@@ -16,11 +15,7 @@ describe('hooks:session', function() {
 
   describe('enabled', function() {
 
-    let nautilus;
-    before(done => {
-      nautilus = new Nautilus({ routes });
-      nautilus.start(done);
-    });
+    let nautilus = new Nautilus({ routes });
 
     var session;
 
@@ -28,7 +23,7 @@ describe('hooks:session', function() {
       request(nautilus.app).get('/session').expect(200).end((err, response) => {
         expect(response.text).toEqual('Session visits: 1');
         var sessionCookie = cookie.parse(response.headers['set-cookie'][0]);
-        expect(sessionCookie['nautilus.sid']).toExist();
+        expect(sessionCookie['nautilus.sid']).toBeDefined();
         session = sessionCookie['nautilus.sid'];
         done(err);
       });
@@ -41,25 +36,17 @@ describe('hooks:session', function() {
       });
     });
 
-    after(done => nautilus.stop(done));
-
   });
 
   describe('disabled', function() {
 
-    let nautilus;
-    before(done => {
-      nautilus = new Nautilus({
-        session: false,
-        routes
-      });
-      nautilus.start(done);
+    let nautilus = new Nautilus({
+      session: false,
+      routes
     });
 
     it('respects the settings in configuration', () =>
       request(nautilus.app).get('/session').expect(500));
-
-    after(done => nautilus.stop(done));
 
   });
 
