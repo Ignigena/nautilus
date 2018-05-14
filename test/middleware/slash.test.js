@@ -9,7 +9,7 @@ describe('middleware:slash', function() {
   beforeAll(() => {
     nautilus = new Nautilus({
       slash: {
-        whitelist: ['whitelist/*']
+        whitelist: ['whitelist/(.*)']
       }
     });
     nautilus.app.get('/slash', (req, res) => res.ok('ok'));
