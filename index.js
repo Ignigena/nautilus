@@ -10,7 +10,7 @@ class NautilusWeb extends Nautilus {
     super(express(), config);
     this.server = this.app.server = new http.Server(this.app);
 
-    // The middleware component adds default Session and Security middleware.
+    // The middleware component adds default Security middleware.
     this.app.profile('middleware');
     require('./lib/core/middleware').bind(this)(this.app);
     this.app.profile('middleware');

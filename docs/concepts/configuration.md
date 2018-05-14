@@ -64,11 +64,11 @@ This can be useful when creating unit tests where specific functionality needs
 to be present despite the contents of the `config` directory.
 
 Runtime configuration can be passed in an object when creating the Nautilus
-instance. For example, to disable the session hook globally:
+instance. For example, to disable the favicon hook globally:
 
 ```
 new Nautilus({
- session: false
+ favicon: false
 });
 ```
 

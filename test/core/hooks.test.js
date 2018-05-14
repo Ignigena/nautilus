@@ -2,15 +2,15 @@ const Nautilus = require('../../index');
 
 describe('core:hooks', function() {
 
-  let sessionLoaded = false;
+  let faviconLoaded = false;
   let viewsLoaded = false;
 
   let nautilus;
   beforeAll(() => {
     nautilus = new Nautilus({
       bootstrap(app) {
-        app.events.once('hooks:loaded:core:session', () => {
-          sessionLoaded = true;
+        app.events.once('hooks:loaded:core:favicon', () => {
+          faviconLoaded = true;
         });
         app.hooks.after('core:views', () => {
           viewsLoaded = true;
@@ -24,7 +24,7 @@ describe('core:hooks', function() {
   });
 
   it('emits an event as each hook is loaded', () => {
-    expect(sessionLoaded).toEqual(true);
+    expect(faviconLoaded).toEqual(true);
     expect(viewsLoaded).toEqual(true);
   });
 
