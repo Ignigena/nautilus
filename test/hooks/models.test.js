@@ -66,6 +66,7 @@ describe('hooks:models', function() {
     };
 
     it('exposes find shortcuts for all models', async () => {
+      await nautilus.app.model('user').deleteMany();
       let create = await nautilus.app.model('user').create(fixture);
       record = await nautilus.app.model('user').findOne({ email: fixture.email });
       expect(record.email).toEqual(fixture.email);
