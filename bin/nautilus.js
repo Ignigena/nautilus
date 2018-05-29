@@ -7,7 +7,7 @@ const { version } = require('../package');
 
 const flags = args(process.argv.slice(2), {
   default: {
-    port: 3000,
+    port: process.env.PORT || 3000,
   },
   alias: {
     p: 'port',
