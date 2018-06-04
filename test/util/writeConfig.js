@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 
-module.exports = function writeConfig(type, config, cb) {
-  if (!fs.existsSync('./config')) fs.mkdirSync('./config');
-  fs.writeFile(`./config/${type}.js`, config, cb);
+module.exports = function writeConfig(type, config) {
+  let contents = typeof config == 'object' ? `module.exports = ${JSON.stringify(config)}` : config;
+  return fs.outputFile(`./config/${type}.js`, contents);
 };

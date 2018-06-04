@@ -1,26 +1,25 @@
-const rimraf = require('rimraf');
+const fs = require('fs-extra');
+
+const writeConfig = require('../util/writeConfig');
 
 const Nautilus = require('../../index');
 
 describe('hooks:views', function() {
 
-  beforeAll(done => {
-    var config = `
-      var JTS = require('jts');
-      var engine = new JTS({
-        defaultLayout: 'layout',
-        layouts: 'views'
-      });
+  beforeAll(() => writeConfig('views', `
+    var JTS = require('jts');
+    var engine = new JTS({
+      defaultLayout: 'layout',
+      layouts: 'views'
+    });
 
-      module.exports = {
-        engine: {
-          ext: 'jts',
-          fn: engine.render,
-        },
-      };
-    `;
-    require('../util/writeConfig')('views', config, done);
-  });
+    module.exports = {
+      engine: {
+        ext: 'jts',
+        fn: engine.render,
+      },
+    };
+  `));
 
   let nautilus;
   beforeAll(() => {
@@ -31,6 +30,6 @@ describe('hooks:views', function() {
     expect(nautilus.app.config.views.engine.ext).toEqual('jts');
   });
 
-  afterAll(done => rimraf('./config', done));
+  afterAll(() => fs.remove('./config'));
 
 });
