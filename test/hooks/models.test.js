@@ -81,13 +81,21 @@ describe('hooks:models', function() {
       expect(typeof nautilus.app.model('user').findOrCreate).toEqual('function');
     });
 
+    let existing;
+    let created;
+
     it('findOrCreate allows properties that are used only if record is created', async () => {
-      let existing = await nautilus.app.model('user').findOrCreate({ email: fixture.email }, { firstName: 'Updated' });
+      existing = await nautilus.app.model('user').findOrCreate({ email: fixture.email }, { firstName: 'Updated' });
       expect(existing.firstName).toEqual('Test');
 
-      let created = await nautilus.app.model('user').findOrCreate({ email: 'new@email.com' }, { firstName: 'New' });
+      created = await nautilus.app.model('user').findOrCreate({ email: 'new@email.com' }, { firstName: 'New' });
       expect(created.firstName).toEqual('New');
     });
+
+    it('findOrCreate sets the `isNew` flag appropriately', () => {
+      expect(existing.isNew).toEqual(false);
+      expect(created.isNew).toEqual(true);
+    })
   });
 
   describe('middleware and virtuals', () => {
