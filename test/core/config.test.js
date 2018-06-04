@@ -1,29 +1,21 @@
 const rimraf = require('rimraf');
 
+const writeConfig = require('../util/writeConfig');
+
 const Nautilus = require('../../index');
 
 describe('hooks:config', function() {
 
   describe('environment configuration', function() {
-    beforeAll(done => {
-      var config = `
-        module.exports = {
-          foo: 'bars',
-        };
-      `;
-      require('../util/writeConfig')('custom', config, done);
-    });
+    beforeAll(() => writeConfig('custom', {
+      foo: 'bars',
+    }));
 
-    beforeAll(done => {
-      var config = `
-        module.exports = {
-          custom: {
-            hello: 'world'
-          }
-        };
-      `;
-      require('../util/writeEnvConfig')('test', config, done);
-    });
+    beforeAll(() => writeConfig('env/test', {
+      custom: {
+        hello: 'world'
+      }
+    }));
 
     let nautilus;
     beforeAll(() => {
@@ -39,16 +31,11 @@ describe('hooks:config', function() {
   });
 
   describe('local configuration', function() {
-    beforeAll(done => {
-      var config = `
-      module.exports = {
-        custom: {
-          foo: 'bar'
-        }
-      };
-      `;
-      require('../util/writeEnvConfig')('local', config, done);
-    });
+    beforeAll(() => writeConfig('env/local', {
+      custom: {
+        foo: 'bar'
+      }
+    }));
 
     let nautilus;
     beforeAll(() => {
