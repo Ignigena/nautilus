@@ -1,4 +1,4 @@
-const rimraf = require('rimraf');
+const fs = require('fs-extra');
 
 const writeConfig = require('../util/writeConfig');
 
@@ -30,6 +30,6 @@ describe('hooks:views', function() {
     expect(nautilus.app.config.views.engine.ext).toEqual('jts');
   });
 
-  afterAll(done => rimraf('./config', done));
+  afterAll(() => fs.remove('./config'));
 
 });
