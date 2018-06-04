@@ -56,6 +56,7 @@
     "coverageDirectory": "coverage",
     "collectCoverageFrom": [
       "lib/**/*.js",
+      "!lib/defaults/*.js",
       "index.js"
     ]
   }
