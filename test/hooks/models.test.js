@@ -91,11 +91,6 @@ describe('hooks:models', function() {
       created = await nautilus.app.model('user').findOrCreate({ email: 'new@email.com' }, { firstName: 'New' });
       expect(created.firstName).toEqual('New');
     });
-
-    it('findOrCreate sets the `isNew` flag appropriately', () => {
-      expect(existing.isNew).toEqual(false);
-      expect(created.isNew).toEqual(true);
-    })
   });
 
   describe('middleware and virtuals', () => {
