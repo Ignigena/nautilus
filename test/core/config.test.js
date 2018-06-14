@@ -7,18 +7,18 @@ const Nautilus = require('../../index');
 describe('hooks:config', function() {
 
   describe('environment configuration', function() {
-    beforeAll(() => writeConfig('custom', {
-      foo: 'bars',
-    }));
-
-    beforeAll(() => writeConfig('env/test', {
-      custom: {
-        hello: 'world'
-      }
-    }));
-
     let nautilus;
-    beforeAll(() => {
+    beforeAll(async () => {
+      await writeConfig('custom', {
+        foo: 'bars',
+      });
+
+      await writeConfig('env/test', {
+        custom: {
+          hello: 'world'
+        }
+      });
+
       nautilus = new Nautilus();
     });
 
@@ -31,14 +31,14 @@ describe('hooks:config', function() {
   });
 
   describe('local configuration', function() {
-    beforeAll(() => writeConfig('env/local', {
-      custom: {
-        foo: 'bar'
-      }
-    }));
-
     let nautilus;
-    beforeAll(() => {
+    beforeAll(async () => {
+      await writeConfig('env/local', {
+        custom: {
+          foo: 'bar'
+        }
+      });
+
       nautilus = new Nautilus();
     });
 

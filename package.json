@@ -4,7 +4,7 @@
   "description": "Convention over configuration framework for Express",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest -i",
     "lint": "eslint ."
   },
   "files": [
