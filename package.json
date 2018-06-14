@@ -4,7 +4,7 @@
   "description": "Convention over configuration framework for Express",
   "main": "index.js",
   "scripts": {
-    "test": "jest -i",
+    "test": "jest -i --forceExit",
     "lint": "eslint ."
   },
   "files": [
