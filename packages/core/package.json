@@ -5,30 +5,27 @@
   "repository": "ignigena/nautilus-core",
   "main": "index.js",
   "scripts": {
-    "test": "nyc mocha -b './test/*.test.js'",
-    "posttest": "nyc report --reporter=lcov"
+    "test": "jest -i"
   },
   "author": "Albert Martin <albert@imor.tl>",
   "license": "MIT",
   "dependencies": {
     "callsite": "^1.0.0",
-    "deepmerge": "^1.5.0",
-    "klaw-sync": "^3.0.0",
-    "winston": "^2.3.1"
+    "deepmerge": "^2.1.1",
+    "klaw-sync": "^3.0.2",
+    "winston": "^2.4.3"
   },
   "devDependencies": {
-    "expect": "^1.20.2",
-    "fs-extra": "^4.0.1",
-    "mocha": "^3.5.0",
-    "nyc": "^11.1.0",
-    "rimraf": "^2.6.1",
-    "sinon": "^3.0.0"
+    "fs-extra": "^6.0.1",
+    "jest": "^23.1.0",
+    "rimraf": "^2.6.2"
   },
-  "nyc": {
-    "exclude": [
-      "**/*.test.js",
-      "config/**/*",
-      "test/**/*"
+  "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "lib/**/*.js",
+      "index.js"
     ]
   }
 }

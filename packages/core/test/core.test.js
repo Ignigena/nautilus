@@ -1,4 +1,3 @@
-const expect = require('expect');
 const Nautilus = require('../index');
 
 describe('core', function() {
@@ -6,7 +5,7 @@ describe('core', function() {
   let didBootstrap = false;
 
   let nautilus;
-  before(() => {
+  beforeAll(() => {
     nautilus = new Nautilus(null, {
       bootstrap(app) {
         didBootstrap = true;

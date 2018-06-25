@@ -1,4 +1,3 @@
-const expect = require('expect');
 const rimraf = require('rimraf');
 
 const Nautilus = require('../index');
@@ -7,7 +6,7 @@ const writeConfig = require('./util/write-config');
 describe('core:config', function() {
 
   describe('framework configuration', function() {
-    before(done => {
+    beforeAll(done => {
       writeConfig(__dirname + '/lib/defaults/custom', {
         should: true,
         foo: 'fee',
@@ -15,7 +14,7 @@ describe('core:config', function() {
     });
 
     let nautilus;
-    before(done => {
+    beforeAll(done => {
       nautilus = new Nautilus();
       done();
     });
@@ -27,13 +26,13 @@ describe('core:config', function() {
   });
 
   describe('standard + environment configuration', function() {
-    before(done => {
+    beforeAll(done => {
       writeConfig('custom', {
         foo: 'bars',
       }, done);
     });
 
-    before(done => {
+    beforeAll(done => {
       process.env.NODE_ENV = 'test';
       writeConfig('config/env/test', {
         custom: {
@@ -43,7 +42,7 @@ describe('core:config', function() {
     });
 
     let nautilus;
-    before(done => {
+    beforeAll(done => {
       nautilus = new Nautilus();
       done();
     });
@@ -53,14 +52,14 @@ describe('core:config', function() {
       expect(nautilus.app.config.custom.hello).toEqual('world');
     });
 
-    after(done => {
+    afterAll(done => {
       delete process.env.NODE_ENV;
       rimraf(__dirname + '/lib', done);
     });
   });
 
   describe('environment configuration: local', function() {
-    before(done => {
+    beforeAll(done => {
       writeConfig('config/env/local', {
         custom: {
           foo: 'bar'
@@ -69,7 +68,7 @@ describe('core:config', function() {
     });
 
     let nautilus;
-    before(done => {
+    beforeAll(done => {
       nautilus = new Nautilus();
       done();
     });
@@ -81,7 +80,7 @@ describe('core:config', function() {
 
   describe('runtime configuration', function() {
     let nautilus;
-    before(done => {
+    beforeAll(done => {
       nautilus = new Nautilus(null, {
         custom: {
           foo: 'allbar',
@@ -95,6 +94,6 @@ describe('core:config', function() {
     });
   });
 
-  after(done => rimraf('config', done));
+  afterAll(done => rimraf('config', done));
 
 });

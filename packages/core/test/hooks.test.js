@@ -1,4 +1,3 @@
-const expect = require('expect');
 const rimraf = require('rimraf');
 
 const Nautilus = require('../index');
@@ -10,7 +9,7 @@ describe('core:hooks', function() {
 
   let hookLoaded = false;
 
-  before(done => {
+  beforeAll(done => {
     makeHook(__dirname + '/lib/hooks/custom', `
       return {
         called: false,
@@ -19,25 +18,25 @@ describe('core:hooks', function() {
     `, done);
   });
 
-  before(done => {
+  beforeAll(done => {
     makeHook(__dirname + '/lib/hooks/badHook', `
       throw new Error('I am a bad hook!');
     `, done);
   });
 
-  before(done => {
+  beforeAll(done => {
     makeHook(__dirname + '/lib/hooks/service/index', `
       app.custom.foo();
     `, done);
   });
 
-  before(done => {
+  beforeAll(done => {
     makeHook(__dirname + '/lib/hooks/service/private', `
       throw new Error('I am private, do not use me!');
     `, done);
   });
 
-  before(done => {
+  beforeAll(done => {
     makeHook(__dirname + '/lib/hooks/xylophone', `
       return {
         play: () => true,
@@ -53,11 +52,11 @@ describe('core:hooks', function() {
     nautilus.app.config.badHook = false;
     nautilus.app.hooks.after('core:custom', () => hookLoaded = true);
     nautilus.app.hooks.load('core');
-    expect(nautilus.app.hooks.loaded).toInclude('core:custom');
+    expect(nautilus.app.hooks.loaded).toContain('core:custom');
   });
 
   it('builds on the app object for hooks that return an object', () => {
-    expect(nautilus.app.custom.foo).toExist();
+    expect(nautilus.app.custom.foo).toBeDefined();
     expect(typeof nautilus.app.custom.foo).toEqual('function');
   });
 
@@ -80,10 +79,10 @@ describe('core:hooks', function() {
   });
 
   it('cleans up empty hooks', () => {
-    expect(nautilus.app.service).toNotExist();
+    expect(nautilus.app.service).not.toBeDefined();
   });
 
-  before(done => {
+  beforeAll(done => {
     makeHook('test/hooks/more', `
       return {
         foo: () => 'bar',
@@ -93,10 +92,10 @@ describe('core:hooks', function() {
 
   it('allows loading hooks at any location', () => {
     nautilus.app.hooks.load('custom', 'test/hooks');
-    expect(nautilus.app.more.foo).toExist();
+    expect(nautilus.app.more.foo).toBeDefined();
   });
 
-  after(done => rimraf('test/lib', done));
-  after(done => rimraf('test/hooks', done));
+  afterAll(done => rimraf('test/lib', done));
+  afterAll(done => rimraf('test/hooks', done));
 
 });
