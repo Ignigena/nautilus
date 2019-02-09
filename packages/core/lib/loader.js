@@ -1,37 +1,37 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
-const klaw = require('klaw-sync');
+const klaw = require('klaw-sync')
 
 class NautilusLoader {
-  constructor(dirname, ext = '.js') {
-    this.dir = dirname;
-    this.ext = ext;
-    this.filter = new RegExp(`${ext}$`);
-    this.loaded = {};
-    return this;
+  constructor (dirname, ext = '.js') {
+    this.dir = dirname
+    this.ext = ext
+    this.filter = new RegExp(`${ext}$`)
+    this.loaded = {}
+    return this
   }
 
-  all() {
-    return this.matching();
+  all () {
+    return this.matching()
   }
 
-  matching(filter) {
-    if (!fs.existsSync(this.dir)) return {};
+  matching (filter) {
+    if (!fs.existsSync(this.dir)) return {}
     this.load(filter || this.filter).map(item => {
-      let hook = path.basename(item.path, this.ext);
-      this.loaded[hook] = require(item.path);
-    });
-    return this.loaded;
+      let hook = path.basename(item.path, this.ext)
+      this.loaded[hook] = require(item.path)
+    })
+    return this.loaded
   }
 
-  load(filter) {
+  load (filter) {
     return klaw(this.dir, {
       nodir: true,
       traverseAll: true,
-      filter: item => filter.test(item.path.replace(this.dir, '')),
-    });
+      filter: item => filter.test(item.path.replace(this.dir, ''))
+    })
   }
 };
 
-module.exports = NautilusLoader;
+module.exports = NautilusLoader

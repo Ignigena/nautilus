@@ -1,20 +1,19 @@
-const Nautilus = require('../index');
+const Nautilus = require('../index')
 
-describe('core', function() {
+describe('core', function () {
+  let didBootstrap = false
 
-  let didBootstrap = false;
-
-  let nautilus;
+  let nautilus
   beforeAll(() => {
     nautilus = new Nautilus(null, {
-      bootstrap(app) {
-        didBootstrap = true;
+      bootstrap (app) {
+        didBootstrap = true
       }
-    });
-  });
+    })
+  })
 
   it('allows custom functionality to be run upon creation', () => {
-    expect(didBootstrap).toEqual(true);
-  });
-
-});
+    expect(nautilus.app).toBeDefined()
+    expect(didBootstrap).toEqual(true)
+  })
+})
