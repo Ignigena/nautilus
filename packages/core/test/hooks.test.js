@@ -1,7 +1,11 @@
 const rimraf = require('rimraf');
 
 const Nautilus = require('../index');
-let nautilus = new Nautilus();
+let nautilus = new Nautilus({}, {
+  log: {
+    level: 'warning',
+  }
+});
 
 const makeHook = require('./util/make-hook');
 

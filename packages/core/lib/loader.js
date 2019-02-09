@@ -28,6 +28,7 @@ class NautilusLoader {
   load(filter) {
     return klaw(this.dir, {
       nodir: true,
+      traverseAll: true,
       filter: item => filter.test(item.path.replace(this.dir, '')),
     });
   }
