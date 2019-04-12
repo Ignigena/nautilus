@@ -35,7 +35,7 @@ describe('core:hooks', function () {
   })
 
   beforeAll(done => {
-    makeHook(path.join(__dirname, '/lib/hooks/service/private'), `
+    makeHook(path.join(__dirname, 'lib/hooks/service/private'), `
       throw new Error('I am private, do not use me!');
     `, done)
   })
@@ -91,7 +91,7 @@ describe('core:hooks', function () {
   })
 
   beforeAll(done => {
-    makeHook('test/hooks/more', `
+    makeHook(path.join(__dirname, 'hooks/more'), `
       return {
         foo: () => 'bar',
       }

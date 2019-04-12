@@ -7,7 +7,7 @@ const writeConfig = require('./util/write-config')
 describe('core:config', function () {
   describe('framework configuration', function () {
     beforeAll(done => {
-      writeConfig(path.join(__dirname, 'lib/defaults/custom'), {
+      writeConfig('test/lib/defaults/custom', {
         should: true,
         foo: 'fee'
       }, done)
@@ -27,7 +27,7 @@ describe('core:config', function () {
 
   describe('standard + environment configuration', function () {
     beforeAll(done => {
-      writeConfig('custom', {
+      writeConfig('config/custom', {
         foo: 'bars'
       }, done)
     })
@@ -94,5 +94,5 @@ describe('core:config', function () {
     })
   })
 
-  afterAll(done => rimraf('config', done))
+  afterAll(done => rimraf(path.join(__dirname, '..', 'config'), done))
 })

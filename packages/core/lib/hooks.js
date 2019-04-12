@@ -32,8 +32,8 @@ module.exports = function NautilusCoreHooks (app) {
     app.profile(`${type} ${location}`)
     app.log.verbose(`Initializing ${type} ${location}...`)
     const dirname = {
-      core: `${app.frameworkPath}/lib/${location}`,
-      custom: `${app.appPath}/${location}`,
+      core: path.join(app.frameworkPath, `lib/${location}`),
+      custom: path.join(app.appPath, location),
       user: location
     }[type]
     if (!fs.existsSync(dirname)) return
@@ -43,7 +43,7 @@ module.exports = function NautilusCoreHooks (app) {
     // If a folder only contains a single matching file, the folder name is
     // used as the key and flattened. This prevents `hooks/myHook/index.js` from
     // being loaded as `myHook.index`.
-    app.hooks[type] = new app.Loader(dirname).load(/^\/([^/]+|.+index)\.js$/).map(item => {
+    app.hooks[type] = new app.Loader(dirname).load(/^[\\/]([^\\/]+|.+index)\.js$/).map(item => {
       let hook = path.basename(item.path, '.js')
       if (hook === 'index') hook = item.path.split(path.sep).slice(-2)[0]
 

@@ -1,6 +1,8 @@
 // Configuration
 // =============
 const fs = require('fs')
+const path = require('path')
+
 const merge = require('deepmerge')
 
 module.exports = function NautilusCoreConfig (app) {
@@ -10,9 +12,10 @@ module.exports = function NautilusCoreConfig (app) {
   // Default configuration can be provided by the framework to allow for less
   // initial config and sane defaults. It is the lowest level of configuration
   // and will be overwritten by any user-supplied configuration.
-  let defaultConfig = new app.Loader(`${app.frameworkPath}/lib/defaults`).all()
+  let defaultConfig = new app.Loader(path.join(app.frameworkPath, 'lib/defaults')).all()
 
-  if (!fs.existsSync(`${app.appPath}/config`)) {
+  const configPath = path.join(app.appPath, 'config')
+  if (!fs.existsSync(configPath)) {
     app.config = merge(defaultConfig, app.runtimeConfig)
     return
   }
@@ -30,7 +33,7 @@ module.exports = function NautilusCoreConfig (app) {
   let envConfig = {}
   let localConfig = {}
 
-  app.config = new app.Loader(`${app.appPath}/config`).matching(/^(?!.*\/env\/.*).*\.js$/)
+  app.config = new app.Loader(configPath).matching(/^(?!.*\/env\/.*).*\.js$/)
 
   // Environment
   // -----------
@@ -39,7 +42,7 @@ module.exports = function NautilusCoreConfig (app) {
   // any global settings but can itself still be overridden by `local.js`.
   try {
     let env = process.env.NODE_ENV || 'development'
-    envConfig = require(`${app.appPath}/config/env/${env}.js`)
+    envConfig = require(path.join(configPath, `env/${env}.js`))
     app.config = merge(app.config, envConfig)
   } catch (e) {}
 
@@ -49,7 +52,7 @@ module.exports = function NautilusCoreConfig (app) {
   // can be used for local development but should be ignored from GIT. Anything
   // provided in this file will override all existing settings.
   try {
-    localConfig = require(`${app.appPath}/config/env/local.js`)
+    localConfig = require(path.join(configPath, `env/local.js`))
     app.config = merge(app.config, localConfig)
   } catch (e) {}
 

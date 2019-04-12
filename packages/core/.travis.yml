@@ -6,6 +6,9 @@ node_js:
 - '9'
 - '10'
 - '11'
+os:
+  - linux
+  - windows
 cache:
   directories:
   - node_modules
