@@ -1,3 +1,4 @@
+const path = require('path');
 const fs = require('fs-extra');
 
 const writeConfig = require('../util/writeConfig');
@@ -30,6 +31,6 @@ describe('hooks:views', function() {
     expect(nautilus.app.config.views.engine.ext).toEqual('jts');
   });
 
-  afterAll(() => fs.remove('./config'));
+  afterAll(() => fs.remove(path.resolve(__dirname, '../../config')));
 
 });

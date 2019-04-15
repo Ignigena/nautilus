@@ -1,3 +1,4 @@
+const path = require('path');
 const fs = require('fs-extra');
 
 const writeConfig = require('../util/writeConfig');
@@ -47,6 +48,6 @@ describe('hooks:config', function() {
     });
   });
 
-  afterAll(() => fs.remove('./config'));
+  afterAll(() => fs.remove(path.resolve(__dirname, '../../config')));
 
 });

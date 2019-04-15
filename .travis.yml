@@ -1,19 +1,15 @@
 language: node_js
 sudo: false
 node_js:
-- '8'
-- '9'
-- '10'
-cache:
-  directories:
-  - node_modules
-env:
-- CXX=g++-4.8
+  - '8'
+  - '9'
+  - '10'
+  - '11'
+os:
+  - linux
+  - windows
+cache: npm
 services:
-- mongodb
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-4.8
+  - mongodb
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install mongodb; fi
