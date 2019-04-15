@@ -9,7 +9,7 @@ describe('hooks:blueprint', function() {
   beforeAll(() => {
     nautilus = new Nautilus({
       connections: {
-        mongo: { url: process.env.DB_MONGO || 'mongodb://127.0.0.1:27017' }
+        mongo: { url: process.env.DB_MONGO || 'mongodb://127.0.0.1:27017/test' }
       },
       models: {
         person: {
