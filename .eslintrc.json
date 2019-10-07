@@ -1,8 +1,6 @@
 {
-  "extends": "google",
-  "parser": "babel-eslint",
-  "rules": {
-    "arrow-parens": [2, "as-needed"],
-    "object-curly-spacing": [2, "always"]
-  }
+  "env": {
+    "node": true
+  },
+  "extends": [ "standard" ]
 }

@@ -1,12 +1,14 @@
-const request = require('supertest');
-const Nautilus = require('../../index');
+const expect = require('expect')
+const { describe, before, after, it } = require('mocha')
+const request = require('supertest')
 
-const ObjectID = require('mongodb').ObjectID;
+const Nautilus = require('../../index')
 
-describe('hooks:blueprint', function() {
+const ObjectID = require('mongodb').ObjectID
 
-  let nautilus;
-  beforeAll(() => {
+describe('hooks:blueprint', function () {
+  let nautilus
+  before(() => {
     nautilus = new Nautilus({
       connections: {
         mongo: { url: process.env.DB_MONGO || 'mongodb://127.0.0.1:27017/test' }
@@ -15,65 +17,63 @@ describe('hooks:blueprint', function() {
         person: {
           schema: {
             email: String,
-            name: String,
-          },
+            name: String
+          }
         }
       },
-      slash: false,
-    });
-  });
+      slash: false
+    })
+  })
 
-  let newUser;
-  beforeAll(done => {
-    nautilus.app.model('person').create({ email: 'test@test.com', name: 'Test' }).then(user => {
-      newUser = user;
-      done();
-    });
+  let newUser
+  before(async () => {
+    newUser = await nautilus.app.model('person').create({ email: 'test@test.com', name: 'Test' })
   })
 
   it('allows a model to be updated using a blueprint', () => {
-    let req = {
+    const req = {
       body: { email: 'edit@test.com' },
-      params: { id: newUser._id },
-    };
+      params: { id: newUser._id }
+    }
     nautilus.app.blueprint.update('person', req).then(user => {
-      expect(user.email).toEqual('edit@test.com');
-      expect(user.name).toEqual(newUser.name);
-      expect(user._id).toEqual(newUser._id);
-    });
-  });
+      expect(user.email).toEqual('edit@test.com')
+      expect(user.name).toEqual(newUser.name)
+      expect(user._id).toEqual(newUser._id)
+    })
+  })
 
   it('allows blueprint updates through HTTP', done => {
     request(nautilus.app).put('/person/' + newUser._id)
       .set('Accept', 'application/json')
       .send({ email: 'changed@test.com' })
       .expect(200, (err, response) => {
-        expect(response.body.data.email).toEqual('changed@test.com');
-        expect(response.body.data._id).toEqual(newUser._id.toString());
-        done(err);
-      });
-  });
+        expect(response.body.data.email).toEqual('changed@test.com')
+        expect(response.body.data._id).toEqual(newUser._id.toString())
+        done(err)
+      })
+  })
 
   it('prohibits updating the internal ID field', () => {
-    let req = {
+    const req = {
       body: { _id: '1234' },
-      params: { id: newUser._id },
-    };
+      params: { id: newUser._id }
+    }
     nautilus.app.blueprint.update('person', req).then(user => {
-      expect(user._id).toEqual(newUser._id);
-    });
-  });
+      expect(user._id).toEqual(newUser._id)
+    })
+  })
 
   it('prohibits findOne requests with an invalid mongoid', done => {
-    request(nautilus.app).get('/person/123').expect(400, done);
-  });
+    request(nautilus.app).get('/person/123').expect(400, done)
+  })
 
   it('allows findOne requests with an valid mongoid', done => {
-    request(nautilus.app).get(`/person/${newUser._id}`).expect(200, done);
-  });
+    request(nautilus.app).get(`/person/${newUser._id}`).expect(200, done)
+  })
 
   it('returns a 404 when an entity is not found', done => {
-    request(nautilus.app).get(`/person/${new ObjectID()}`).expect(404, done);
-  });
+    request(nautilus.app).get(`/person/${new ObjectID()}`).expect(404, done)
+  })
 
-});
+  after(done => nautilus.stop(done))
+})

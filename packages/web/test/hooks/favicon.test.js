@@ -1,13 +1,13 @@
-const request = require('supertest');
-const Nautilus = require('../../index');
+const { describe, before, it } = require('mocha')
+const request = require('supertest')
 
-describe('hooks:favicon', function() {
+const Nautilus = require('../../index')
 
-  let nautilus;
-  beforeAll(() => {
-    nautilus = new Nautilus();
-  });
+describe('hooks:favicon', function () {
+  let nautilus
+  before(() => {
+    nautilus = new Nautilus()
+  })
 
-  it('loads a default favicon', () => request(nautilus.app).get('/favicon.ico').expect(200));
-
-});
+  it('loads a default favicon', () => request(nautilus.app).get('/favicon.ico').expect(200))
+})

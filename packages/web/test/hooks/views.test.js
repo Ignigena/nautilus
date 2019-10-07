@@ -1,13 +1,15 @@
-const path = require('path');
-const fs = require('fs-extra');
+const path = require('path')
+const fs = require('fs-extra')
 
-const writeConfig = require('../util/writeConfig');
+const expect = require('expect')
+const { describe, before, after, it } = require('mocha')
 
-const Nautilus = require('../../index');
+const writeConfig = require('../util/writeConfig')
 
-describe('hooks:views', function() {
+const Nautilus = require('../../index')
 
-  beforeAll(() => writeConfig('views', `
+describe('hooks:views', function () {
+  before(() => writeConfig('views', `
     var JTS = require('jts');
     var engine = new JTS({
       defaultLayout: 'layout',
@@ -20,17 +22,16 @@ describe('hooks:views', function() {
         fn: engine.render,
       },
     };
-  `));
+  `))
 
-  let nautilus;
-  beforeAll(() => {
-    nautilus = new Nautilus({ appPath: path.resolve(__dirname, '../../') });
-  });
+  let nautilus
+  before(() => {
+    nautilus = new Nautilus({ appPath: path.resolve(__dirname, '../../') })
+  })
 
   it('uses the configured view engine', () => {
-    expect(nautilus.app.config.views.engine.ext).toEqual('jts');
-  });
+    expect(nautilus.app.config.views.engine.ext).toEqual('jts')
+  })
 
-  afterAll(() => fs.remove(path.resolve(__dirname, '../../config')));
-
-});
+  after(() => fs.remove(path.resolve(__dirname, '../../config')))
+})

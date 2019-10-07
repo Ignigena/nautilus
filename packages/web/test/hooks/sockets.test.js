@@ -1,12 +1,12 @@
-const request = require('supertest');
-const Nautilus = require('../../index');
+const expect = require('expect')
+const { describe, it } = require('mocha')
 
-describe('hooks:sockets', function() {
+const Nautilus = require('../../index')
 
-  let nautilus = new Nautilus();
+describe('hooks:sockets', function () {
+  const nautilus = new Nautilus()
 
   it('initializes a socket using the default server', () => {
-    expect(nautilus.server).toEqual(nautilus.app.io.httpServer);
-  });
-
-});
+    expect(nautilus.server).toEqual(nautilus.app.io.httpServer)
+  })
+})

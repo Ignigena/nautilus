@@ -1,38 +1,37 @@
-const Nautilus = require('../../index');
+const expect = require('expect')
+const { describe, before, it } = require('mocha')
 
-describe('core:hooks', function() {
+const Nautilus = require('../../')
 
-  let faviconLoaded = false;
-  let viewsLoaded = false;
+describe('core:hooks', function () {
+  let faviconLoaded = false
+  let viewsLoaded = false
 
-  let nautilus;
-  beforeAll(() => {
+  let nautilus
+  before(() => {
     nautilus = new Nautilus({
-      bootstrap(app) {
+      bootstrap (app) {
         app.events.once('hooks:loaded:core:favicon', () => {
-          faviconLoaded = true;
-        });
+          faviconLoaded = true
+        })
         app.hooks.after('core:views', () => {
-          viewsLoaded = true;
-        });
+          viewsLoaded = true
+        })
       }
-    });
-  });
-
-  it('respects the defined order of hooks', () => {
-    expect(nautilus.app.hooks.core.shift()).toEqual('security');
-  });
-
-  it('emits an event as each hook is loaded', () => {
-    expect(faviconLoaded).toEqual(true);
-    expect(viewsLoaded).toEqual(true);
-  });
-
-  it('cleans up empty hooks', () => {
-    expect(nautilus.app.blueprint).toBeDefined();
-    expect(nautilus.app.views).toBeUndefined();
+    })
   })
 
-  afterAll(done => nautilus.stop(done));
+  it('respects the defined order of hooks', () => {
+    expect(nautilus.app.hooks.core.shift()).toEqual('security')
+  })
 
-});
+  it('emits an event as each hook is loaded', () => {
+    expect(faviconLoaded).toEqual(true)
+    expect(viewsLoaded).toEqual(true)
+  })
+
+  it('cleans up empty hooks', () => {
+    expect(nautilus.app.blueprint).toBeDefined()
+    expect(nautilus.app.views).toBeUndefined()
+  })
+})
