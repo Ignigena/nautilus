@@ -1,10 +1,8 @@
 module.exports = {
   collectCoverage: true,
   coverageDirectory: 'coverage',
-  collectCoverageFrom: [
-    'lib/**/*.js',
-    '!lib/defaults/*.js',
-    'index.js',
+  coveragePathIgnorePatterns: [
+    'packages/(.*)/(config|test)',
   ],
   testEnvironment: 'node',
 };

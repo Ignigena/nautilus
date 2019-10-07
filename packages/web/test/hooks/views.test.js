@@ -24,7 +24,7 @@ describe('hooks:views', function() {
 
   let nautilus;
   beforeAll(() => {
-    nautilus = new Nautilus();
+    nautilus = new Nautilus({ appPath: path.resolve(__dirname, '../../') });
   });
 
   it('uses the configured view engine', () => {

@@ -1,0 +1,45 @@
+{
+  "name": "@nautilus/web",
+  "version": "0.11.0",
+  "description": "Convention over configuration framework for Express",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest -i --forceExit",
+    "lint": "eslint ."
+  },
+  "files": [
+    "bin",
+    "lib",
+    "index.js"
+  ],
+  "bin": {
+    "nautilus": "./bin/nautilus.js"
+  },
+  "license": "MIT",
+  "repository": "ignigena/nautilus",
+  "dependencies": {
+    "@nautilus/core": "^1.1.0",
+    "body-parser": "^1.18.3",
+    "camelcase": "^5.3.1",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dot-prop": "^5.0.0",
+    "express": "^4.16.4",
+    "get-port": "^5.0.0",
+    "http-status-codes": "^1.3.2",
+    "jts": "^1.2.0",
+    "lodash": "^4.17.11",
+    "lusca": "^1.6.1",
+    "mongo-querystring": "^4.0.2",
+    "mongodb": "^3.2.3",
+    "mongoose": "^5.5.1",
+    "mri": "^1.1.4",
+    "path-to-regexp": "^3.0.0",
+    "serve-favicon": "^2.5.0",
+    "socket.io": "^2.2.0",
+    "validator": "^11.1.0"
+  },
+  "engines": {
+    "node": ">= 8.x"
+  }
+}
