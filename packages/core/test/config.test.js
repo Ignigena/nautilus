@@ -1,22 +1,23 @@
+const expect = require('expect')
+const { describe, before, it, after } = require('mocha')
+
 const path = require('path')
 const rimraf = require('rimraf')
 
 const Nautilus = require('../index')
 const writeConfig = require('./util/write-config')
 
+let nautilus
+
 describe('core:config', function () {
   describe('framework configuration', function () {
-    beforeAll(done => {
-      writeConfig('test/lib/defaults/custom', {
-        should: true,
-        foo: 'fee'
-      }, done)
-    })
+    before(() => writeConfig('test/lib/defaults/custom', {
+      should: true,
+      foo: 'fee'
+    }))
 
-    let nautilus
-    beforeAll(done => {
+    before(() => {
       nautilus = new Nautilus()
-      done()
     })
 
     it('allows the framework to declare a set of default configuration', () => {
@@ -26,25 +27,21 @@ describe('core:config', function () {
   })
 
   describe('standard + environment configuration', function () {
-    beforeAll(done => {
-      writeConfig('config/custom', {
-        foo: 'bars'
-      }, done)
-    })
+    before(() => writeConfig('config/custom', {
+      foo: 'bars'
+    }))
 
-    beforeAll(done => {
+    before(() => {
       process.env.NODE_ENV = 'test'
-      writeConfig('config/env/test', {
+      return writeConfig('config/env/test', {
         custom: {
           hello: 'world'
         }
-      }, done)
+      })
     })
 
-    let nautilus
-    beforeAll(done => {
-      nautilus = new Nautilus()
-      done()
+    before(() => {
+      nautilus = new Nautilus({ appPath: path.resolve(__dirname, '../') })
     })
 
     it('merges environment configuration without overwriting', () => {
@@ -52,25 +49,21 @@ describe('core:config', function () {
       expect(nautilus.app.config.custom.hello).toEqual('world')
     })
 
-    afterAll(done => {
+    after(done => {
       delete process.env.NODE_ENV
       rimraf(path.join(__dirname, 'lib'), done)
     })
   })
 
   describe('environment configuration: local', function () {
-    beforeAll(done => {
-      writeConfig('config/env/local', {
-        custom: {
-          foo: 'bar'
-        }
-      }, done)
-    })
+    before(() => writeConfig('config/env/local', {
+      custom: {
+        foo: 'bar'
+      }
+    }))
 
-    let nautilus
-    beforeAll(done => {
-      nautilus = new Nautilus()
-      done()
+    before(() => {
+      nautilus = new Nautilus({ appPath: path.resolve(__dirname, '../') })
     })
 
     it('local configuration overrides all other environment levels', () => {
@@ -79,9 +72,8 @@ describe('core:config', function () {
   })
 
   describe('runtime configuration', function () {
-    let nautilus
-    beforeAll(done => {
-      nautilus = new Nautilus(null, {
+    before(done => {
+      nautilus = new Nautilus({ appPath: path.resolve(__dirname, '../') }, {
         custom: {
           foo: 'allbar'
         }
@@ -94,5 +86,5 @@ describe('core:config', function () {
     })
   })
 
-  afterAll(done => rimraf(path.join(__dirname, '..', 'config'), done))
+  after(done => rimraf(path.join(__dirname, '..', 'config'), done))
 })

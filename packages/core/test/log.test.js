@@ -1,9 +1,13 @@
+const expect = require('expect')
+const { describe, before, it } = require('mocha')
+const { fake } = require('sinon')
+
 const Nautilus = require('../index')
-let nautilus = new Nautilus()
+const nautilus = new Nautilus()
 
 describe('core:log', function () {
-  beforeAll(() => {
-    nautilus.app.log.profile = jest.fn().mockReturnValue()
+  before(() => {
+    nautilus.app.log.profile = fake()
   })
 
   it('exposes winston at app.log namespace', () => {
@@ -14,13 +18,13 @@ describe('core:log', function () {
   it('adds a shortcut to profile code in development', () => {
     expect(nautilus.app.profile).toBeDefined()
     nautilus.app.profile('test')
-    expect(nautilus.app.log.profile.mock.calls.length).toEqual(1)
+    expect(nautilus.app.log.profile.callCount).toEqual(1)
   })
 
   it('disables profiling in production', () => {
     process.env.NODE_ENV = 'production'
     nautilus.app.profile('test')
-    expect(nautilus.app.log.profile.mock.calls.length).toEqual(1)
+    expect(nautilus.app.log.profile.callCount).toEqual(1)
     delete process.env.NODE_ENV
   })
 })

@@ -1,10 +1,13 @@
+const expect = require('expect')
+const { describe, before, it } = require('mocha')
+
 const Nautilus = require('../index')
 
 describe('core', function () {
   let didBootstrap = false
 
   let nautilus
-  beforeAll(() => {
+  before(() => {
     nautilus = new Nautilus(null, {
       bootstrap (app) {
         didBootstrap = true
