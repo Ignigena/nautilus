@@ -1,0 +1,23 @@
+{
+  "name": "@nautilus/micro",
+  "version": "0.1.0",
+  "description": "Convention over configuration framework for Micro",
+  "main": "index.js",
+  "bin": {
+    "nautilus": "./bin/nautilus.js"
+  },
+  "license": "MIT",
+  "repository": "ignigena/nautilus",
+  "engines": {
+    "node": ">= 10.x"
+  },
+  "peerDependencies": {
+    "micro": "9.x"
+  },
+  "dependencies": {
+    "camelcase": "^5.3.1"
+  },
+  "devDependencies": {
+    "micro": "^9.3.4"
+  }
+}
