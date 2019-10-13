@@ -7,14 +7,14 @@
  */
 module.exports = (app, model) => (req, res) => {
   if (app.api.controller[model] && app.api.controller[model].create) {
-    return app.api.controller[model].create(req, res);
+    return app.api.controller[model].create(req, res)
   }
 
   if (Object.keys(req.body).length < 1) {
-    return res.badRequest('record required');
+    return res.badRequest('record required')
   }
 
   app.model(model).create(req.body)
     .then(record => res.created(record))
-    .catch(err => res.serverError(err));
-};
+    .catch(err => res.serverError(err))
+}

@@ -1,13 +1,13 @@
-const _ = require('lodash');
-const crypto = require('crypto');
+const _ = require('lodash')
+const crypto = require('crypto')
 
-module.exports = function generateSecret() {
+module.exports = function generateSecret () {
   const factors = _.shuffle([
     new Date().getTime() * Math.random(),
     Math.random() * 1000,
     process.version,
-    process.env.pid,
-  ]);
+    process.env.pid
+  ])
 
-  return crypto.createHash('md5').update(factors.join()).digest('hex');
-};
+  return crypto.createHash('md5').update(factors.join()).digest('hex')
+}

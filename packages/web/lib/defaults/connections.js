@@ -3,7 +3,7 @@ module.exports = {
     options: {
       connectTimeoutMS: 30000,
       keepAlive: 300000,
-      useNewUrlParser: true,
-    },
-  },
-};
+      useNewUrlParser: true
+    }
+  }
+}

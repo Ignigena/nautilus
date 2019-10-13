@@ -7,14 +7,14 @@
  */
 module.exports = (app, model) => (req, res) => {
   if (app.api.controller[model] && app.api.controller[model].delete) {
-    return app.api.controller[model].delete(req, res);
+    return app.api.controller[model].delete(req, res)
   }
 
   app.model(model).findByIdAndRemove(req.params.id).then(result => {
     // https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.7
-    res.noContent();
+    res.noContent()
   }).catch(err => {
-    app.log.error(err);
-    res.serverError(err);
-  });
-};
+    app.log.error(err)
+    res.serverError(err)
+  })
+}

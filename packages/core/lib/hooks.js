@@ -47,7 +47,7 @@ module.exports = function NautilusCoreHooks (app) {
       let hook = path.basename(item.path, '.js')
       if (hook === 'index') hook = item.path.split(path.sep).slice(-2)[0]
 
-      let disabled = (app.config[hook] === false || app.config.hooks[hook] === false)
+      const disabled = (app.config[hook] === false || app.config.hooks[hook] === false)
 
       return {
         hook,
@@ -62,12 +62,12 @@ module.exports = function NautilusCoreHooks (app) {
       app.log.verbose(`  ├ ${item.hook}`)
 
       app[item.hook] = app[item.hook] || {}
-      let hookReturn = item.fn(app, arg)
+      const hookReturn = item.fn(app, arg)
 
       // Each hook, both core and custom, will emit an event when it has loaded.
       // For advaned fine-grained control, a hook can wait for any other hook
       // to fire it's `hooks:loaded` event before initializing.
-      let locationKey = (location !== 'hooks') ? `:${location}` : ''
+      const locationKey = (location !== 'hooks') ? `:${location}` : ''
       const hookAddress = `${type}${locationKey}:${item.hook}`
       app.hooks.loaded.push(hookAddress)
 

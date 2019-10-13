@@ -1,6 +1,6 @@
-const validator = require('validator');
+const validator = require('validator')
 
-module.exports = function NautilusHookRequest(app) {
+module.exports = function NautilusHookRequest (app) {
   /**
    * Validate an incoming request before continuing. This comes built in to all
    * controller and routes created through Nautilus and can be configured using
@@ -13,16 +13,16 @@ module.exports = function NautilusHookRequest(app) {
    * value may contain any number of validation rules that must pass.
    * @return {Object} - Validation result (pass/fail on `isValid` property)
    */
-  app.request.validate = function(rules) {
-    let result = { isValid: true };
+  app.request.validate = function (rules) {
+    let result = { isValid: true }
     Object.keys(rules).map(param => {
-      if (!this.params[param]) return;
-      if (!Array.isArray(rules[param])) rules[param] = [rules[param]];
+      if (!this.params[param]) return
+      if (!Array.isArray(rules[param])) rules[param] = [rules[param]]
       rules[param].map(validate => {
-        let isValid = validator[validate](this.params[param]);
-        if (!isValid) result = { isValid: false, param, validate };
-      });
-    });
-    return result;
-  };
-};
+        const isValid = validator[validate](this.params[param])
+        if (!isValid) result = { isValid: false, param, validate }
+      })
+    })
+    return result
+  }
+}

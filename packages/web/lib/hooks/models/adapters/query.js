@@ -1,3 +1,3 @@
-module.exports = schema => function(method, name) {
-  schema.query[name] = method;
-};
+module.exports = schema => function (method, name) {
+  schema.query[name] = method
+}

@@ -1,8 +1,8 @@
-const generateSecret = require('../util/generateSecret');
+const generateSecret = require('../util/generateSecret')
 
 module.exports = {
   secret: generateSecret(),
   name: 'nautilus.sid',
   resave: false,
-  saveUninitialized: false,
-};
+  saveUninitialized: false
+}

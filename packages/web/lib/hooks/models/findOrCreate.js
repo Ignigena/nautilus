@@ -1,4 +1,4 @@
-module.exports = function findOrCreatePlugin(schema, options) {
+module.exports = function findOrCreatePlugin (schema, options) {
   /**
   * Simple findOrCreate plugin for Mongoose.
   * This can produce unexpected side-effects on a production application which
@@ -14,14 +14,14 @@ module.exports = function findOrCreatePlugin(schema, options) {
   * @param {Object} doc - The fields to use when creating the document.
   * @return {Object}
   */
-  schema.statics.findOrCreate = async function findOrCreate(criteria, doc) {
-    let result = await this.findOne(criteria);
-    if (result) return result;
+  schema.statics.findOrCreate = async function findOrCreate (criteria, doc) {
+    const result = await this.findOne(criteria)
+    if (result) return result
 
     try {
-      let record = new this({ ...criteria, ...doc });
-      await record.save();
-      return record;
+      const record = new this({ ...criteria, ...doc })
+      await record.save()
+      return record
     } catch (err) {
       // Basic error prevention for concurrency when `unique` index is present.
       // It's possible in certain situations that a matching document gets
@@ -30,10 +30,10 @@ module.exports = function findOrCreatePlugin(schema, options) {
       // criteria and return this if found. Otherwise we pass along the error
       // for the host application to handle.
       if (err && err.code === 11000) {
-        let result = await this.findOne(criteria);
-        if (result) return result;
+        const result = await this.findOne(criteria)
+        if (result) return result
       }
-      throw err;
+      throw err
     }
-  };
-};
+  }
+}

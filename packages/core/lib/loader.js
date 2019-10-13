@@ -19,7 +19,7 @@ class NautilusLoader {
   matching (filter) {
     if (!fs.existsSync(this.dir)) return {}
     this.load(filter || this.filter).map(item => {
-      let hook = path.basename(item.path, this.ext)
+      const hook = path.basename(item.path, this.ext)
       this.loaded[hook] = require(item.path)
     })
     return this.loaded

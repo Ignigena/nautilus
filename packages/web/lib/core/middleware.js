@@ -1,12 +1,12 @@
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser')
 
-module.exports = function NautilusWebMiddleware(app) {
+module.exports = function NautilusWebMiddleware (app) {
   // Core Middleware
   // --
-  app.use(require('../middleware/headers'));
-  app.use(require('../middleware/slash')(app));
+  app.use(require('../middleware/headers'))
+  app.use(require('../middleware/slash')(app))
 
-  app.use(bodyParser.json());
+  app.use(bodyParser.json())
 
   // Custom Middleware
   // --
@@ -17,12 +17,12 @@ module.exports = function NautilusWebMiddleware(app) {
   // automatically when it's loaded.
   app.events.on('hooks:loaded:middleware', (hook, hookReturn) => {
     if (typeof hookReturn === 'function') {
-      app.use(hookReturn);
+      app.use(hookReturn)
     }
-  });
+  })
 
   app.events.once('ready', () =>
-    app.events.removeAllListeners('hooks:loaded:middleware'));
+    app.events.removeAllListeners('hooks:loaded:middleware'))
 
-  app.hooks.load('custom', 'middleware', this.server);
-};
+  app.hooks.load('custom', 'middleware', this.server)
+}

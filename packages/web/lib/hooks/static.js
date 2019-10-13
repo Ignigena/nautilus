@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require('express')
 
-module.exports = function staticHook(app) {
-  const servePath = require('../util/getStaticPath')(app);
-  app.use(express.static(servePath, app.config.static));
-};
+module.exports = function staticHook (app) {
+  const servePath = require('../util/getStaticPath')(app)
+  app.use(express.static(servePath, app.config.static))
+}
