@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+const findOrCreate = require('./findOrCreate')
+
 module.exports = function NautilusCoreConnect (app) {
   mongoose.connection.once('connected', () => {
     app.log.verbose('Mongo connection opened')
@@ -26,6 +28,8 @@ module.exports = function NautilusCoreConnect (app) {
     app.log.error(err)
     process.exit(1)
   })
+
+  mongoose.plugin(findOrCreate)
 
   app.mongo = mongoose
 

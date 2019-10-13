@@ -32,6 +32,7 @@
     "mongo-querystring": "^4.0.2",
     "mongodb": "^3.2.3",
     "mongoose": "^5.5.1",
+    "mongoose-shorthand": "^1.0.0",
     "mri": "^1.1.4",
     "path-to-regexp": "^3.0.0",
     "serve-favicon": "^2.5.0",
