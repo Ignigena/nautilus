@@ -3,19 +3,18 @@
 // Nautilus is built on top of Express and all responses which are provided by
 // Express are supported out of the box. This hook adds some convenience methods
 // by which the more common responses can be streamlined.
+const { STATUS_CODES } = require('http')
 const fs = require('fs')
 const path = require('path')
 
-const _ = require('lodash')
 const camelCase = require('camelcase')
-const httpStatusCodes = require('http-status-codes')
 
-const responseCodes = _.reduce(httpStatusCodes, (result, code) => {
-  if (typeof code !== 'number') return result
-  result[code] = httpStatusCodes.getStatusText(code)
-  result[code] = result[code].toLowerCase().replace('_', '-')
-  return result
-}, {})
+const responseCodes = [
+  ...Object.entries(STATUS_CODES),
+  [301, 'Moved Permanently'],
+  [420, 'Slow Your Roll'],
+  [500, 'Server Error']
+]
 
 module.exports = function responsesHook (app) {
   // This object is populated once the Views hook loads.
@@ -34,13 +33,14 @@ module.exports = function responsesHook (app) {
   // corresponding view for error responses. These can be placed in your views
   // directory in a `responses/` subdirectory.
   app.hooks.after('core:views', () => {
-    _.each(responseCodes, (statusText, status) => {
+    for (let i = 0; i < responseCodes.length; i++) {
+      const [status, statusText] = responseCodes[i]
       const path = this.responsePath(statusText)
       fs.access(path, fs.R_OK, err => {
         if (err) return
         viewPaths[status] = path
       })
-    })
+    }
   })
 
   // All status codes are made available as response helpers. For a full list of
@@ -49,7 +49,8 @@ module.exports = function responsesHook (app) {
   // `200 - OK` response from your API you can simply write
   // `res.ok('hello world')`. Or you can send a `404 - Not Found` with
   // `res.notFound('these are not the droids')`.
-  _.each(responseCodes, (statusText, status) => {
+  for (let i = 0; i < responseCodes.length; i++) {
+    const [status, statusText] = responseCodes[i]
     const short = camelCase(statusText)
     app.response[short] = function (body) {
       this.status(status)
@@ -57,7 +58,7 @@ module.exports = function responsesHook (app) {
       if (viewPaths[status]) return this.negotiate(viewPaths[status], body)
       this.negotiate(body)
     }
-  })
+  }
 
   // res.negotiate()
   // --
