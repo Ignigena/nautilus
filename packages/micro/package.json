@@ -15,7 +15,9 @@
     "micro": "9.x"
   },
   "dependencies": {
-    "camelcase": "^5.3.1"
+    "camelcase": "^5.3.1",
+    "mongoose": "^5.7.5",
+    "mongoose-shorthand": "^1.0.0"
   },
   "devDependencies": {
     "micro": "^9.3.4"
