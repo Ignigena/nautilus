@@ -1,7 +1,8 @@
 {
   "exclude": [
+    "examples/",
     "packages/**/config",
     "packages/**/test"
   ],
-  "reporter": ["html", "text"]
+  "reporter": ["html", "lcov", "text"]
 }
