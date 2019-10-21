@@ -2,6 +2,8 @@ const camelcase = require('camelcase')
 const mongoose = require('mongoose')
 const schema = require('mongoose-shorthand')
 
+mongoose.Promise = global.Promise
+
 let connection
 async function connect ({ uri, options }) {
   if (connection) return connection
