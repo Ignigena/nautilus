@@ -1,5 +1,4 @@
 const expect = require('expect')
-const { describe, it } = require('mocha')
 const { fake, stub } = require('sinon')
 const request = require('supertest')
 

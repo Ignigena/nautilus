@@ -1,4 +1,3 @@
-const { describe, before, it } = require('mocha')
 const request = require('supertest')
 
 const Nautilus = require('../../index')

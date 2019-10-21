@@ -1,5 +1,4 @@
 const expect = require('expect')
-const { describe, before, it, after } = require('mocha')
 
 const path = require('path')
 const rimraf = require('rimraf')

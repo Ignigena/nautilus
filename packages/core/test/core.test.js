@@ -1,5 +1,4 @@
 const expect = require('expect')
-const { describe, before, it } = require('mocha')
 
 const Nautilus = require('../index')
 

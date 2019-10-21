@@ -2,7 +2,6 @@ const path = require('path')
 const fs = require('fs-extra')
 
 const expect = require('expect')
-const { describe, before, after, it } = require('mocha')
 
 const writeConfig = require('../util/writeConfig')
 
