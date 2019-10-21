@@ -1,4 +1,4 @@
 {
   "ignore": ["packages/**/node_modules/**"],
-  "spec": "packages/**/*.test.js"
+  "spec": ["examples/**/*.test.js", "packages/**/*.test.js"]
 }

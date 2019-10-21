@@ -38,12 +38,11 @@ describe('models', () => {
   })
 
   it('parses all models in configuration', async () => {
-    const models = require('../example/config/models')
     const handler = micro(withModels(send, {
       connections: {
         mongo: { uri: 'mongodb://127.0.0.1:27017/test' }
       },
-      models
+      models: require('../../../examples/micro/config/models')
     }))
 
     await request(handler).get('/')
