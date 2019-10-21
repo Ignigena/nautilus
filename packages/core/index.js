@@ -9,6 +9,8 @@ const EventEmitter = require('events')
 const path = require('path')
 const stack = require('callsite')
 
+const makeConfig = require('./lib/config')
+
 class Nautilus {
   /**
    * The core functionality of Nautilus is centered around the application and
@@ -44,7 +46,11 @@ class Nautilus {
     this.app.Loader = require('./lib/loader.js')
 
     // Configuration and logging are initialized first before all others.
-    require('./lib/config')(this.app)
+    this.app.config = makeConfig([
+      path.join(this.app.frameworkPath, 'lib/defaults'),
+      path.join(this.app.appPath, 'config')
+    ], config)
+
     require('./lib/log')(this.app)
     require('./lib/hooks')(this.app)
 
