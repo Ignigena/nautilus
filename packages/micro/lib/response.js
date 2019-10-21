@@ -17,11 +17,11 @@ function sendStatus (res, statusCode, message) {
   send(res, statusCode, message)
 }
 
-module.exports = next => (req, res) => {
+module.exports = next => (req, res, app) => {
   codes.reduce((response, [statusCode, verb]) => {
     response[camelcase(verb)] = data => sendStatus(res, statusCode, data || verb)
     return response
   }, res)
 
-  next(req, res)
+  next(req, res, app)
 }
