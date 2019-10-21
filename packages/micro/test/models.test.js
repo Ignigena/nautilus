@@ -38,6 +38,9 @@ describe('models', () => {
   })
 
   it('parses all models in configuration', async () => {
+    mongoose.models = {}
+    mongoose.modelSchema = {}
+
     const handler = micro(withModels(send, {
       connections: {
         mongo: { uri: 'mongodb://127.0.0.1:27017/test' }

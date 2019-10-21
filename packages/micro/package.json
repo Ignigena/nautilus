@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "description": "Convention over configuration framework for Micro",
   "main": "index.js",
-  "bin": {
-    "nautilus": "./bin/nautilus.js"
-  },
   "license": "MIT",
   "repository": "ignigena/nautilus",
   "engines": {
@@ -15,7 +12,10 @@
     "micro": "9.x"
   },
   "dependencies": {
+    "@nautilus/core": "^1.1.0",
     "camelcase": "^5.3.1",
+    "deepmerge": "^4.1.1",
+    "find-up": "^4.1.0",
     "mongoose": "^5.7.5",
     "mongoose-shorthand": "^1.0.0"
   },
