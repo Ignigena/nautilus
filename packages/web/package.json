@@ -3,10 +3,6 @@
   "version": "0.11.0",
   "description": "Convention over configuration framework for Express",
   "main": "index.js",
-  "scripts": {
-    "test": "jest -i --forceExit",
-    "lint": "eslint ."
-  },
   "files": [
     "bin",
     "lib",
@@ -33,7 +29,6 @@
     "mongoose": "^5.5.1",
     "mongoose-shorthand": "^1.0.0",
     "mri": "^1.1.4",
-    "path-to-regexp": "^3.0.0",
     "serve-favicon": "^2.5.0",
     "socket.io": "^2.2.0",
     "validator": "^12.0.0"
