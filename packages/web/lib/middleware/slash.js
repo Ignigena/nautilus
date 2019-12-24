@@ -6,7 +6,7 @@
 // will enforce a canonical URL whether with or without a slash.
 // https://webmasters.googleblog.com/2010/04/to-slash-or-not-to-slash.html
 const url = require('url')
-const pathMatch = require('path-to-regexp')
+const { match } = require('path-to-regexp')
 
 module.exports = app => function middlewareSlash (req, res, next) {
   // Only enforce trailing slashes for `GET` and `HEAD` requests.
@@ -18,7 +18,7 @@ module.exports = app => function middlewareSlash (req, res, next) {
   // simply add them to the `whitelist` key in ``app.config.slash`.
   if (app.config.slash && app.config.slash.whitelist) {
     const whitelistPass = app.config.slash.whitelist.every(path =>
-      (req.originalUrl.slice(1).match(pathMatch(path)) === null))
+      (req.originalUrl.slice(1).match(match(path)) === null))
 
     if (!whitelistPass) return next()
   }
