@@ -24,6 +24,11 @@ jobs:
           ${{ runner.os }}-node${{ matrix.node }}
     - run: npm ci
     - run: npm test
+    - run: bash <(curl -s https://codecov.io/bash)
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        REF: ${{ github.ref }}
+        SHA: ${{ github.sha }}
 
   lint:
     if: github.event_name != 'pull_request'
