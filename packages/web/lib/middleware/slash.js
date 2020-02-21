@@ -5,7 +5,7 @@
 // slashes can be enabled by configuring `app.config.slash`. Either behaviour
 // will enforce a canonical URL whether with or without a slash.
 // https://webmasters.googleblog.com/2010/04/to-slash-or-not-to-slash.html
-const url = require('url')
+const { URL } = require('url')
 const pathMatch = require('path-to-regexp')
 
 module.exports = app => function middlewareSlash (req, res, next) {
@@ -23,7 +23,7 @@ module.exports = app => function middlewareSlash (req, res, next) {
     if (!whitelistPass) return next()
   }
 
-  const requestUrl = url.parse(req.originalUrl)
+  const requestUrl = new URL(req.originalUrl, 'nautilus://')
 
   // Remove trailing slashes if `app.config.slash` or
   // `app.config.slash.trailing` is set to `false`.

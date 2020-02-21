@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const pathMatch = require('path-to-regexp')
-const url = require('url')
+const { URL } = require('url')
 
 module.exports = NautilusCorePolicies
 
@@ -96,7 +96,7 @@ function whitelistCheck (policy) {
 }
 
 function whitelistPass (originalUrl) {
-  originalUrl = url.parse(originalUrl).pathname
+  originalUrl = new URL(originalUrl, 'nautilus://').pathname
   return middlewareWhitelist.some(path => originalUrl.match(pathMatch(path)))
 }
 
