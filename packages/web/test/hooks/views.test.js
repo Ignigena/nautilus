@@ -1,36 +1,36 @@
-const path = require('path')
-const fs = require('fs-extra')
-
 const expect = require('expect')
 
-const writeConfig = require('../util/writeConfig')
+const writeConfig = require('../../../../test/util/write-config')
 
 const Nautilus = require('../../index')
 
 describe('hooks:views', function () {
-  before(() => writeConfig('views', `
-    var JTS = require('jts');
-    var engine = new JTS({
-      defaultLayout: 'layout',
-      layouts: 'views'
-    });
+  let temp
+  before(async () => {
+    temp = await writeConfig('views', `
+      var JTS = require('jts');
+      var engine = new JTS({
+        defaultLayout: 'layout',
+        layouts: 'views'
+      });
 
-    module.exports = {
-      engine: {
-        ext: 'jts',
-        fn: engine.render,
-      },
-    };
-  `))
+      module.exports = {
+        engine: {
+          ext: 'jts',
+          fn: engine.render,
+        },
+      };
+    `)
+  })
 
   let nautilus
   before(() => {
-    nautilus = new Nautilus({ appPath: path.resolve(__dirname, '../../') })
+    nautilus = new Nautilus({ appPath: __dirname })
   })
 
   it('uses the configured view engine', () => {
     expect(nautilus.app.config.views.engine.ext).toEqual('jts')
   })
 
-  after(() => fs.remove(path.resolve(__dirname, '../../config')))
+  after(() => temp.cleanup())
 })
