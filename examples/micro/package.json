@@ -2,7 +2,7 @@
   "name": "@nautilus/examples-micro",
   "license": "MIT",
   "dependencies": {
-    "@nautilus/micro": "*"
+    "@nautilus/micro": "file:../../packages/micro"
   },
   "devDependencies": {
     "@zeit/node-file-trace": "^0.3.1",
