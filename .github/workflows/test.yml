@@ -1,0 +1,39 @@
+name: Build and Test
+
+on: [push, pull_request]
+
+jobs:
+  unit:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '12.x', '13.x' ]
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+    - run: sudo docker run --name mongo -d -p 27017:27017 mongo:latest
+    - uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node${{ matrix.node }}
+    - run: npm ci
+    - run: npm test
+
+  lint:
+    if: github.event_name != 'pull_request'
+    name: ESLint
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+    - run: npm ci
+    - run: npx eslint .
