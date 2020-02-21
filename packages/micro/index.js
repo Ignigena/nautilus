@@ -1,10 +1,11 @@
-const findUp = require('find-up')
+const { setup } = require('./lib/config')
 
 exports.utils = {
   config: require('@nautilus/core/lib/config')
 }
 
 const hooks = [
+  'config',
   'response',
   'models'
 ]
@@ -18,15 +19,8 @@ const hooks = [
  * @return {Function} A request/response handler.
  */
 exports.nautilus = (next, config) => {
-  if (!config) {
-    const foundConfig = findUp.sync('config', {
-      cwd: module.parent.filename,
-      type: 'directory'
-    })
-    config = foundConfig ? this.utils.config(foundConfig) : {}
-  }
-
-  return exports.withMiddleware(hooks.filter(hook => config[hook] !== false))(next, config)
+  config = setup(config)
+  return this.withMiddleware(hooks.filter(hook => config[hook] !== false))(next, config)
 }
 
 /**
@@ -39,6 +33,10 @@ exports.nautilus = (next, config) => {
  * @return {Function} The middleware stack, ready to wrap your handler.
  */
 exports.withMiddleware = hooks => {
-  const stack = hooks.reverse().map(m => (typeof m === 'string') ? require('./lib/' + m) : m)
+  const stack = hooks.reverse().map(m => {
+    const func = (typeof m === 'string') ? require('./lib/' + m) : m
+    return typeof func === 'function' ? func : func.handler
+  })
+
   return (next, ...args) => stack.reduce((stack, hook) => hook(stack, ...args), next)
 }
