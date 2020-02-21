@@ -7,7 +7,7 @@
 // unless you know what you're doing!
 const EventEmitter = require('events')
 const path = require('path')
-const stack = require('callsite')
+const stack = require('callsites')
 
 const makeConfig = require('./lib/config')
 
