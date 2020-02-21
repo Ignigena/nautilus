@@ -5,9 +5,9 @@ const { send } = require('micro')
 
 const codes = [
   ...Object.entries(STATUS_CODES),
-  [301, 'Redirect'],
-  [420, 'Slow Your Roll'],
-  [500, 'Error']
+  ['301', 'Redirect'],
+  ['420', 'Enhance Your Calm'],
+  ['500', 'Error']
 ]
 
 function sendStatus (res, statusCode, message) {

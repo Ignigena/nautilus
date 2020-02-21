@@ -11,9 +11,9 @@ const camelCase = require('camelcase')
 
 const responseCodes = [
   ...Object.entries(STATUS_CODES),
-  [301, 'Moved Permanently'],
-  [420, 'Slow Your Roll'],
-  [500, 'Server Error']
+  ['301', 'Moved Permanently'],
+  ['420', 'Enhance Your Calm'],
+  ['500', 'Server Error']
 ]
 
 module.exports = function responsesHook (app) {
