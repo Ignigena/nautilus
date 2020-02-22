@@ -7,7 +7,7 @@ const mongoose = require('mongoose')
 
 const withModels = require('../lib/models')
 
-const createConnection = stub(mongoose, 'createConnection').resolves(true)
+const connect = stub(mongoose, 'connect').resolves(true)
 const send = fake((req, res) => micro.send(res, 200))
 
 describe('models', () => {
@@ -16,7 +16,7 @@ describe('models', () => {
 
     await request(handler).get('/')
 
-    expect(createConnection.called).toBe(false)
+    expect(connect.called).toBe(false)
     expect(send.called).toBe(true)
   })
 
@@ -28,13 +28,13 @@ describe('models', () => {
     }))
 
     await request(handler).get('/')
-    expect(createConnection.called).toBe(true)
-    const [url, options] = createConnection.lastCall.args
+    expect(connect.called).toBe(true)
+    const [url, options] = connect.lastCall.args
     expect(typeof url).toBe('string')
     expect(options.bufferCommands).toBe(false)
 
     await request(handler).get('/')
-    expect(createConnection.callCount).toBe(1)
+    expect(connect.callCount).toBe(1)
   })
 
   it('parses all models in configuration', async () => {
