@@ -6,6 +6,7 @@ exports.utils = {
 
 const hooks = [
   'config',
+  'log',
   'response',
   'models'
 ]
