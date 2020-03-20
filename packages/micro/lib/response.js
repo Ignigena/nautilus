@@ -10,12 +10,14 @@ const codes = [
   ['500', 'Error']
 ]
 
-exports.send = res => message => {
+exports.send = res => body => {
   res.statusCode = res.statusCode || 200
-  if (typeof message !== 'object') {
-    message = { [res.statusCode >= 400 ? 'error' : 'data']: message }
+
+  if (typeof message !== 'object' && !res.getHeader('Content-Type')) {
+    body = { [res.statusCode >= 400 ? 'error' : 'data']: body }
   }
-  return send(res, res.statusCode, message)
+
+  return send(res, res.statusCode, body)
 }
 
 exports.status = res => statusCode => {
