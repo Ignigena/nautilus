@@ -33,7 +33,7 @@ module.exports = (next, config = {}) => {
     if (!mongo.uri) return next(req, res, app)
     await connect(mongo)
 
-    app.mongo = mongoose
+    app.mongo = mongoose.connection.db
     app.model = (model) => (model && models[model]) || Object.keys(models)
 
     next(req, res, app)
