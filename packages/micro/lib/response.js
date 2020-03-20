@@ -10,18 +10,26 @@ const codes = [
   ['500', 'Error']
 ]
 
-function sendStatus (res, statusCode, message) {
+exports.send = res => message => {
+  res.statusCode = res.statusCode || 200
   if (typeof message !== 'object') {
-    message = { [statusCode >= 400 ? 'error' : 'data']: message }
+    message = { [res.statusCode >= 400 ? 'error' : 'data']: message }
   }
-  send(res, statusCode, message)
+  return send(res, res.statusCode, message)
 }
 
-module.exports = next => (req, res, app) => {
-  codes.reduce((response, [statusCode, verb]) => {
-    response[camelcase(verb)] = data => sendStatus(res, statusCode, data || verb)
-    return response
-  }, res)
+exports.status = res => statusCode => {
+  res.statusCode = statusCode
+  return res
+}
+
+exports.handler = next => (req, res, app) => {
+  res.send = exports.send(res)
+  res.status = exports.status(res)
+
+  codes.forEach(([statusCode, verb]) => {
+    res[camelcase(verb)] = data => res.status(statusCode).send(data || verb)
+  })
 
   next(req, res, app)
 }

@@ -3,7 +3,7 @@ const request = require('supertest')
 
 const micro = require('micro')
 
-const response = require('../lib/response')
+const { handler: response } = require('../lib/response')
 
 describe('response', () => {
   it('adds response helpers for common status codes', async () => {
