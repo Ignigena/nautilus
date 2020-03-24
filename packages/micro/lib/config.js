@@ -1,6 +1,6 @@
 const { dirname } = require('path')
 
-const loadConfig = require('@nautilus/core/lib/config')
+const loadConfig = require('@nautilus/config')
 const stack = require('callsites')
 const findUp = require('find-up')
 

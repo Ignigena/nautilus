@@ -9,7 +9,7 @@ const EventEmitter = require('events')
 const path = require('path')
 const stack = require('callsites')
 
-const makeConfig = require('./lib/config')
+const makeConfig = require('@nautilus/config')
 
 class Nautilus {
   /**

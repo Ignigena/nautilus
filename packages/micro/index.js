@@ -1,7 +1,7 @@
 const { setup } = require('./lib/config')
 
 exports.utils = {
-  config: require('@nautilus/core/lib/config')
+  config: require('@nautilus/config')
 }
 
 const hooks = [
