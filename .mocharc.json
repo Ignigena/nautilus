@@ -1,5 +1,9 @@
 {
   "ignore": ["packages/**/node_modules/**"],
   "require": [".mocha.env.js"],
-  "spec": ["examples/**/*.test.js", "packages/**/*.test.js"]
+  "spec": [
+    "core/**/*.test.js",
+    "examples/**/*.test.js",
+    "packages/**/*.test.js"
+  ]
 }

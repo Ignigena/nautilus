@@ -1,8 +1,9 @@
 {
   "exclude": [
+    ".mocha.env.js",
+    "**/test",
     "examples/",
-    "packages/**/config",
-    "packages/**/test"
+    "packages/**/config"
   ],
-  "reporter": ["html", "lcov", "text"]
+  "reporter": ["html", "lcov", "text-summary"]
 }
