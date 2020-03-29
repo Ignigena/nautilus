@@ -3,9 +3,9 @@ const Module = require('module')
 const expect = require('expect')
 const sinon = require('sinon')
 
-const makeConfig = require('../flat')
+const makeConfig = require('../loaders/flat')
 
-describe('@nautilus/config/flat', () => {
+describe('@nautilus/config/loaders/flat', () => {
   const mockEnv = {
     default: { foo: 'bar' },
     test: { env: 'test' },
@@ -13,10 +13,9 @@ describe('@nautilus/config/flat', () => {
   }
 
   before(() => {
-    // Skipping the filesystem in these tests for performance reasons.
     const original = Module._load
     sinon.stub(Module, '_load').callsFake((path, parent) => {
-      const envConfig = mockEnv[path.split('/').pop()]
+      const envConfig = mockEnv[path.split('config/').pop()]
       return envConfig || original(path, parent)
     })
   })
@@ -35,11 +34,6 @@ describe('@nautilus/config/flat', () => {
 
     const config = makeConfig('../config')
     expect(config.foo).toBe('bat')
-  })
-
-  it('allows runtime config to supercede all', () => {
-    const config = makeConfig('../config', { foo: 'baz' })
-    expect(config.foo).toBe('baz')
   })
 
   it('uses the appropriate `process.env` to detect environment', () => {
