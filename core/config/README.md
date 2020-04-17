@@ -108,3 +108,42 @@ If the `dotenv` package is installed it will be used to populate your `process.e
 You may continue using `local.js` to override values during local development but you will get the added benefit of having these values populated "for free" if you are using `now dev` or `now secrets pull`.
 
 If you aren't using `dotenv`, it is not required as a dependency. It is recommended that you use the file structures outlined above to organize your secrets and environment overrides.
+
+## Options
+
+### Environment
+
+By default the environment will be determined based on the values of either `process.env.DEPLOY_ENV` or `process.env.NODE_ENV`. If neither environment variable are set, `development` is used.
+
+To override this manually, pass any value to the `env` configuration key:
+
+```
+makeConfig('./config', { env: 'beta' })
+```
+
+### Flat loader
+
+For some projects, a simpler configuration structure is needed. An example may be an application built using the Webpack [EnvironmentPlugin](https://webpack.js.org/plugins/environment-plugin/) The flat configuration loader is built just for cases like this.
+
+```
+makeConfig('./config', { flat: true })
+```
+
+When using the flat loader, only three files are loaded from your configuration directory. A `default.js` file is used as your base, a file corresponding to the current environment, and a `local.js` if present. Each file is expected to have a flat representation of your configuration:
+
+```
+config
+├── local.js
+├── beta.js
+├── production.js
+└── default.js
+```
+
+In the above example, your `default.js` might look like this:
+
+```js
+module.exports = {
+  API_URI: 'https://my.api/v1/',
+  API_KEY: process.env.API_KEY
+}
+```
