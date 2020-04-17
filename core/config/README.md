@@ -101,7 +101,7 @@ module.exports = {
 
 When running your application locally, take advantage of your `config/env/local.js` file to store the actual username and password. The benefit here is that you don't have to worry about accidentally committing sensitive data to version control.
 
-## Optional `dotenv` integration
+### Optional `dotenv` integration
 
 If the `dotenv` package is installed it will be used to populate your `process.env` values. This is to facilitate compatibility with development flows that include the creation of a `.env` file such as ZEIT's Now platform.
 
