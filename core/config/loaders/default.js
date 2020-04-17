@@ -7,10 +7,12 @@ const flatLoader = require('./flat')
 
 /**
  * Structured configuration loader with namespacing based on discovered paths.
- * @param {String} directory - Path to the configuration directory.
+ * @param {Object} config
+ * @param {String} config.directory - Path to the configuration directory.
+ * @param {String} config.env - Environment configuration to use.
  * @returns {Object}
  */
-module.exports = (directory) => {
+module.exports = ({ directory, env }) => {
   let config
   try {
     config = fs.readdirSync(directory).reduce((config, path) => {
@@ -23,7 +25,7 @@ module.exports = (directory) => {
     config = {}
   }
 
-  const envConfig = flatLoader(resolve(directory, 'env'))
+  const envConfig = flatLoader({ directory: resolve(directory, 'env'), env })
 
   return merge(config, envConfig)
 }

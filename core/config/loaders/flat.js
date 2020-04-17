@@ -7,17 +7,15 @@ const merge = require('deepmerge')
  * the namespacing. Each environment configuration is expected to be in the
  * same directory. This can be used along with the Webpack EnvironmentPlugin or
  * anywhere a simpler configuration structure is warranted.
- * @param {String} directory - Path to the configuration directory.
+ * @param {Object} config
+ * @param {String} config.directory - Path to the configuration directory.
+ * @param {String} config.env - Environment configuration to use.
  * @returns {Object}
  */
-module.exports = (directory) =>
-  [
-    'default',
-    process.env.DEPLOY_ENV || process.env.NODE_ENV || 'development',
-    'local'
-  ].reduce((config, env) => {
+module.exports = ({ directory, env }) =>
+  ['default', env, 'local'].reduce((config, file) => {
     try {
-      config = merge(config, require(resolve(directory, env)))
+      config = merge(config, require(resolve(directory, file)))
     } catch (e) {}
     return config
   }, {})

@@ -3,7 +3,7 @@ const Module = require('module')
 const expect = require('expect')
 const sinon = require('sinon')
 
-const makeConfig = require('../loaders/flat')
+const makeConfig = require('../')
 
 describe('@nautilus/config/loaders/flat', () => {
   const mockEnv = {
@@ -25,24 +25,24 @@ describe('@nautilus/config/loaders/flat', () => {
   })
 
   it('generates configuration from a directory', () => {
-    const config = makeConfig('../config')
+    const config = makeConfig('../config', { flat: true })
     expect(config.foo).toBe('bar')
   })
 
   it('respects the merge order', () => {
     mockEnv.local = { foo: 'bat' }
 
-    const config = makeConfig('../config')
+    const config = makeConfig('../config', { flat: true })
     expect(config.foo).toBe('bat')
   })
 
   it('uses the appropriate `process.env` to detect environment', () => {
-    expect(makeConfig('../config').env).toBe('test')
+    expect(makeConfig('../config', { flat: true }).env).toBe('test')
 
     mockEnv.beta = { env: 'beta' }
     process.env.DEPLOY_ENV = 'beta'
 
-    expect(makeConfig('../config').env).toBe('beta')
+    expect(makeConfig('../config', { flat: true }).env).toBe('beta')
   })
 
   it('uses `development` if no `process.env` value is found', () => {
@@ -51,7 +51,7 @@ describe('@nautilus/config/loaders/flat', () => {
     delete process.env.NODE_ENV
 
     mockEnv.development = { env: 'dev' }
-    expect(makeConfig('../config').env).toBe('dev')
+    expect(makeConfig('../config', { flat: true }).env).toBe('dev')
 
     process.env.NODE_ENV = env
   })
@@ -60,6 +60,6 @@ describe('@nautilus/config/loaders/flat', () => {
     delete mockEnv.test
     delete mockEnv.local
 
-    expect(makeConfig('../config').foo).toBe('bar')
+    expect(makeConfig('../config', { flat: true }).foo).toBe('bar')
   })
 })
