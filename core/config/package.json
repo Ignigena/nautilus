@@ -1,6 +1,6 @@
 {
   "name": "@nautilus/config",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Convention for your configuration",
   "main": "index.js",
   "license": "MIT",
