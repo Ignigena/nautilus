@@ -1,5 +1,6 @@
 {
   "name": "@nautilus/examples-micro",
+  "private": true,
   "license": "MIT",
   "dependencies": {
     "@nautilus/micro": "*"
