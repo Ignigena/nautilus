@@ -5,6 +5,7 @@
   "main": "index.js",
   "license": "MIT",
   "repository": "Ignigena/nautilus",
+  "homepage": "https://github.com/Ignigena/nautilus/tree/master/core/config#readme",
   "engines": {
     "node": ">= 10.x"
   },
