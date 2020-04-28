@@ -23,6 +23,10 @@ module.exports = (next, config = {}) => {
 
   const shorthand = schema(config)
 
+  // Prevent hot-reloading from crashing if Mongoose models are cached.
+  mongoose.models = {}
+  mongoose.modelSchemas = {}
+
   // Each model is initialized with application `config` for context.
   models = Object.entries(models).reduce((all, [model, schema]) => {
     all[model] = shorthand(camelcase(model, { pascalCase: true }), schema)
