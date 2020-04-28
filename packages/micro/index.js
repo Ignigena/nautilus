@@ -22,7 +22,10 @@ const hooks = [
  */
 exports.nautilus = (next, config) => {
   config = setup(config)
-  return this.withMiddleware(hooks.filter(hook => config[hook] !== false))(next, config)
+  return this.withMiddleware(hooks.filter(hook => config[hook] !== false))((req, res, app) => {
+    req.app = app
+    next(req, res, app)
+  }, config)
 }
 
 /**
