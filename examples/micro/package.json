@@ -6,7 +6,7 @@
     "@nautilus/micro": "*"
   },
   "devDependencies": {
-    "@zeit/node-file-trace": "^0.5.1",
+    "@zeit/node-file-trace": "^0.6.5",
     "micro": "^9.3.4"
   }
 }
