@@ -5,7 +5,7 @@ const { utils } = require('@nautilus/micro')
 
 const expect = require('expect')
 const request = require('supertest')
-const trace = require('@zeit/node-file-trace')
+const { nodeFileTrace: trace } = require('@zeit/node-file-trace')
 
 const handler = require('../api/user')
 
