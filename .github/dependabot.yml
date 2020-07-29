@@ -1,0 +1,22 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+- package-ecosystem: npm
+  directory: "/core/config"
+  schedule:
+    interval: weekly
+- package-ecosystem: npm
+  directory: "/packages/core"
+  schedule:
+    interval: weekly
+- package-ecosystem: npm
+  directory: "/packages/micro"
+  schedule:
+    interval: weekly
+- package-ecosystem: npm
+  directory: "/packages/web"
+  schedule:
+    interval: weekly
