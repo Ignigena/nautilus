@@ -7,10 +7,17 @@ const mongoose = require('mongoose')
 
 const withModels = require('../lib/models')
 
-const connect = stub(mongoose, 'connect').resolves(true)
-const send = fake((req, res) => micro.send(res, 200))
-
 describe('models', () => {
+  let connect, send
+  before(() => {
+    connect = stub(mongoose, 'connect').resolves(true)
+    send = fake((req, res) => micro.send(res, 200))
+  })
+
+  after(() => {
+    connect.restore()
+  })
+
   it('skips if no configuration is provided', async () => {
     const handler = micro(withModels(send))
 
