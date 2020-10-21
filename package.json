@@ -16,12 +16,11 @@
     "examples/*"
   ],
   "devDependencies": {
-    "acorn": "^7.1.0",
     "callsites": "^3.1.0",
-    "eslint": "^6.5.1",
+    "eslint": "^7.11.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-mocha": "^6.2.0",
+    "eslint-plugin-mocha": "^8.0.0",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
@@ -30,6 +29,6 @@
     "mocha": "^8.0.1",
     "nyc": "^15.0.0",
     "sinon": "^9.0.0",
-    "supertest": "^4.0.2"
+    "supertest": "^5.0.0"
   }
 }
