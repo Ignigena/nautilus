@@ -27,7 +27,7 @@
     "lusca": "^1.6.1",
     "mongo-querystring": "^4.0.2",
     "mongoose": "^5.5.1",
-    "mongoose-shorthand": "^1.0.0",
+    "mongoose-shorthand": "^2.0.0",
     "mri": "^1.1.4",
     "serve-favicon": "^2.5.0",
     "socket.io": "^2.2.0",
