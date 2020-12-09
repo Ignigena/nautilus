@@ -19,12 +19,7 @@ module.exports = function NautilusCoreConnect (app) {
 
   const url = app.config.connections.mongo.url
   const options = app.config.connections.mongo.options
-  mongoose.connect(url, options, err => {
-    if (err) {
-      app.log.error(err)
-      process.exit(1)
-    }
-  }).catch(err => {
+  mongoose.connect(url, options).catch(err => {
     app.log.error(err)
     process.exit(1)
   })
