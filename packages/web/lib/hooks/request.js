@@ -15,10 +15,10 @@ module.exports = function NautilusHookRequest (app) {
    */
   app.request.validate = function (rules) {
     let result = { isValid: true }
-    Object.keys(rules).map(param => {
+    Object.keys(rules).forEach(param => {
       if (!this.params[param]) return
       if (!Array.isArray(rules[param])) rules[param] = [rules[param]]
-      rules[param].map(validate => {
+      rules[param].forEach(validate => {
         const isValid = validator[validate](this.params[param])
         if (!isValid) result = { isValid: false, param, validate }
       })
