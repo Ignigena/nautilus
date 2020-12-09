@@ -17,7 +17,7 @@
     "deepmerge": "^4.1.1",
     "find-up": "^5.0.0",
     "mongoose": "^5.7.5",
-    "mongoose-shorthand": "^1.0.0"
+    "mongoose-shorthand": "^2.0.0"
   },
   "devDependencies": {
     "micro": "^9.3.4"
