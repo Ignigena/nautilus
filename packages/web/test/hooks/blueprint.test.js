@@ -3,7 +3,8 @@ const request = require('supertest')
 
 const Nautilus = require('../../index')
 
-const ObjectID = require('mongodb').ObjectID
+const mongoose = require('mongoose')
+const { ObjectID } = require('mongodb')
 
 describe('hooks:blueprint', function () {
   let nautilus
@@ -74,5 +75,9 @@ describe('hooks:blueprint', function () {
     request(nautilus.app).get(`/person/${new ObjectID()}`).expect(404, done)
   })
 
-  after(done => nautilus.stop(done))
+  after(done => {
+    mongoose.deleteModel(/.+/)
+    mongoose.models = {}
+    nautilus.stop(done)
+  })
 })

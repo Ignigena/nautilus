@@ -6,12 +6,19 @@ const micro = require('micro')
 
 const withLogging = require('../lib/log')
 
-const send = fake((req, res) => micro.send(res, 200))
-
-const error = stub(console, 'error').callsFake(() => true)
-const correlationHeader = '2c5ea4c0-4067-11e9-8b2d-1b9d6bcdbbfd'
-
 describe('logging', () => {
+  let correlationHeader, error, send
+  before(() => {
+    error = stub(console, 'error').callsFake(() => true)
+    send = fake((req, res) => micro.send(res, 200))
+
+    correlationHeader = '2c5ea4c0-4067-11e9-8b2d-1b9d6bcdbbfd'
+  })
+
+  after(() => {
+    error.restore()
+  })
+
   it('adds correlation ID to request', async () => {
     await request(micro(withLogging(send))).get('/').expect(200)
     expect(send.firstArg.correlation).toBeDefined()

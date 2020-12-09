@@ -1,4 +1,5 @@
 const expect = require('expect')
+const mongoose = require('mongoose')
 
 const Nautilus = require('../../index')
 
@@ -117,5 +118,9 @@ describe('hooks:models', function () {
     })
   })
 
-  after(done => nautilus.stop(done))
+  after(done => {
+    mongoose.deleteModel(/.+/)
+    mongoose.models = {}
+    nautilus.stop(done)
+  })
 })
