@@ -1,0 +1,23 @@
+{
+  "name": "Node.js & Mongo DB",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"dbaeumer.vscode-eslint",
+		"mongodb.mongodb-vscode"
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [27017],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "npm i"
+}
