@@ -16,7 +16,7 @@
     "camelcase": "^6.2.0",
     "deepmerge": "^4.1.1",
     "find-up": "^5.0.0",
-    "mongoose": "^5.11.8",
+    "mongoose": "^5.11.15",
     "mongoose-shorthand": "^2.0.0"
   },
   "devDependencies": {
