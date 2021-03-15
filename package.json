@@ -17,7 +17,7 @@
   ],
   "devDependencies": {
     "callsites": "^3.1.0",
-    "eslint": "^7.16.0",
+    "eslint": "^7.22.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-mocha": "^8.0.0",
