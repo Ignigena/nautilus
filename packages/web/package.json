@@ -24,7 +24,7 @@
     "get-port": "^5.0.0",
     "jts": "^1.2.0",
     "lodash": "^4.17.11",
-    "lusca": "^1.6.1",
+    "lusca": "^1.7.0",
     "mongo-querystring": "^4.0.2",
     "mongoose": "^5.12.1",
     "mongoose-shorthand": "^2.0.0",
