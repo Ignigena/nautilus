@@ -4,7 +4,7 @@ exports.utils = {
   config: require('@nautilus/config')
 }
 
-const hooks = [
+const middleware = [
   'config',
   'cors',
   'log',
@@ -23,7 +23,7 @@ const hooks = [
  */
 exports.nautilus = (next, config) => {
   config = setup(config)
-  return this.withMiddleware(hooks.filter(hook => config[hook] !== false))((req, res, app) => {
+  return this.withMiddleware(middleware.filter(hook => config[hook] !== false))((req, res, app) => {
     req.app = app
     next(req, res, app)
   }, config)
@@ -31,15 +31,15 @@ exports.nautilus = (next, config) => {
 
 /**
  * For more advanced setups, the `withMiddleware` option comes with no assumptions
- * about your approach. You can intermix your own hooks with the core ones based
+ * about your approach. You can intermix your own middleware with the core ones based
  * on the needs of your application.
- * @param {Array<String|Function>} hooks - If a string is provided, it is assumed
- * to be a core Nautilus hook. Otherwise, a function or `require` should be used
- * to define custom hooks.
+ * @param {Array<String|Function>} middleware - If a string is provided, it is assumed
+ * to be a core Nautilus middleware. Otherwise, a function or `require` should be used
+ * to define custom middleware.
  * @return {Function} The middleware stack, ready to wrap your handler.
  */
-exports.withMiddleware = hooks => {
-  const stack = hooks.reverse().map(m => {
+exports.withMiddleware = middleware => {
+  const stack = middleware.reverse().map(m => {
     const func = (typeof m === 'string') ? require('./lib/' + m) : m
     return typeof func === 'function' ? func : func.handler
   })
