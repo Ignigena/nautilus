@@ -5,7 +5,7 @@ const request = require('supertest')
 const micro = require('micro')
 const mongoose = require('mongoose')
 
-const withModels = require('../lib/models')
+const withModels = require('./models')
 
 describe('models', () => {
   let connect, send

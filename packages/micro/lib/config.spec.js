@@ -6,7 +6,7 @@ const micro = require('micro')
 
 const writeConfig = require('../../../test/util/write-config')
 
-const { handler: withConfig } = require('../lib/config')
+const { handler: withConfig } = require('./config')
 
 const send = fake((req, res) => micro.send(res, 200))
 

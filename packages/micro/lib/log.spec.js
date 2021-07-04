@@ -4,7 +4,7 @@ const request = require('supertest')
 
 const micro = require('micro')
 
-const withLogging = require('../lib/log')
+const withLogging = require('./log')
 
 describe('logging', () => {
   let correlationHeader, error, send
