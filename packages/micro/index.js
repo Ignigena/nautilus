@@ -10,8 +10,7 @@ const middleware = [
   'log',
   'response',
   'errors',
-  'parse',
-  'models'
+  'parse'
 ]
 
 /**

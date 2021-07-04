@@ -14,7 +14,6 @@ describe('example: micro', () => {
 
   it('loads correct configuration by default', () => {
     const config = utils.config(path.resolve(__dirname, '../config'))
-    expect(config.models).toBeDefined()
     expect(config.greetings.hello).toBe('world')
     expect(config.README).not.toBeDefined()
   })

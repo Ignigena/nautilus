@@ -5,7 +5,7 @@ const request = require('supertest')
 const micro = require('micro')
 const mongoose = require('mongoose')
 
-const withModels = require('./models')
+const withModels = require('./')
 
 describe('models', () => {
   let connect, send
@@ -52,7 +52,7 @@ describe('models', () => {
       connections: {
         mongo: { uri: 'mongodb://127.0.0.1:27017/test' }
       },
-      models: require('../../../examples/micro/config/models')
+      models: require('../../examples/micro/config/models')
     }))
 
     await request(handler).get('/')
