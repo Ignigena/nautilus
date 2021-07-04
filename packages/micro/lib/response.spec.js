@@ -39,4 +39,12 @@ describe('response', () => {
     const { text } = await request(handler).get('/')
     expect(text).toBe('<xml>')
   })
+
+  it('stringifies JSON responses', async () => {
+    const handler = micro(response((req, res) => res.json({ hello: 'world' })))
+    const { body, text } = await request(handler).get('/')
+
+    expect(body.hello).toBe('world')
+    expect(text).toBe('{\n  "hello": "world"\n}')
+  })
 })
