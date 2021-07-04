@@ -3,12 +3,12 @@ const { STATUS_CODES } = require('http')
 const camelcase = require('camelcase')
 const { send } = require('micro')
 
-const codes = [
+const codes = new Map([
   ...Object.entries(STATUS_CODES),
   ['301', 'Redirect'],
   ['420', 'Enhance Your Calm'],
   ['500', 'Error']
-]
+])
 
 /**
  * Send a JSON response with correct headers. By default the JSON will be sent
@@ -29,8 +29,8 @@ exports.json = res => jsonBody => {
 exports.send = res => body => {
   res.statusCode = res.statusCode || 200
 
-  if (typeof message !== 'object' && !res.getHeader('Content-Type')) {
-    body = { [res.statusCode >= 400 ? 'error' : 'data']: body }
+  if (!body && !res.getHeader('Content-Type')) {
+    res.json({ [res.statusCode >= 400 ? 'error' : 'data']: codes.get(res.statusCode) })
   }
 
   return send(res, res.statusCode, body)
@@ -46,9 +46,9 @@ exports.handler = next => (req, res, app) => {
   res.send = exports.send(res)
   res.status = exports.status(res)
 
-  codes.forEach(([statusCode, verb]) => {
+  codes.forEach((verb, statusCode) => {
     res[camelcase(verb)] = data =>
-      res.status(statusCode)[typeof data === 'object' ? 'json' : 'send'](data || verb)
+      res.status(statusCode)[typeof data === 'object' ? 'json' : 'send'](data)
   })
 
   next(req, res, app)
