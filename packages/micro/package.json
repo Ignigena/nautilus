@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": "ignigena/nautilus",
   "engines": {
-    "node": ">= 10.x"
+    "node": ">= 14.x"
   },
   "peerDependencies": {
     "micro": "9.x"
