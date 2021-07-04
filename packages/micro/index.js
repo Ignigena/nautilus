@@ -8,8 +8,9 @@ const middleware = [
   'config',
   'cors',
   'log',
-  'parse',
   'response',
+  'errors',
+  'parse',
   'models'
 ]
 
