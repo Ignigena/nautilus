@@ -1,7 +1,6 @@
 const { json, text } = require('micro')
 const { parse: parseContentType } = require('content-type')
 const { parse: parseCookies } = require('cookie')
-const { parse: parseQS } = require('qs')
 
 exports.parseBody = async (req) => {
   if (!req.headers['content-type']) return undefined
@@ -15,7 +14,7 @@ exports.parseBody = async (req) => {
       }
 
     case 'application/x-www-form-urlencoded':
-      return parseQS(await text(req))
+      return Object.fromEntries(new URLSearchParams(await text(req)))
 
     default:
       return text(req)
@@ -25,6 +24,10 @@ exports.parseBody = async (req) => {
 exports.handler = next => async (req, res, app) => {
   req.body = await exports.parseBody(req)
   req.cookies = parseCookies(req.headers.cookie || '')
+  req.query = Object.assign(
+    req.query || {},
+    Object.fromEntries(new URL(req.url, `http://${req.headers.host}`).searchParams)
+  )
 
   next(req, res, app)
 }
