@@ -8,6 +8,7 @@ const hooks = [
   'config',
   'cors',
   'log',
+  'parse',
   'response',
   'models'
 ]
