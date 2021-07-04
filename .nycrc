@@ -1,6 +1,7 @@
 {
   "exclude": [
     ".mocha.env.js",
+    "**/*.spec.js",
     "**/test",
     "examples/",
     "packages/**/config"
