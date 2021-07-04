@@ -1,6 +1,6 @@
 const isObject = obj => obj !== null && typeof obj === 'object'
 
-const merge = (target, ...sources) => sources.reduce((result, toMerge) => {
+const merge = (...sources) => sources.reduce((result, toMerge) => {
   for (const [key, newValue] of Object.entries(toMerge)) {
     const oldValue = result[key]
 
@@ -14,6 +14,6 @@ const merge = (target, ...sources) => sources.reduce((result, toMerge) => {
   }
 
   return result
-}, target)
+}, {})
 
 module.exports = merge
