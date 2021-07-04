@@ -2,13 +2,13 @@ const expect = require('expect')
 const micro = require('micro')
 const request = require('supertest')
 
-const withBodyParser = require('./parse')
+const { handler: withParser } = require('./parse')
 const whoami = require('../test/handlers/whoami')
 
-const handler = micro(withBodyParser(whoami))
+const handler = micro(withParser(whoami))
 
-describe('body parser', () => {
-  it('json', async () => {
+describe('parser', () => {
+  it('body: json', async () => {
     expect((
       await request(handler).post('/').send({ who: 'Ignigena' })
     ).text).toBe('Hello Ignigena!')
@@ -18,9 +18,15 @@ describe('body parser', () => {
     ).text).toBe('Hello anonymous!')
   })
 
-  it('x-www-form-urlencoded', async () => {
+  it('body: x-www-form-urlencoded', async () => {
     expect((
       await request(handler).post('/').send('who=Ignigena')
+    ).text).toBe('Hello Ignigena!')
+  })
+
+  it('cookies', async () => {
+    expect((
+      await request(handler).get('/').set('Cookie', ['who=Ignigena'])
     ).text).toBe('Hello Ignigena!')
   })
 })
