@@ -1,9 +1,8 @@
 const fs = require('fs')
 const { parse, resolve } = require('path')
 
-const merge = require('deepmerge')
-
 const flatLoader = require('./flat')
+const merge = require('../merge')
 
 /**
  * Structured configuration loader with namespacing based on discovered paths.

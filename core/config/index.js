@@ -1,5 +1,4 @@
-const merge = require('deepmerge')
-
+const merge = require('./merge')
 const loaders = require('./loaders')
 
 /**

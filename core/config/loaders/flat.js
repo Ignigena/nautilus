@@ -1,6 +1,6 @@
 const { resolve } = require('path')
 
-const merge = require('deepmerge')
+const merge = require('../merge')
 
 /**
  * Flat configuration loader which follows the same merge strategy but without

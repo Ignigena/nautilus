@@ -1,8 +1,8 @@
 const expect = require('expect')
 const sinon = require('sinon')
 
-const config = require('../')
-const loaders = require('../loaders')
+const config = require('.')
+const loaders = require('./loaders')
 
 describe('@nautilus/config', () => {
   let mockLoader

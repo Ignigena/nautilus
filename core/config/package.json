@@ -7,13 +7,9 @@
   "repository": "Ignigena/nautilus",
   "homepage": "https://github.com/Ignigena/nautilus/tree/master/core/config#readme",
   "engines": {
-    "node": ">= 10.x"
-  },
-  "dependencies": {
-    "deepmerge": "^4.1.1"
+    "node": ">= 14.x"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0",
-    "micro": "^9.3.4"
+    "dotenv": "^8.2.0"
   }
 }

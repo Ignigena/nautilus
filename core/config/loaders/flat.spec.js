@@ -3,7 +3,7 @@ const Module = require('module')
 const expect = require('expect')
 const sinon = require('sinon')
 
-const makeConfig = require('../')
+const makeConfig = require('..')
 
 describe('@nautilus/config/loaders/flat', () => {
   const mockEnv = {
