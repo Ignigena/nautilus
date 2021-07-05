@@ -1,23 +1,28 @@
-const { json, text } = require('micro')
 const { parse: parseContentType } = require('content-type')
 const { parse: parseCookies } = require('cookie')
 
 exports.parseBody = async (req) => {
   if (!req.headers['content-type']) return undefined
 
+  const body = await new Promise(resolve => {
+    const chunks = []
+    req.on('data', chunk => chunks.push(chunk))
+    req.on('end', () => resolve(Buffer.concat(chunks).toString()))
+  })
+
   switch (parseContentType(req.headers['content-type']).type) {
     case 'application/json':
       try {
-        return await json(req)
+        return JSON.parse(body.toString())
       } catch (err) {
         return undefined
       }
 
     case 'application/x-www-form-urlencoded':
-      return Object.fromEntries(new URLSearchParams(await text(req)))
+      return Object.fromEntries(new URLSearchParams(body))
 
     default:
-      return text(req)
+      return body
   }
 }
 
