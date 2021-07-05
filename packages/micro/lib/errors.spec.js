@@ -1,5 +1,4 @@
 const expect = require('expect')
-const micro = require('micro')
 const { fake, stub } = require('sinon')
 const request = require('supertest')
 
@@ -8,9 +7,9 @@ const { handler: withResponse } = require('./response')
 
 describe('errors', () => {
   const logger = stub(console, 'error')
-  const handler = micro(withErrorHandler(withResponse((req, res) => {
+  const handler = withErrorHandler(withResponse((req, res) => {
     throw new Error('whoops!')
-  })))
+  }))
 
   beforeEach(() => {
     logger.reset()
@@ -40,9 +39,9 @@ describe('errors', () => {
   it('allows a custom error handler to be configured', async () => {
     const customLogger = fake()
     const errorHandler = fake((req, res) => customLogger)
-    const handler = micro(withErrorHandler(withResponse((req, res) => {
+    const handler = withErrorHandler(withResponse((req, res) => {
       throw new Error('whoops!')
-    }), { errors: { handler: errorHandler } }))
+    }), { errors: { handler: errorHandler } })
 
     const { text } = await request(handler).get('/')
     expect(text).toContain('Error: whoops!')
@@ -53,9 +52,9 @@ describe('errors', () => {
 
   it('allows the handler to control the response', async () => {
     const errorHandler = fake((req, res) => () => res.send('[redacted]'))
-    const handler = micro(withErrorHandler(withResponse((req, res) => {
+    const handler = withErrorHandler(withResponse((req, res) => {
       throw new Error('whoops!')
-    }), { errors: { handler: errorHandler } }))
+    }), { errors: { handler: errorHandler } })
 
     const { text } = await request(handler).get('/')
     expect(text).toBe('[redacted]')

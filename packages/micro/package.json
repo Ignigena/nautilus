@@ -8,9 +8,6 @@
   "engines": {
     "node": ">= 14.x"
   },
-  "peerDependencies": {
-    "micro": "9.x"
-  },
   "dependencies": {
     "@nautilus/config": "^1.1.0",
     "callsites": "^3.1.0",
@@ -21,8 +18,5 @@
     "find-up": "^5.0.0",
     "is-stream": "^2.0.0",
     "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "micro": "^9.3.4"
   }
 }

@@ -2,17 +2,16 @@ const expect = require('expect')
 const { fake } = require('sinon')
 const request = require('supertest')
 
-const micro = require('micro')
-
 const writeConfig = require('../../../test/util/write-config')
 
 const { handler: withConfig } = require('./config')
+const { handler: withResponse } = require('./response')
 
-const send = fake((req, res) => micro.send(res, 200))
+const send = fake(withResponse((req, res) => res.ok()))
 
 describe('config', () => {
   it('uses configuration if provided', async () => {
-    const handler = micro(withConfig(send, { foo: 'bar' }))
+    const handler = withConfig(send, { foo: 'bar' })
     await request(handler).get('/')
 
     expect(send.called).toBe(true)
@@ -21,7 +20,7 @@ describe('config', () => {
   })
 
   it('does not throw if no configuration is present', async () => {
-    const handler = micro(withConfig(send))
+    const handler = withConfig(send)
     await request(handler).get('/')
 
     expect(send.called).toBe(true)
@@ -31,7 +30,7 @@ describe('config', () => {
   it('loads configuration from the filesystem', async () => {
     const temp = await writeConfig('greeting', { hello: 'world' })
 
-    const handler = micro(withConfig(send))
+    const handler = withConfig(send)
     await request(handler).get('/')
 
     expect(send.called).toBe(true)

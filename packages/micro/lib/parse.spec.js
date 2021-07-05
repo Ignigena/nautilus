@@ -1,12 +1,12 @@
 const expect = require('expect')
-const micro = require('micro')
 const request = require('supertest')
 
 const { handler: withParser } = require('./parse')
+const { handler: withResponse } = require('./response')
 
-const handler = withParser((req, res) => micro.send(res, 200, `Hello ${
+const handler = withParser(withResponse((req, res) => res.ok(`Hello ${
   req.body?.who || req.body || req.query?.who || req.cookies?.who || 'anonymous'
-}!`))
+}!`)))
 
 describe('parser', () => {
   it('body: json', async () => {
