@@ -1,13 +1,13 @@
 const { STATUS_CODES } = require('http')
 
 const camelcase = require('camelcase')
-const { send } = require('micro')
+const isStream = require('is-stream')
 
 const codes = new Map([
-  ...Object.entries(STATUS_CODES),
-  ['301', 'Redirect'],
-  ['420', 'Enhance Your Calm'],
-  ['500', 'Error']
+  ...Object.entries(STATUS_CODES).map(([code, verb]) => [parseInt(code), verb]),
+  [301, 'Redirect'],
+  [420, 'Enhance Your Calm'],
+  [500, 'Error']
 ])
 
 /**
@@ -16,7 +16,6 @@ const codes = new Map([
  * been provided, a 200 "OK" status will automatically be used.
  */
 exports.json = res => jsonBody => {
-  res.statusCode = res.statusCode || 200
   const body = JSON.stringify(jsonBody, null, 2)
 
   if (!res.getHeader('Content-Type')) {
@@ -26,14 +25,36 @@ exports.json = res => jsonBody => {
   return res.send(body)
 }
 
-exports.send = res => body => {
-  res.statusCode = res.statusCode || 200
+exports.send = res => {
+  res.json = exports.json(res)
 
-  if (!body && !res.getHeader('Content-Type')) {
-    res.json({ [res.statusCode >= 400 ? 'error' : 'data']: codes.get(res.statusCode) })
+  return body => {
+    const type = res.getHeader('Content-Type')
+
+    if (!body && !type) {
+      body = {
+        [res.statusCode >= 400 ? 'error' : 'data']: codes.get(res.statusCode)
+      }
+    }
+
+    if (Buffer.isBuffer(body)) {
+      res.setHeader('Content-Type', type || 'application/octet-stream')
+      res.setHeader('Content-Length', body.length)
+      return res.end(body)
+    }
+
+    if (isStream.readable(body)) {
+      res.setHeader('Content-Type', type || 'application/octet-stream')
+      return body.pipe(res)
+    }
+
+    if (typeof body === 'object' && !type) {
+      return res.json(body)
+    }
+
+    res.setHeader('Content-Length', Buffer.byteLength(body))
+    res.end(body)
   }
-
-  return send(res, res.statusCode, body)
 }
 
 exports.status = res => statusCode => {
@@ -42,14 +63,12 @@ exports.status = res => statusCode => {
 }
 
 exports.handler = next => (req, res, app) => {
-  res.json = exports.json(res)
   res.send = exports.send(res)
   res.status = exports.status(res)
 
-  codes.forEach((verb, statusCode) => {
-    res[camelcase(verb)] = data =>
-      res.status(statusCode)[typeof data === 'object' ? 'json' : 'send'](data)
-  })
+  for (const [statusCode, verb] of codes.entries()) {
+    res[camelcase(verb)] = data => res.status(statusCode).send(data)
+  }
 
   next(req, res, app)
 }
