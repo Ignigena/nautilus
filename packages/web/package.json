@@ -31,7 +31,7 @@
     "mri": "^1.1.4",
     "serve-favicon": "^2.5.0",
     "socket.io": "^4.1.2",
-    "validator": "^13.5.2"
+    "validator": "^13.6.0"
   },
   "engines": {
     "node": ">= 8.x"
