@@ -11,10 +11,12 @@ describe('response', () => {
     await Promise.all([
       request(withResponse((req, res) => res.ok())).get('/').expect(200),
       request(withResponse((req, res) => res.created())).get('/').expect(201),
+      request(withResponse((req, res) => res.nonAuthoritativeInformation())).get('/').expect(203),
       request(withResponse((req, res) => res.redirect())).get('/').expect(301),
       request(withResponse((req, res) => res.badRequest())).get('/').expect(400),
       request(withResponse((req, res) => res.forbidden())).get('/').expect(403),
       request(withResponse((req, res) => res.notFound())).get('/').expect(404),
+      request(withResponse((req, res) => res.imATeapot())).get('/').expect(418),
       request(withResponse((req, res) => res.error())).get('/').expect(500)
     ])
   })

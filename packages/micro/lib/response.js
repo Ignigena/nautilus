@@ -1,13 +1,17 @@
 const { STATUS_CODES } = require('http')
 
-const camelcase = require('camelcase')
 const isStream = require('is-stream')
 
-const codes = new Map([
-  ...Object.entries(STATUS_CODES).map(([code, verb]) => [parseInt(code), verb]),
-  [301, 'Redirect'],
-  [420, 'Enhance Your Calm'],
-  [500, 'Error']
+const camelcase = str => str.toLowerCase().replace(/[-\s]+(.)/g, (match, p1) => p1.toUpperCase()).replace(/\W/g, '')
+
+exports.statuses = new Map([
+  ...Object.entries(STATUS_CODES).map(([code, description]) => [
+    parseInt(code),
+    { short: camelcase(description), description }
+  ]),
+  [301, { short: 'redirect', description: 'Moved Permanently' }],
+  [420, { short: 'enhanceYourCalm', description: 'Enhance Your Calm' }],
+  [500, { short: 'error', description: 'Internal Server Error' }]
 ])
 
 /**
@@ -33,7 +37,7 @@ exports.send = res => {
 
     if (!body && !type) {
       body = {
-        [res.statusCode >= 400 ? 'error' : 'data']: codes.get(res.statusCode)
+        [res.statusCode >= 400 ? 'error' : 'data']: exports.statuses.get(res.statusCode).description
       }
     }
 
@@ -66,8 +70,8 @@ exports.handler = next => (req, res, app) => {
   res.send = exports.send(res)
   res.status = exports.status(res)
 
-  for (const [statusCode, verb] of codes.entries()) {
-    res[camelcase(verb)] = data => res.status(statusCode).send(data)
+  for (const [code, { short }] of exports.statuses.entries()) {
+    res[short] = data => res.status(code).send(data)
   }
 
   next(req, res, app)
