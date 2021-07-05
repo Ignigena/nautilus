@@ -34,6 +34,7 @@ module.exports = (next, { log: config = {} } = {}) => {
 
   return async (req, res, app = {}) => {
     req.correlation = req.headers[header] || uuidv1()
+    res.setHeader(header, req.correlation)
     app.log = logging(level, req.correlation)
 
     next(req, res, app)

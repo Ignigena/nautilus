@@ -19,12 +19,14 @@ describe('logging', () => {
   })
 
   it('adds correlation ID to request', async () => {
-    await request(withLogging(send)).get('/').expect(200)
+    let res = await request(withLogging(send)).get('/')
     expect(send.firstArg.correlation).toBeDefined()
+    expect(res.headers['x-correlation-id']).toBeDefined()
 
-    await request(withLogging(send)).get('/')
-      .set('X-Correlation-ID', correlationHeader).expect(200)
+    res = await request(withLogging(send)).get('/')
+      .set('X-Correlation-ID', correlationHeader)
     expect(send.firstArg.correlation).toBe(correlationHeader)
+    expect(res.headers['x-correlation-id']).toBe(correlationHeader)
   })
 
   it('allows configuration of logging levels', async () => {
