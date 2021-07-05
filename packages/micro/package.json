@@ -9,7 +9,7 @@
     "node": ">= 14.x"
   },
   "dependencies": {
-    "@nautilus/config": "^1.1.0",
+    "@nautilus/config": "^1.3.0",
     "callsites": "^3.1.0",
     "content-type": "^1.0.4",
     "cookie": "^0.4.1",
