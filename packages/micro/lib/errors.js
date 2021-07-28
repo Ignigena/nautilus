@@ -5,7 +5,7 @@ module.exports = (next, config) => async (req, res, app) => {
     await next(req, res)
   } catch (err) {
     await handler(err)
-    if (res.writableEnded) return
+    if (res.headersSent) return
 
     res.status(err.statusCode || 500).send(
       process.env.NODE_ENV === 'production'
