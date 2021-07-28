@@ -1,6 +1,6 @@
 {
   "name": "@nautilus/micro",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Convention over configuration framework for microservices",
   "main": "index.js",
   "license": "MIT",
