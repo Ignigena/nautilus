@@ -27,7 +27,7 @@ exports.parseBody = async (req) => {
 }
 
 exports.handler = next => async (req, res, app) => {
-  req.body = await exports.parseBody(req)
+  req.body = req.body || await exports.parseBody(req)
   req.cookies = parseCookies(req.headers.cookie || '')
   req.query = Object.assign(
     req.query || {},

@@ -42,4 +42,12 @@ describe('parser', () => {
       await request(handler).get('/?who=Ignigena')
     ).text).toBe('Hello Ignigena!')
   })
+
+  it('gracefully handles upstream middleware which already parsed the body', async () => {
+    expect((
+      await request(
+        withParser(withParser(withResponse((req, res) => res.ok(`Hello ${req.body.who}!`))))
+      ).post('/').send({ who: 'Ignigena' })
+    ).text).toBe('Hello Ignigena!')
+  })
 })
