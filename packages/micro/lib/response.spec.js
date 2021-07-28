@@ -42,6 +42,16 @@ describe('response', () => {
     const { text } = await request(handler).get('/')
     expect(text).toBe('<xml>')
   })
+
+  it('handles empty body responses', async () => {
+    const handler = withResponse((req, res) => {
+      res.setHeader('Content-Type', 'text/html; charset=utf-8')
+      res.send()
+    })
+
+    const { text } = await request(handler).get('/')
+    expect(text).toBe('')
+  })
 })
 
 describe('res.json', () => {

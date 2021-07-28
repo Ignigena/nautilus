@@ -56,7 +56,7 @@ exports.send = res => {
       return res.json(body)
     }
 
-    res.setHeader('Content-Length', Buffer.byteLength(body))
+    res.setHeader('Content-Length', body ? Buffer.byteLength(body) : 0)
     res.end(body)
   }
 }
