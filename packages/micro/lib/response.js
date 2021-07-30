@@ -69,6 +69,7 @@ exports.status = res => statusCode => {
 exports.handler = next => (req, res, app) => {
   res.send = exports.send(res)
   res.status = exports.status(res)
+  res.setHeaders = headers => Object.entries(headers).forEach(([header, value]) => res.setHeader(header, value))
 
   for (const [code, { short }] of exports.statuses.entries()) {
     res[short] = data => res.status(code).send(data)

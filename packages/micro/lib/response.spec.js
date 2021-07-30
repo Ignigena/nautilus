@@ -52,6 +52,20 @@ describe('response', () => {
     const { text } = await request(handler).get('/')
     expect(text).toBe('')
   })
+
+  it('allows headers to be set in bulk', async () => {
+    const handler = withResponse((req, res) => {
+      res.setHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      })
+      res.ok()
+    })
+
+    const { headers } = await request(handler).get('/')
+    expect(headers['access-control-allow-origin']).toBe('*')
+    expect(headers['content-type']).toBe('application/json')
+  })
 })
 
 describe('res.json', () => {
