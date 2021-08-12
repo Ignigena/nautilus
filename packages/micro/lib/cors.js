@@ -3,7 +3,7 @@ exports.vary = res => value =>
 
 exports.handler = (next, { cors: config = {} } = {}) => {
   const {
-    allowCredentials = false,
+    allowCredentials = true,
     allowHeaders = [],
     allowMethods = ['DELETE', 'GET', 'HEAD', 'PATCH', 'POST', 'PUT'],
     allowOrigin = '*',
@@ -15,7 +15,7 @@ exports.handler = (next, { cors: config = {} } = {}) => {
     res.vary = exports.vary(res)
     res.setHeader('Access-Control-Allow-Origin', allowOrigin)
 
-    if (allowOrigin === '*' && req.headers.referer) {
+    if (allowCredentials && allowOrigin === '*' && req.headers.referer) {
       // Allow a wildcard origin that switches to a Referer hostname for
       // authenticated requests. To opt-out, manually specify the allowed origin
       // or use the pipe syntax to restrict only credentialed requests.
