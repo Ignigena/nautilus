@@ -9,9 +9,10 @@ const merge = require('../merge')
  * @param {Object} config
  * @param {String} config.directory - Path to the configuration directory.
  * @param {String} config.env - Environment configuration to use.
+ * @param {Boolean} config.ignoreLocal - Ignore local configuration.
  * @returns {Object}
  */
-module.exports = ({ directory, env }) => {
+module.exports = ({ directory, env, ignoreLocal }) => {
   let config
   try {
     config = fs.readdirSync(directory).reduce((config, path) => {
@@ -24,7 +25,7 @@ module.exports = ({ directory, env }) => {
     config = {}
   }
 
-  const envConfig = flatLoader({ directory: resolve(directory, 'env'), env })
+  const envConfig = flatLoader({ directory: resolve(directory, 'env'), env, ignoreLocal })
 
   return merge(config, envConfig)
 }

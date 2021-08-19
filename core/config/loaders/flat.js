@@ -10,10 +10,11 @@ const merge = require('../merge')
  * @param {Object} config
  * @param {String} config.directory - Path to the configuration directory.
  * @param {String} config.env - Environment configuration to use.
+ * @param {Boolean} config.ignoreLocal - Ignore local configuration.
  * @returns {Object}
  */
-module.exports = ({ directory, env }) =>
-  ['default', env, 'local'].reduce((config, file) => {
+module.exports = ({ directory, env, ignoreLocal }) =>
+  ['default', env, !ignoreLocal && 'local'].reduce((config, file) => {
     try {
       config = merge(config, require(resolve(directory, file)))
     } catch (e) {}

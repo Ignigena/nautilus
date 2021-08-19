@@ -11,12 +11,15 @@ const loaders = require('./loaders')
  * of the defaults if a file exists with a matching name. If not specified uses
  * `process.env.DEPLOY_ENV`, `process.env.NODE_ENV` or `development`.,
  * @param {Boolean} config.flat - Use the flat loader instead of the default.
+ * @param {Boolean} config.ignoreLocal - Ignore local configuration. Defaults to
+ * `true` if the `NODE_ENV` has been set to `test` (ex. in Jest)
  */
 module.exports = (paths, config = {}) => {
   const {
     dotenv,
     env = process.env.DEPLOY_ENV || process.env.NODE_ENV || 'development',
     flat = false,
+    ignoreLocal,
     ...runtimeConfig
   } = config
 
@@ -27,7 +30,11 @@ module.exports = (paths, config = {}) => {
   return merge(
     (Array.isArray(paths) ? paths : [paths])
       .reduce((result, directory) =>
-        merge(result, loaders[flat ? 'flat' : 'default']({ directory, env })), {}),
+        merge(result, loaders[flat ? 'flat' : 'default']({
+          directory,
+          env,
+          ignoreLocal: ignoreLocal ?? env === 'test'
+        })), {}),
     runtimeConfig || {}
   )
 }

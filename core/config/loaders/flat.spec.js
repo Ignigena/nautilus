@@ -32,7 +32,7 @@ describe('@nautilus/config/loaders/flat', () => {
   it('respects the merge order', () => {
     mockEnv.local = { foo: 'bat' }
 
-    const config = makeConfig('../config', { flat: true })
+    const config = makeConfig('../config', { flat: true, ignoreLocal: false })
     expect(config.foo).toBe('bat')
   })
 
@@ -54,6 +54,12 @@ describe('@nautilus/config/loaders/flat', () => {
     expect(makeConfig('../config', { flat: true }).env).toBe('dev')
 
     process.env.NODE_ENV = env
+  })
+
+  it('ignores local configuration when configured', () => {
+    mockEnv.local = { env: 'local' }
+    expect(makeConfig('../config', { flat: true, ignoreLocal: true }).env).not.toBe('local')
+    expect(makeConfig('../config', { flat: true, ignoreLocal: false }).env).toBe('local')
   })
 
   it('does not throw if configuration is missing', () => {

@@ -147,3 +147,13 @@ module.exports = {
   API_KEY: process.env.API_KEY
 }
 ```
+
+### Ignore local configuration
+
+In some cases you may want to ignore local configuration, even when it is present. The most common case for this is when running tests locally to ensure that secrets are not available. By default, if the `env` is `test`, local configuration is ignored. This should work out of the box for testing frameworks such as Jest which automatically set the `NODE_ENV` to `test`.
+
+If necessary you may override the default behaviour with:
+
+```js
+makeConfig('./config', { ignoreLocal: false }) // always consider `local.js` regardless of environment
+```
