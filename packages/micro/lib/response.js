@@ -1,6 +1,6 @@
 const { STATUS_CODES } = require('http')
 
-const isStream = require('is-stream')
+const { isReadableStream } = require('is-stream')
 
 const camelcase = str => str.toLowerCase().replace(/[-\s]+(.)/g, (match, p1) => p1.toUpperCase()).replace(/\W/g, '')
 
@@ -47,7 +47,7 @@ exports.send = res => {
       return res.end(body)
     }
 
-    if (isStream.readable(body)) {
+    if (isReadableStream(body)) {
       res.setHeader('Content-Type', type || 'application/octet-stream')
       return body.pipe(res)
     }
