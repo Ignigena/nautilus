@@ -7,7 +7,7 @@ exports.parseBody = async (req) => {
   const body = await new Promise(resolve => {
     const chunks = []
     req.on('data', chunk => chunks.push(chunk))
-    req.on('end', () => resolve(Buffer.concat(chunks).toString()))
+    req.on('end', () => resolve(Buffer.concat(chunks)))
   })
 
   switch (parseContentType(req.headers['content-type']).type) {
@@ -19,7 +19,7 @@ exports.parseBody = async (req) => {
       }
 
     case 'application/x-www-form-urlencoded':
-      return Object.fromEntries(new URLSearchParams(body))
+      return Object.fromEntries(new URLSearchParams(body.toString()))
 
     default:
       return body
