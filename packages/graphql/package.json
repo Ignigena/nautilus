@@ -1,0 +1,22 @@
+{
+  "name": "@nautilus/graphql",
+  "version": "0.1.0",
+  "description": "Lightweight Node.js GraphQL server optimized for serverless",
+  "main": "index.js",
+  "author": "Albert Martin <albert@imor.tl>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ignigena/nautilus",
+    "directory": "packages/graphql"
+  },
+  "engines": {
+    "node": ">= 16.x"
+  },
+  "dependencies": {
+    "@nautilus/micro": "^0.4.5"
+  },
+  "peerDependencies": {
+    "apollo-server-core": "^3.10.1"
+  }
+}
