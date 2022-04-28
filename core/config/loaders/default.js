@@ -12,13 +12,17 @@ const merge = require('../merge')
  * @param {Boolean} config.ignoreLocal - Ignore local configuration.
  * @returns {Object}
  */
-module.exports = ({ directory, env, ignoreLocal }) => {
+module.exports = ({ directory, env, ignoreLocal, parentPath }) => {
   let config
   try {
     config = fs.readdirSync(directory).reduce((config, path) => {
       const { ext, name } = parse(path)
       if (ext !== '.js' && ext !== '.json') return config
-      config[name] = require(resolve(directory, `./${name}`))
+
+      const requirePath = resolve(directory, name + ext)
+      if (requirePath === parentPath) return config
+
+      config[name] = require(requirePath)
       return config
     }, {})
   } catch (e) {

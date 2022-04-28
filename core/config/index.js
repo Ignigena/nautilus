@@ -33,7 +33,8 @@ module.exports = (paths, config = {}) => {
         merge(result, loaders[flat ? 'flat' : 'default']({
           directory,
           env,
-          ignoreLocal: ignoreLocal ?? env === 'test'
+          ignoreLocal: ignoreLocal ?? env === 'test',
+          parentPath: module.parent?.filename
         })), {}),
     runtimeConfig || {}
   )
