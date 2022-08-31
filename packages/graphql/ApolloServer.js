@@ -16,10 +16,11 @@ module.exports = class ApolloServer extends ApolloServerBase {
 
     return withMiddleware(['cors', 'response', 'parse'])(async (req, res) => {
       try {
+        const query = req.method === 'POST' ? req.body : req.query
         const { graphqlResponse, responseInit } = await runHttpQuery([req, res], {
           method: req.method,
           options: this.graphQLServerOptions({ req, res }),
-          query: req.body,
+          query,
           request: convertNodeHttpToRequest(req)
         })
 
@@ -27,7 +28,7 @@ module.exports = class ApolloServer extends ApolloServerBase {
         res.send(graphqlResponse)
       } catch (err) {
         if (err?.name === 'HttpQueryError') {
-          res.setHeaders(err.headers)
+          if (err.headers) res.setHeaders(err.headers)
           return res.status(err.statusCode).send(err?.message)
         }
 

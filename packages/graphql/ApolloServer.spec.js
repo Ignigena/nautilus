@@ -28,6 +28,15 @@ describe('plugins: config', () => {
     expect(data.hello).toBe('Hello world!')
   })
 
+  it('supports `GET` requests with query parameters', async () => {
+    const { body: { data, errors }, statusCode } = await request(testServer).get('/graphql?query=%7B__typename%7D')
+
+    expect(statusCode).toBe(200)
+    expect(errors).not.toBeDefined()
+    expect(data).toBeDefined()
+    expect(data).toStrictEqual({ __typename: 'Query' })
+  })
+
   it('handles errors thrown inside a resolver', async () => {
     resolver.mockImplementationOnce(() => { throw new UserInputError() })
     const { body: { data, errors }, statusCode } = await request(testServer).post('/graphql').send({ query: 'query { hello }' })
