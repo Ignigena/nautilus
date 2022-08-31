@@ -1,5 +1,3 @@
-const expect = require('expect')
-
 const path = require('path')
 const rimraf = require('rimraf')
 
@@ -15,7 +13,7 @@ const makeHook = require('./util/make-hook')
 describe('core:hooks', function () {
   let hookLoaded = false
 
-  before(done => {
+  beforeAll(done => {
     makeHook(path.join(__dirname, 'lib/hooks/custom'), `
       return {
         called: false,
@@ -24,25 +22,25 @@ describe('core:hooks', function () {
     `, done)
   })
 
-  before(done => {
+  beforeAll(done => {
     makeHook(path.join(__dirname, 'lib/hooks/badHook'), `
       throw new Error('I am a bad hook!');
     `, done)
   })
 
-  before(done => {
+  beforeAll(done => {
     makeHook(path.join(__dirname, 'lib/hooks/service/index'), `
       app.custom.foo();
     `, done)
   })
 
-  before(done => {
+  beforeAll(done => {
     makeHook(path.join(__dirname, 'lib/hooks/service/private'), `
       throw new Error('I am private, do not use me!');
     `, done)
   })
 
-  before(done => {
+  beforeAll(done => {
     makeHook(path.join(__dirname, 'lib/hooks/xylophone'), `
       return {
         play: () => true,
@@ -92,7 +90,7 @@ describe('core:hooks', function () {
     expect(nautilus.app.service).not.toBeDefined()
   })
 
-  before(done => {
+  beforeAll(done => {
     makeHook(path.join(__dirname, 'hooks/more'), `
       return {
         foo: () => 'bar',
@@ -105,6 +103,6 @@ describe('core:hooks', function () {
     expect(nautilus.app.more.foo).toBeDefined()
   })
 
-  after(done => rimraf(path.join(__dirname, 'lib'), done))
-  after(done => rimraf(path.join(__dirname, 'hooks'), done))
+  afterAll(done => rimraf(path.join(__dirname, 'lib'), done))
+  afterAll(done => rimraf(path.join(__dirname, 'hooks'), done))
 })

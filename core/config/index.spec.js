@@ -1,31 +1,24 @@
-const expect = require('expect')
-const sinon = require('sinon')
-
 const config = require('.')
 const loaders = require('./loaders')
 
+jest.mock('./loaders')
+
 describe('@nautilus/config', () => {
-  let mockLoader
-  before(() => {
-    mockLoader = sinon.stub(loaders, 'default').returns({})
-  })
-
-  beforeEach(() => mockLoader.resetHistory())
-
-  after(() => mockLoader.restore())
+  beforeAll(() => loaders.default.mockReturnValue({}))
+  beforeEach(() => loaders.default.mockClear())
 
   it('allows a single path to be loaded', () => {
     config('../config')
-    expect(mockLoader.calledOnce).toBe(true)
+    expect(loaders.default).toHaveBeenCalledTimes(1)
   })
 
   it('allows multiple paths to be loaded', () => {
     config(['./app-config', '../framework-config'])
-    expect(mockLoader.calledTwice).toBe(true)
+    expect(loaders.default).toHaveBeenCalledTimes(2)
   })
 
   it('applies top level config over loader', () => {
-    mockLoader.returns({ foo: 'bar' })
+    loaders.default.mockReturnValue({ foo: 'bar' })
     expect(config('../config', { foo: 'baz' }).foo).toBe('baz')
   })
 })

@@ -3,7 +3,6 @@ const path = require('path')
 const micro = require('micro')
 const { utils } = require('@nautilus/micro')
 
-const expect = require('expect')
 const request = require('supertest')
 const { nodeFileTrace: trace } = require('@zeit/node-file-trace')
 

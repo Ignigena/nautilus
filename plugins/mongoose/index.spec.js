@@ -1,5 +1,3 @@
-const expect = require('expect')
-const { fake, stub } = require('sinon')
 const request = require('supertest')
 
 const micro = require('micro')
@@ -9,22 +7,20 @@ const withModels = require('./')
 
 describe('models', () => {
   let connect, send
-  before(() => {
-    connect = stub(mongoose, 'connect').resolves(true)
-    send = fake((req, res) => micro.send(res, 200))
+  beforeAll(() => {
+    connect = jest.spyOn(mongoose, 'connect').mockReturnValue(true)
+    send = jest.fn((req, res) => micro.send(res, 200))
   })
 
-  after(() => {
-    connect.restore()
-  })
+  afterEach(() => jest.clearAllMocks())
 
   it('skips if no configuration is provided', async () => {
     const handler = micro(withModels(send))
 
     await request(handler).get('/')
 
-    expect(connect.called).toBe(false)
-    expect(send.called).toBe(true)
+    expect(connect).not.toHaveBeenCalled()
+    expect(send).toHaveBeenCalled()
   })
 
   it('utilizes connection caching between invocations', async () => {
@@ -35,13 +31,13 @@ describe('models', () => {
     }))
 
     await request(handler).get('/')
-    expect(connect.called).toBe(true)
-    const [url, options] = connect.lastCall.args
+    expect(connect).toHaveBeenCalled()
+    const [url, options] = connect.mock.calls[0]
     expect(typeof url).toBe('string')
     expect(options.bufferCommands).toBe(false)
 
     await request(handler).get('/')
-    expect(connect.callCount).toBe(1)
+    expect(connect).toHaveBeenCalledTimes(1)
   })
 
   it('parses all models in configuration', async () => {
@@ -57,7 +53,7 @@ describe('models', () => {
 
     await request(handler).get('/')
 
-    const app = send.lastCall.args[2]
+    const app = send.mock.calls[0][2]
     expect(app.model().length).toBe(2)
     expect(app.model('location').prototype.$isMongooseModelPrototype).toBe(true)
   })

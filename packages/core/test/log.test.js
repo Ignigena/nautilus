@@ -1,13 +1,10 @@
-const expect = require('expect')
-const { fake } = require('sinon')
-
 const Nautilus = require('../index')
-const nautilus = new Nautilus()
 
 describe('core:log', function () {
-  before(() => {
-    nautilus.app.log.profile = fake()
-  })
+  const nautilus = new Nautilus()
+  nautilus.app.log.profile = jest.fn()
+
+  afterEach(() => jest.clearAllMocks())
 
   it('exposes winston at app.log namespace', () => {
     expect(nautilus.app.log).toBeDefined()
@@ -17,13 +14,13 @@ describe('core:log', function () {
   it('adds a shortcut to profile code in development', () => {
     expect(nautilus.app.profile).toBeDefined()
     nautilus.app.profile('test')
-    expect(nautilus.app.log.profile.callCount).toEqual(1)
+    expect(nautilus.app.log.profile).toHaveBeenCalled()
   })
 
   it('disables profiling in production', () => {
     process.env.NODE_ENV = 'production'
     nautilus.app.profile('test')
-    expect(nautilus.app.log.profile.callCount).toEqual(1)
+    expect(nautilus.app.log.profile).not.toHaveBeenCalled()
     delete process.env.NODE_ENV
   })
 })

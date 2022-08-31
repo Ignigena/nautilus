@@ -1,12 +1,9 @@
-process.env.NODE_ENV = 'test'
-
-const expect = require('expect')
 const request = require('supertest')
 const Nautilus = require('../../index')
 
 describe('middleware:responses', function () {
   let nautilus
-  before(() => {
+  beforeAll(() => {
     nautilus = new Nautilus()
     nautilus.app.get('/response/bad', (req, res) => res.badRequest('bad'))
     nautilus.app.get('/response/created', (req, res) => res.created('created'))

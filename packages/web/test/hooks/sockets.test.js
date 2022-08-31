@@ -1,5 +1,3 @@
-const expect = require('expect')
-
 const Nautilus = require('../../index')
 
 describe('hooks:sockets', function () {

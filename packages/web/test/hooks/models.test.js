@@ -1,11 +1,10 @@
-const expect = require('expect')
 const mongoose = require('mongoose')
 
 const Nautilus = require('../../index')
 
 describe('hooks:models', function () {
   let nautilus
-  before(() => {
+  beforeAll(() => {
     nautilus = new Nautilus({
       connections: {
         mongo: { url: process.env.DB_MONGO || 'mongodb://127.0.0.1:27017/test' }
@@ -103,7 +102,7 @@ describe('hooks:models', function () {
       password: 'password'
     }
 
-    before(() => {
+    beforeAll(() => {
       return nautilus.app.model('user').create(fixture).then(result => {
         record = result
       })
@@ -118,7 +117,7 @@ describe('hooks:models', function () {
     })
   })
 
-  after(done => {
+  afterAll(done => {
     mongoose.deleteModel(/.+/)
     mongoose.models = {}
     nautilus.stop(done)
