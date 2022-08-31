@@ -1,6 +1,6 @@
 {
   "name": "@nautilus/graphql",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lightweight Node.js GraphQL server optimized for serverless",
   "main": "index.js",
   "author": "Albert Martin <albert@imor.tl>",
