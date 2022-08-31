@@ -1,82 +1,65 @@
-const expect = require('expect')
-
 const Nautilus = require('../index')
-const writeConfig = require('../../../test/util/write-config')
 
-let nautilus
-let tempLib, temp
+const { readdirSync } = require('fs')
+const { resolve } = require('path')
+
+jest.mock('fs')
 
 describe('core:config', function () {
-  describe('framework configuration', function () {
-    before(async () => {
-      tempLib = await writeConfig('../lib/defaults/custom', {
-        should: true,
-        foo: 'fee'
-      })
-      nautilus = new Nautilus({ appPath: __dirname })
-    })
+  beforeEach(() => jest.resetModules())
+  afterAll(() => jest.clearAllMocks())
 
-    it('allows the framework to declare a set of default configuration', () => {
+  describe('framework configuration', function () {
+    it('allows the framework to declare a set of default configuration', async () => {
+      jest.mock(resolve(__dirname, 'lib/defaults', 'custom'), () => ({ should: true, foo: 'fee' }), { virtual: true })
+
+      readdirSync.mockReturnValueOnce(['lib/defaults/custom.js']).mockReturnValueOnce([])
+
+      const nautilus = new Nautilus({ appPath: __dirname })
+
       expect(nautilus.app.config.custom.should).toEqual(true)
       expect(nautilus.app.config.custom.foo).toEqual('fee')
     })
   })
 
   describe('standard + environment configuration', function () {
-    before(async () => {
-      temp = await writeConfig('custom', {
-        foo: 'bars'
-      })
+    it('merges environment configuration without overwriting', async () => {
+      jest.mock(resolve(__dirname, 'config', 'custom'), () => ({ foo: 'bars' }), { virtual: true })
+      jest.mock(resolve(__dirname, 'config/env', 'test'), () => ({ custom: { hello: 'world' } }), { virtual: true })
+
+      readdirSync.mockReturnValueOnce([]).mockReturnValueOnce(['config/custom.js'])
 
       process.env.NODE_ENV = 'test'
-      await writeConfig('env/test', {
-        custom: {
-          hello: 'world'
-        }
-      })
+      const nautilus = new Nautilus({ appPath: __dirname })
 
-      nautilus = new Nautilus({ appPath: __dirname })
-    })
-
-    it('merges environment configuration without overwriting', () => {
       expect(nautilus.app.config.custom.foo).toEqual('bars')
       expect(nautilus.app.config.custom.hello).toEqual('world')
-    })
-
-    after(async () => {
-      delete process.env.NODE_ENV
-      await tempLib.cleanup()
     })
   })
 
   describe('environment configuration: local', function () {
-    before(async () => {
-      await writeConfig('env/local', {
-        custom: {
-          foo: 'bar'
-        }
-      })
-      nautilus = new Nautilus({ appPath: __dirname })
-    })
+    it('local configuration overrides all other environment levels', async () => {
+      jest.mock(resolve(__dirname, 'config', 'custom'), () => ({ foo: 'bars' }), { virtual: true })
+      jest.mock(resolve(__dirname, 'config/env', 'local'), () => ({ custom: { foo: 'bar' } }), { virtual: true })
 
-    it('local configuration overrides all other environment levels', () => {
+      readdirSync.mockReturnValueOnce([]).mockReturnValueOnce(['config/custom.js'])
+
+      process.env.NODE_ENV = 'dev'
+      const nautilus = new Nautilus({ appPath: __dirname })
+
       expect(nautilus.app.config.custom.foo).toEqual('bar')
+      process.env.NODE_ENV = 'test'
     })
   })
 
   describe('runtime configuration', function () {
-    before(() => {
-      nautilus = new Nautilus({ appPath: __dirname }, {
-        custom: {
-          foo: 'allbar'
-        }
-      })
-    })
+    it('runtime configuration overrides all others', async () => {
+      jest.mock(resolve(__dirname, 'config', 'custom'), () => ({ foo: 'bars' }), { virtual: true })
+      readdirSync.mockReturnValueOnce([]).mockReturnValueOnce(['config/custom.js'])
 
-    it('runtime configuration overrides all others', () => {
+      const nautilus = new Nautilus({ appPath: __dirname }, { custom: { foo: 'allbar' } })
+
       expect(nautilus.app.config.custom.foo).toEqual('allbar')
     })
   })
-
-  after(() => temp.cleanup())
 })

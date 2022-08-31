@@ -1,13 +1,10 @@
-process.env.NODE_ENV = 'test'
-
-const expect = require('expect')
 const request = require('supertest')
 
 const Nautilus = require('../../index')
 
 describe('middleware:slash', function () {
   let nautilus
-  before(() => {
+  beforeAll(() => {
     nautilus = new Nautilus({
       slash: {
         whitelist: ['whitelist/(.*)']

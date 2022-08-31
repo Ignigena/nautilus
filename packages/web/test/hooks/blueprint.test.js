@@ -1,4 +1,3 @@
-const expect = require('expect')
 const request = require('supertest')
 
 const Nautilus = require('../../index')
@@ -8,7 +7,7 @@ const { ObjectID } = require('mongodb')
 
 describe('hooks:blueprint', function () {
   let nautilus
-  before(() => {
+  beforeAll(() => {
     nautilus = new Nautilus({
       connections: {
         mongo: { url: process.env.DB_MONGO || 'mongodb://127.0.0.1:27017/test' }
@@ -26,7 +25,7 @@ describe('hooks:blueprint', function () {
   })
 
   let newUser
-  before(async () => {
+  beforeAll(async () => {
     newUser = await nautilus.app.model('person').create({ email: 'test@test.com', name: 'Test' })
   })
 
@@ -75,7 +74,7 @@ describe('hooks:blueprint', function () {
     request(nautilus.app).get(`/person/${new ObjectID()}`).expect(404, done)
   })
 
-  after(done => {
+  afterAll(done => {
     mongoose.deleteModel(/.+/)
     mongoose.models = {}
     nautilus.stop(done)

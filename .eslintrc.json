@@ -4,7 +4,5 @@
     "node": true
   },
   "extends": [ "standard" ],
-  "plugins": [
-    "jest"
-  ]
+  "plugins": [ "jest" ]
 }

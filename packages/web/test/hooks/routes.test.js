@@ -1,11 +1,10 @@
-const expect = require('expect')
 const request = require('supertest')
 
 const Nautilus = require('../../index')
 
 describe('hooks:routes', function () {
   let nautilus
-  before(() => {
+  beforeAll(() => {
     nautilus = new Nautilus({
       slash: false,
       routes: {

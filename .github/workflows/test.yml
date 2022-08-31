@@ -8,16 +8,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '14.x', '16.x' ]
+        node: [ 16, 18 ]
 
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node }}
-    - run: npm i -g npm@7
     - run: sudo docker run --name mongo -d -p 27017:27017 mongo:latest
-    - uses: actions/cache@v1
+    - uses: actions/cache@v3
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
@@ -37,8 +36,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node }}
     - run: npm ci

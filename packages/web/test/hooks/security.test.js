@@ -1,4 +1,3 @@
-const expect = require('expect')
 const request = require('supertest')
 
 const Nautilus = require('../../index')
@@ -6,7 +5,7 @@ const Nautilus = require('../../index')
 describe('hooks:security', function () {
   describe('cors default configuration', function () {
     let nautilus
-    before(() => {
+    beforeAll(() => {
       nautilus = new Nautilus()
     })
 

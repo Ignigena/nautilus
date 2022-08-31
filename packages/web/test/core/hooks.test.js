@@ -1,5 +1,3 @@
-const expect = require('expect')
-
 const Nautilus = require('../../')
 
 describe('core:hooks', function () {
@@ -7,7 +5,7 @@ describe('core:hooks', function () {
   let viewsLoaded = false
 
   let nautilus
-  before(() => {
+  beforeAll(() => {
     nautilus = new Nautilus({
       bootstrap (app) {
         app.events.once('hooks:loaded:core:favicon', () => {

@@ -1,28 +1,20 @@
-const expect = require('expect')
-const { fake, stub } = require('sinon')
 const request = require('supertest')
 
 const withErrorHandler = require('./errors')
 const { handler: withResponse } = require('./response')
 
 describe('errors', () => {
-  const logger = stub(console, 'error')
+  const logger = jest.spyOn(console, 'error').mockImplementation()
   const handler = withErrorHandler(withResponse((req, res) => {
     throw new Error('whoops!')
   }))
 
-  beforeEach(() => {
-    logger.reset()
-  })
-
-  after(() => {
-    console.error.restore()
-  })
+  beforeEach(() => logger.mockClear())
 
   it('catches errors thrown in the handler', async () => {
     const { text } = await request(handler).get('/')
     expect(text).toContain('Error: whoops!')
-    expect(logger.called).toBe(true)
+    expect(logger).toHaveBeenCalled()
   })
 
   it('suppresses the stacktrace in production', async () => {
@@ -31,27 +23,27 @@ describe('errors', () => {
 
     const { text } = await request(handler).get('/')
     expect(text).not.toContain('at Function.exports.run')
-    expect(logger.called).toBe(true)
+    expect(logger).toHaveBeenCalled()
 
     process.env.NODE_ENV = restored
   })
 
   it('allows a custom error handler to be configured', async () => {
-    const customLogger = fake()
-    const errorHandler = fake((req, res) => customLogger)
+    const customLogger = jest.fn()
+    const errorHandler = jest.fn((req, res) => customLogger)
     const handler = withErrorHandler(withResponse((req, res) => {
       throw new Error('whoops!')
     }), { errors: { handler: errorHandler } })
 
     const { text } = await request(handler).get('/')
     expect(text).toContain('Error: whoops!')
-    expect(errorHandler.called).toBe(true)
-    expect(logger.called).toBe(false)
-    expect(customLogger.called).toBe(true)
+    expect(errorHandler).toHaveBeenCalled()
+    expect(logger).not.toHaveBeenCalled()
+    expect(customLogger).toHaveBeenCalled()
   })
 
   it('allows the handler to control the response', async () => {
-    const errorHandler = fake((req, res) => () => res.send('[redacted]'))
+    const errorHandler = jest.fn((req, res) => () => res.send('[redacted]'))
     const handler = withErrorHandler(withResponse((req, res) => {
       throw new Error('whoops!')
     }), { errors: { handler: errorHandler } })

@@ -4,7 +4,7 @@ const Nautilus = require('../../index')
 
 describe('hooks:favicon', function () {
   let nautilus
-  before(() => {
+  beforeAll(() => {
     nautilus = new Nautilus()
   })
 

@@ -1,28 +1,13 @@
-const Module = require('module')
-
-const expect = require('expect')
-const sinon = require('sinon')
+const { resolve } = require('path')
 
 const makeConfig = require('..')
 
 describe('@nautilus/config/loaders/flat', () => {
-  const mockEnv = {
-    default: { foo: 'bar' },
-    test: { env: 'test' },
-    local: {}
-  }
+  jest.mock(resolve('../config', 'default'), () => ({ foo: 'bar' }), { virtual: true })
+  jest.mock(resolve('../config', 'test'), () => ({ env: 'test' }), { virtual: true })
 
-  before(() => {
-    const original = Module._load
-    sinon.stub(Module, '_load').callsFake((path, parent) => {
-      const envConfig = mockEnv[path.split('config/').pop()]
-      return envConfig || original(path, parent)
-    })
-  })
-
-  after(() => {
-    Module._load.restore()
-  })
+  beforeEach(() => jest.resetModules())
+  afterAll(() => jest.clearAllMocks())
 
   it('generates configuration from a directory', () => {
     const config = makeConfig('../config', { flat: true })
@@ -30,8 +15,7 @@ describe('@nautilus/config/loaders/flat', () => {
   })
 
   it('respects the merge order', () => {
-    mockEnv.local = { foo: 'bat' }
-
+    jest.mock(resolve('../config', 'local'), () => ({ foo: 'bat' }), { virtual: true })
     const config = makeConfig('../config', { flat: true, ignoreLocal: false })
     expect(config.foo).toBe('bat')
   })
@@ -39,7 +23,7 @@ describe('@nautilus/config/loaders/flat', () => {
   it('uses the appropriate `process.env` to detect environment', () => {
     expect(makeConfig('../config', { flat: true }).env).toBe('test')
 
-    mockEnv.beta = { env: 'beta' }
+    jest.mock(resolve('../config', 'beta'), () => ({ env: 'beta' }), { virtual: true })
     process.env.DEPLOY_ENV = 'beta'
 
     expect(makeConfig('../config', { flat: true }).env).toBe('beta')
@@ -50,22 +34,15 @@ describe('@nautilus/config/loaders/flat', () => {
     delete process.env.DEPLOY_ENV
     delete process.env.NODE_ENV
 
-    mockEnv.development = { env: 'dev' }
+    jest.mock(resolve('../config', 'development'), () => ({ env: 'dev' }), { virtual: true })
     expect(makeConfig('../config', { flat: true }).env).toBe('dev')
 
     process.env.NODE_ENV = env
   })
 
   it('ignores local configuration when configured', () => {
-    mockEnv.local = { env: 'local' }
+    jest.mock(resolve('../config', 'local'), () => ({ env: 'local' }), { virtual: true })
     expect(makeConfig('../config', { flat: true, ignoreLocal: true }).env).not.toBe('local')
     expect(makeConfig('../config', { flat: true, ignoreLocal: false }).env).toBe('local')
-  })
-
-  it('does not throw if configuration is missing', () => {
-    delete mockEnv.test
-    delete mockEnv.local
-
-    expect(makeConfig('../config', { flat: true }).foo).toBe('bar')
   })
 })
