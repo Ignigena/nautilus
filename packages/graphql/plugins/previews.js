@@ -9,7 +9,7 @@
  * pattern of `application/vnd.github.*+json`.
  * @returns {ApolloServerPlugin}
  */
-module.exports = (config) => ({
+module.exports = config => ({
   /**
    * @param {import("apollo-server-core").GraphQLRequestContext}
    */

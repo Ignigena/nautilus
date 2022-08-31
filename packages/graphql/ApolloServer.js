@@ -4,6 +4,7 @@ const {
   convertNodeHttpToRequest,
   runHttpQuery
 } = require('apollo-server-core')
+const { serializeError } = require('serialize-error')
 
 module.exports = class ApolloServer extends ApolloServerBase {
   serverlessFramework () {
@@ -14,8 +15,6 @@ module.exports = class ApolloServer extends ApolloServerBase {
     this.ensureStarted()
 
     return withMiddleware(['cors', 'response', 'parse'])(async (req, res) => {
-      res.setHeaders = headers => Object.entries(headers).forEach(([header, value]) => res.setHeader(header, value))
-
       try {
         const { graphqlResponse, responseInit } = await runHttpQuery([req, res], {
           method: req.method,
@@ -27,11 +26,12 @@ module.exports = class ApolloServer extends ApolloServerBase {
         res.setHeaders(responseInit.headers)
         res.send(graphqlResponse)
       } catch (err) {
-        if (err.name === 'HttpQueryError' && err.headers) {
+        if (err?.name === 'HttpQueryError') {
           res.setHeaders(err.headers)
+          return res.status(err.statusCode).send(err?.message)
         }
 
-        res.status(err.statusCode || 500).send(err.message)
+        res.status(500).json({ errors: [serializeError(err)] })
       }
     })
   }

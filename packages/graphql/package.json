@@ -14,7 +14,8 @@
     "node": ">= 16.x"
   },
   "dependencies": {
-    "@nautilus/micro": "^0.4.5"
+    "@nautilus/micro": "^0.4.5",
+    "serialize-error": "^8.1.0"
   },
   "peerDependencies": {
     "apollo-server-core": "^3.10.1"
