@@ -74,10 +74,10 @@ describe('merge', () => {
       get foo () {
         return 'bar'
       },
-      bar: 'bat'
+      bat: 'baz'
     }, {
       get bar () {
-        return 'baz'
+        return this.bat
       }
     })
 

@@ -9,7 +9,7 @@ const merge = (...sources) => sources.reduce((result, toMerge) => {
     } else if (isObject(oldValue) && isObject(newValue)) {
       result[key] = merge(oldValue, newValue)
     } else {
-      result[key] = newValue
+      Object.defineProperty(result, key, Object.getOwnPropertyDescriptor(toMerge, key))
     }
   }
 
